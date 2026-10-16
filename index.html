@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>October UNO Championship 2026</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app-container">
+    <!-- Header -->
+    <header class="sticky-header">
+      <div>
+        <div class="brand-badge" data-i18n="department">Talent Development | HR</div>
+        <div class="header-title" data-i18n="appTitle">October UNO Showdown</div>
+      </div>
+      <button id="langToggle" class="lang-toggle-btn" aria-label="Toggle Language">
+        <span id="langLabel">BM</span>
+      </button>
+    </header>
+
+    <!-- Hero -->
+    <div class="hero-banner">
+      <div class="hero-tagline" data-i18n="hero.tagline">October Engagement Day</div>
+      <div class="hero-main">UNO Championship 2026</div>
+      <div class="hero-subtext" data-i18n="hero.subtext">From Digital 1v1s to 1 Ultimate Champion!</div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="rules" data-i18n="nav.rules">📖 Rules</button>
+      <button class="tab-btn" data-tab="guide" data-i18n="nav.guide">🕹️ Guide</button>
+      <button class="tab-btn" data-tab="tournament" data-i18n="nav.tournament">🏆 Tournament</button>
+    </nav>
+
+    <!-- Tab 1: Rules -->
+    <section id="rulesView" class="tab-content active">
+      <h3 class="section-title">🃏 Action Card Mechanics | Kad Aksi</h3>
+      <div class="carousel-container">
+        <div class="carousel-card card-skip">
+          <span class="card-badge">Action Card</span>
+          <div class="card-title">Skip 🚫</div>
+          <div class="card-mechanic"><strong>Multi-Player:</strong> Next player loses turn.</div>
+          <div class="card-highlight"><strong>1v1 Digital:</strong> Skips opponent; you take another turn immediately!</div>
+        </div>
+        <div class="carousel-card card-reverse">
+          <span class="card-badge">Action Card</span>
+          <div class="card-title">Reverse 🔁</div>
+          <div class="card-mechanic"><strong>Multi-Player:</strong> Inverts play direction.</div>
+          <div class="card-highlight"><strong>1v1 Digital:</strong> Acts as Skip; you take another turn immediately!</div>
+        </div>
+        <div class="carousel-card card-draw2">
+          <span class="card-badge">Action Card</span>
+          <div class="card-title">Draw 2 (+2) ➕2️⃣</div>
+          <div class="card-mechanic">Next player draws 2 cards and loses their turn.</div>
+          <div class="card-highlight">No stacking allowed! Penalty resolved immediately.</div>
+        </div>
+        <div class="carousel-card card-wild">
+          <span class="card-badge">Wild Card</span>
+          <div class="card-title">Wild 🌈</div>
+          <div class="card-mechanic">Player declares active color for subsequent cards.</div>
+          <div class="card-highlight">Can be played on any color at any time.</div>
+        </div>
+        <div class="carousel-card card-wild4">
+          <span class="card-badge">Wild Action</span>
+          <div class="card-title">Wild Draw 4 🔥</div>
+          <div class="card-mechanic">Declare color; opponent draws 4 cards & loses turn.</div>
+          <div class="card-highlight">Strict no-stacking! Opponent takes cards directly.</div>
+        </div>
+      </div>
+
+      <h3 class="section-title" data-i18n="rulesTab.title">Official House Rules</h3>
+      <div class="accordion-group">
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span data-i18n="rulesTab.shoutUnoTitle">Calling 'UNO!'</span>
+            <span class="acc-icon">➕</span>
+          </div>
+          <div class="accordion-body" data-i18n="rulesTab.shoutUnoDesc">
+            You must call out 'UNO!' clearly when you have only 1 card left. If caught with 1 card before the next player takes their turn, draw a 2-card penalty.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span data-i18n="rulesTab.stackingTitle">No Card Stacking</span>
+            <span class="acc-icon">➕</span>
+          </div>
+          <div class="accordion-body" data-i18n="rulesTab.stackingDesc">
+            You cannot stack +2 on +2 or +4 on +4 to pass penalties. Penalties must be resolved immediately.
+          </div>
+        </div>
+        <div class="accordion-item">
+          <div class="accordion-header">
+            <span data-i18n="rulesTab.timerTitle">Turn Timer (30s)</span>
+            <span class="acc-icon">➕</span>
+          </div>
+          <div class="accordion-body" data-i18n="rulesTab.timerDesc">
+            Players have 30 seconds per turn in digital rounds to ensure smooth flow.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Guide -->
+    <section id="guideView" class="tab-content">
+      <h3 class="section-title" data-i18n="guideTab.title">Player's Quick Guide</h3>
+      <div class="guide-step-card">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4 data-i18n="guideSteps.step1Title">Enter Your Real Name</h4>
+          <p data-i18n="guideTab.step1">Open the link and enter your full name as nickname.</p>
+        </div>
+      </div>
+      <div class="guide-step-card">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4 data-i18n="guideSteps.step2Title">Enter Assigned Room Code</h4>
+          <p data-i18n="guideTab.step2">Enter your assigned Room Name (e.g., HR-Match-01).</p>
+        </div>
+      </div>
+      <div class="guide-step-card">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4 data-i18n="guideSteps.step3Title">Start the Match</h4>
+          <p data-i18n="guideTab.step3">Tap 'Play Uno' and wait for your opponent to join.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 3: Tournament -->
+    <section id="tournamentView" class="tab-content">
+      <h3 class="section-title" data-i18n="buttons.findMatch">Find My Match</h3>
+      <div class="search-wrapper">
+        <input type="text" id="playerSearch" class="search-input" placeholder="Type your name (e.g., Ahmad, Sarah)..." autocomplete="off">
+      </div>
+      <div id="searchResults" class="search-results">
+        <div class="empty-search" id="initialSearchPrompt">Enter your name above to see your table and room assignment.</div>
+      </div>
+
+      <h3 class="section-title" data-i18n="tournamentTab.title" style="margin-top:24px;">Tournament Progression</h3>
+      <div class="guide-step-card">
+        <div class="step-num">R1</div>
+        <div class="step-content">
+          <h4 data-i18n="tournamentTab.round1Title">Round 1: Digital 1v1s</h4>
+          <p data-i18n="tournamentTab.round1Desc">15 simultaneous 1v1 browser matches (Best of 3). Winners advance.</p>
+        </div>
+      </div>
+      <div class="guide-step-card">
+        <div class="step-num">R2</div>
+        <div class="step-content">
+          <h4 data-i18n="tournamentTab.round2Title">Round 2: Physical Heats</h4>
+          <p data-i18n="tournamentTab.round2Desc">3 tables × 5 players using physical cards. Top 1 advances per table.</p>
+        </div>
+      </div>
+      <div class="guide-step-card">
+        <div class="step-num">R3</div>
+        <div class="step-content">
+          <h4 data-i18n="tournamentTab.round3Title">Round 3: Grand Final</h4>
+          <p data-i18n="tournamentTab.round3Desc">3-player championship table to decide 1st, 2nd, and 3rd place.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Floating Action Bar -->
+    <aside class="bottom-action-bar">
+      <div class="action-bar-inner">
+        <a id="launchGameBtn" href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="launch-game-btn" data-i18n="buttons.openGame">
+          Open Game Room ➔
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

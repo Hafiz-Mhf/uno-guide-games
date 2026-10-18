@@ -1,0 +1,10 @@
+{
+  "name": "uno-guide-rules",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx -y serve -p 3000 .",
+    "start": "npx -y serve -p 3000 .",
+    "test": "node tests/verify-data.js && node tests/verify-app.js && node tests/e2e-simulation.js"
+  }
+}

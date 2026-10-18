@@ -2,7 +2,7 @@
 
 ## 1. Event Overview
 - **Event Name:** October Engagement Day: Hybrid UNO Championship
-- **Organized By:** Talent Development | Human Resource
+- **Organized By:** Talent Development | Human Resource & Administration
 - **Date:** Wednesday, 28 October 2026[cite: 1]
 - **Time:** 3:00 PM – 4:30 PM (90 Minutes)[cite: 1]
 - **Venue:** Chatter Box, Level 3, Hive 5, MRANTI

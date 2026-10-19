@@ -2,6 +2,7 @@
 import fs from 'fs';
 import { PLAYERS, searchPlayers } from '../tournament-data.js';
 import { TRANSLATIONS, getNestedValue } from '../app.js';
+import { isPlayable, SCENARIOS } from '../card-engine.js';
 
 console.log('Running End-to-End Simulation Check...');
 
@@ -44,7 +45,7 @@ for (const p of PLAYERS) {
   }
 }
 
-// 3. Verify CSS file exists and has essential color tokens
+// 3. Verify CSS file exists and has essential color tokens & playground classes
 const css = fs.readFileSync('styles.css', 'utf-8');
 const requiredTokens = ['--uno-red', '--uno-yellow', '--uno-green', '--uno-blue', '--uno-dark'];
 for (const token of requiredTokens) {
@@ -52,6 +53,29 @@ for (const token of requiredTokens) {
     console.error(`FAIL: Missing CSS token ${token}`);
     process.exit(1);
   }
+}
+
+const requiredClasses = ['uno-card', 'card-center-oval', 'table-mat', 'shakeCard'];
+for (const cls of requiredClasses) {
+  if (!css.includes(cls)) {
+    console.error(`FAIL: Missing CSS class ${cls}`);
+    process.exit(1);
+  }
+}
+
+// 4. Verify playground elements in index.html
+const requiredIds = ['playgroundTable', 'activeDiscardPile', 'playerHandDock', 'drawDeckBtn', 'playFeedbackBanner'];
+for (const id of requiredIds) {
+  if (!html.includes(`id="${id}"`)) {
+    console.error(`FAIL: Missing element ID in index.html: ${id}`);
+    process.exit(1);
+  }
+}
+
+// 5. Verify Card Engine scenarios
+if (!SCENARIOS || SCENARIOS.length < 3) {
+  console.error('FAIL: Expected at least 3 scenarios in card engine');
+  process.exit(1);
 }
 
 console.log('PASS: All End-to-End simulation checks succeeded!');

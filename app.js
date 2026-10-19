@@ -35,7 +35,7 @@ export const TRANSLATIONS = {
       step2Desc: "Look at the card on top of the Discard Pile. On your turn, you must match it by:",
       step2RuleA: "Color (e.g. Red on Red)",
       step2RuleB: "Number or Symbol (e.g. 7 on 7, or Skip on Skip)",
-      step2RuleC: "Wild Card (can be played on any card anytime!)",
+      step2RuleC: "Color Card (allows you to choose among 4 colors anytime!)",
       step3Title: "3. No Match? Draw 1 Card",
       step3Desc: "If you cannot play a matching card, draw 1 card from the Draw Pile. If the card drawn is playable, you can play it immediately!",
       step4Title: "4. Shout 'UNO!' at 1 Card",
@@ -53,7 +53,15 @@ export const TRANSLATIONS = {
       shuffleBtn: "🎲 New Scenario",
       resetBtn: "🔄 Reset Scenario",
       initialPrompt: "👉 Click any card from your hand below to test if it's a legal move!",
-      drewCardMsg: "Drew a card! Check if it can be played on the active card."
+      drewCardMsg: "Drew a card! Check if it can be played on the active card.",
+      chooseColorTitle: "Choose Next Active Color",
+      chooseColorDesc: "Color Card played! Select which color the next card must match:",
+      colorRed: "Red",
+      colorYellow: "Yellow",
+      colorGreen: "Green",
+      colorBlue: "Blue",
+      activeColorBadge: "Active Color:",
+      legalColorChoice: "Color chosen: {color}! Next play must match {color}."
     },
     matchExample: {
       title: "Quick Match Visual Example",
@@ -61,7 +69,7 @@ export const TRANSLATIONS = {
       playable: "✅ Cards You Can Play:",
       playableColor: "Red 3 (Matches Color)",
       playableNumber: "Blue 7 (Matches Number)",
-      playableWild: "Wild Card (Matches Anything)",
+      playableWild: "Color Card (Choose any of 4 colors)",
       notPlayable: "❌ Cannot Play:",
       notPlayableDesc: "Green 4 (Wrong Color & Wrong Number)"
     },
@@ -75,7 +83,7 @@ export const TRANSLATIONS = {
       timerTitle: "Rule 3: 30-Second Turn Clock",
       timerDesc: "In Round 1 digital lobbies, turns exceeding 30 seconds are subject to automatic timeout. Table Captains may forfeit inactive players to ensure schedule integrity.",
       actionFinishTitle: "Rule 4: Winning on an Action Card",
-      actionFinishDesc: "You are fully permitted to win the game by playing an Action Card (+2, Skip, Reverse, Wild, or Wild Draw 4) as your final card.",
+      actionFinishDesc: "You are fully permitted to win the game by playing an Action Card (+2, Skip, Reverse, Color Card, or Color +4) as your final card.",
       refereeTitle: "Rule 5: Table Captain & Referee Decisions Final",
       refereeDesc: "Table Captains preside over each physical table in Rounds 2 & 3. Any dispute regarding card drop timing, verbal shouts, or penalties is decided exclusively by the Table Captain."
     },
@@ -144,7 +152,7 @@ export const TRANSLATIONS = {
       step2Desc: "Lihat kad di atas timbunan buangan. Pada giliran anda, padankan kad mengikut:",
       step2RuleA: "Warna (cth: Merah atas Merah)",
       step2RuleB: "Nombor atau Simbol (cth: 7 atas 7, atau Skip atas Skip)",
-      step2RuleC: "Kad Wild (boleh diletakkan bila-bila masa atas mana-mana kad!)",
+      step2RuleC: "Kad Warna (membolehkan anda memilih antara 4 warna bila-bila masa!)",
       step3Title: "3. Tiada Padanan? Ambil 1 Kad",
       step3Desc: "Jika tiada kad yang sepadan, ambil 1 kad dari timbunan cabutan. Jika kad yang diambil boleh dimainkan, anda boleh terus meletakkannya!",
       step4Title: "4. Wajib Laung 'UNO!' Bila Tinggal 1 Kad",
@@ -162,7 +170,15 @@ export const TRANSLATIONS = {
       shuffleBtn: "🎲 Senario Baharu",
       resetBtn: "🔄 Set Semula Senario",
       initialPrompt: "👉 Tekan mana-mana kad di tangan anda di bawah untuk uji sama ada sah atau tidak!",
-      drewCardMsg: "Kad telah dicabut! Semak sama ada ia boleh dimainkan atas kad semasa."
+      drewCardMsg: "Kad telah dicabut! Semak sama ada ia boleh dimainkan atas kad semasa.",
+      chooseColorTitle: "Pilih Warna Seterusnya",
+      chooseColorDesc: "Kad Warna dimainkan! Pilih warna yang perlu dipadankan seterusnya:",
+      colorRed: "Merah",
+      colorYellow: "Kuning",
+      colorGreen: "Hijau",
+      colorBlue: "Biru",
+      activeColorBadge: "Warna Semasa:",
+      legalColorChoice: "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}."
     },
     matchExample: {
       title: "Contoh Visual Padanan Pantas",
@@ -170,7 +186,7 @@ export const TRANSLATIONS = {
       playable: "✅ Kad Yang Boleh Diletak:",
       playableColor: "Merah 3 (Sama Warna)",
       playableNumber: "Biru 7 (Sama Nombor)",
-      playableWild: "Kad Wild (Bebas Warna)",
+      playableWild: "Kad Warna (Bebas pilih antara 4 warna)",
       notPlayable: "❌ Tidak Boleh Diletak:",
       notPlayableDesc: "Hijau 4 (Warna & Nombor Tidak Sama)"
     },
@@ -184,7 +200,7 @@ export const TRANSLATIONS = {
       timerTitle: "Peraturan 3: Had Masa Giliran (30 Saat)",
       timerDesc: "Dalam perlawanan digital Pusingan 1, masa maksimum setiap giliran ialah 30 saat. Kelewatan boleh menyebabkan giliran terbatal bagi memastikan kelancaran jadual.",
       actionFinishTitle: "Peraturan 4: Menamatkan Permainan dengan Kad Aksi",
-      actionFinishDesc: "Pemain dibenarkan sepenuhnya untuk memenangi permainan dengan meletakkan Kad Aksi (+2, Skip, Reverse, Wild, atau Wild Draw 4) sebagai kad terakhir mereka.",
+      actionFinishDesc: "Pemain dibenarkan sepenuhnya untuk memenangi permainan dengan meletakkan Kad Aksi (+2, Skip, Reverse, Kad Warna, atau Kad Warna +4) sebagai kad terakhir mereka.",
       refereeTitle: "Peraturan 5: Keputusan Ketua Meja & Pengadil Muktamad",
       refereeDesc: "Ketua Meja bertindak sebagai pengadil di setiap meja fizikal Pusingan 2 & 3. Sebarang pertikaian mengenai masa, laungan atau denda diputuskan secara muktamad oleh Ketua Meja."
     },
@@ -296,17 +312,50 @@ export function renderSearchResults() {
   `).join('');
 }
 
-// Realistic UNO Card HTML Generator
+// Realistic UNO Card HTML Generator (Matches Authentic UNO Deck Reference)
 export function createCardElementHtml(card, customClass = '') {
-  const displayVal = getCardDisplayGlyph(card.value);
+  const isColorCard = card.color === 'wild' && card.value === 'wild';
+  const isColorPlus4 = card.color === 'wild' && card.value === '+4';
+  const isUnderlined = card.value === '6' || card.value === '9';
+
+  let centerContent = '';
+  let pipTopLeft = '';
+  let pipBottomRight = '';
+
+  if (isColorCard) {
+    // Authentic Color Card: Clean White Oval in center, 4-Color corner pips
+    centerContent = '';
+    pipTopLeft = '<span class="wild-quad-pip" aria-hidden="true"></span>';
+    pipBottomRight = '<span class="wild-quad-pip" aria-hidden="true"></span>';
+  } else if (isColorPlus4) {
+    // Authentic Color +4 Card: 4 overlapping fanned cards in center, +4 in corners
+    centerContent = `
+      <div class="wild-stack-visual" aria-hidden="true">
+        <span class="mini-uno-card mini-card-green"></span>
+        <span class="mini-uno-card mini-card-blue"></span>
+        <span class="mini-uno-card mini-card-red"></span>
+        <span class="mini-uno-card mini-card-yellow"></span>
+      </div>
+    `;
+    pipTopLeft = '+4';
+    pipBottomRight = '+4';
+  } else {
+    // Number or Action Cards: Bold white with black drop stroke
+    const displayVal = getCardDisplayGlyph(card.value);
+    const underlineClass = isUnderlined ? ' card-underlined' : '';
+    centerContent = `<span class="card-center-val${underlineClass}">${displayVal}</span>`;
+    pipTopLeft = `<span class="${underlineClass}">${displayVal}</span>`;
+    pipBottomRight = `<span class="${underlineClass}">${displayVal}</span>`;
+  }
+
   return `
     <div class="uno-card card-color-${card.color} ${customClass}" data-id="${card.id || ''}" data-color="${card.color}" data-value="${card.value}">
       <div class="card-face">
-        <span class="card-pip pip-top-left">${displayVal}</span>
+        <span class="card-pip pip-top-left">${pipTopLeft}</span>
         <div class="card-center-oval">
-          <span class="card-center-val">${displayVal}</span>
+          ${centerContent}
         </div>
-        <span class="card-pip pip-bottom-right">${displayVal}</span>
+        <span class="card-pip pip-bottom-right">${pipBottomRight}</span>
       </div>
     </div>
   `;
@@ -314,7 +363,7 @@ export function createCardElementHtml(card, customClass = '') {
 
 function getCardDisplayGlyph(val) {
   if (val === 'skip') return '🚫';
-  if (val === 'reverse') return '🔁';
+  if (val === 'reverse') return '⇄';
   if (val === 'wild') return '🌈';
   if (val === '+4') return '+4';
   if (val === '+2') return '+2';
@@ -327,8 +376,21 @@ export function renderPlayground() {
   const handDockEl = document.getElementById('playerHandDock');
   if (!activeDiscardEl || !handDockEl) return;
 
+  const dict = TRANSLATIONS[currentLang];
+
   // Render Table Active Card
-  activeDiscardEl.innerHTML = createCardElementHtml(activeTableCard, 'table-target-card');
+  let activeCardHtml = createCardElementHtml(activeTableCard, 'table-target-card');
+  if (activeTableCard.color === 'wild' && activeTableCard.chosenColor) {
+    const colorKey = `color${activeTableCard.chosenColor.charAt(0).toUpperCase() + activeTableCard.chosenColor.slice(1)}`;
+    const colorLabel = dict.playground[colorKey] || activeTableCard.chosenColor.toUpperCase();
+    activeCardHtml += `
+      <div class="active-color-badge">
+        <span class="color-dot dot-${activeTableCard.chosenColor}"></span>
+        <span>${dict.playground.activeColorBadge} <strong>${colorLabel}</strong></span>
+      </div>
+    `;
+  }
+  activeDiscardEl.innerHTML = activeCardHtml;
 
   // Render Hand Cards
   handDockEl.innerHTML = currentHand.map(c => createCardElementHtml(c, 'hand-card-item')).join('');
@@ -345,22 +407,13 @@ export function renderPlayground() {
   });
 }
 
+let pendingWildCard = null;
+
 export function handleCardPlay(card, cardEl) {
   const banner = document.getElementById('playFeedbackBanner');
   const result = getPlayReason(card, activeTableCard, currentLang);
 
-  if (result.success) {
-    // Legal Move
-    activeTableCard = { ...card };
-    currentHand = currentHand.filter(c => c.id !== card.id);
-
-    if (banner) {
-      banner.className = 'play-feedback-banner feedback-legal';
-      banner.textContent = `✅ ${result.message}`;
-    }
-
-    renderPlayground();
-  } else {
+  if (!result.success) {
     // Illegal Move
     if (cardEl) {
       cardEl.classList.remove('shake-card');
@@ -372,7 +425,62 @@ export function handleCardPlay(card, cardEl) {
       banner.className = 'play-feedback-banner feedback-illegal';
       banner.textContent = `❌ ${result.message}`;
     }
+    return;
   }
+
+  // If Color Card or Color +4, user must choose among 4 colors
+  if (card.color === 'wild') {
+    pendingWildCard = card;
+    const overlay = document.getElementById('colorPickerOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+    }
+    if (banner) {
+      banner.className = 'play-feedback-banner feedback-legal';
+      banner.textContent = `🎯 ${result.message}`;
+    }
+    return;
+  }
+
+  // Normal Playable Move
+  activeTableCard = { ...card };
+  currentHand = currentHand.filter(c => c.id !== card.id);
+
+  if (banner) {
+    banner.className = 'play-feedback-banner feedback-legal';
+    banner.textContent = `✅ ${result.message}`;
+  }
+
+  renderPlayground();
+}
+
+export function handleColorSelection(chosenColor) {
+  if (!pendingWildCard) return;
+
+  const overlay = document.getElementById('colorPickerOverlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+
+  activeTableCard = {
+    ...pendingWildCard,
+    chosenColor: chosenColor
+  };
+  currentHand = currentHand.filter(c => c.id !== pendingWildCard.id);
+  pendingWildCard = null;
+
+  const dict = TRANSLATIONS[currentLang];
+  const colorKey = `color${chosenColor.charAt(0).toUpperCase() + chosenColor.slice(1)}`;
+  const colorLabel = dict.playground[colorKey] || chosenColor.toUpperCase();
+  const banner = document.getElementById('playFeedbackBanner');
+
+  if (banner) {
+    banner.className = 'play-feedback-banner feedback-legal';
+    const msgTemplate = dict.playground.legalColorChoice || "Color chosen: {color}! Next play must match {color}.";
+    banner.textContent = `✅ ${msgTemplate.replace(/\{color\}/g, colorLabel.toUpperCase())}`;
+  }
+
+  renderPlayground();
 }
 
 export function handleDrawCard() {
@@ -402,6 +510,12 @@ export function resetScenario() {
   const scenario = SCENARIOS[currentScenarioIdx];
   activeTableCard = { ...scenario.target };
   currentHand = scenario.hand.map(c => ({ ...c }));
+  pendingWildCard = null;
+
+  const overlay = document.getElementById('colorPickerOverlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
 
   const banner = document.getElementById('playFeedbackBanner');
   const dict = TRANSLATIONS[currentLang];
@@ -463,7 +577,18 @@ if (typeof window !== 'undefined') {
       drawDeckBtn.addEventListener('click', handleDrawCard);
     }
 
+    // Color Choice Modal Buttons
+    document.querySelectorAll('.color-choice-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const color = btn.getAttribute('data-color');
+        if (color) {
+          handleColorSelection(color);
+        }
+      });
+    });
+
     // Initial render
     updateI18n();
   });
 }
+

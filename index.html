@@ -87,7 +87,7 @@
             <div class="rule-icon-box bg-green">🎯</div>
             <div class="rule-content">
               <h4 data-i18n="rulesTab.actionFinishTitle">Rule 4: Winning on an Action Card</h4>
-              <p data-i18n="rulesTab.actionFinishDesc">You are fully permitted to win the game by playing an Action Card (+2, Skip, Reverse, Wild, or Wild Draw 4) as your final card.</p>
+              <p data-i18n="rulesTab.actionFinishDesc">You are fully permitted to win the game by playing an Action Card (+2, Skip, Reverse, Color Card, or Color +4) as your final card.</p>
             </div>
           </div>
 
@@ -143,24 +143,24 @@
           </div>
 
           <div class="action-card card-wild">
-            <div class="card-top-badge bg-purple">Wild Card</div>
+            <div class="card-top-badge bg-purple">Color Card</div>
             <div class="card-icon-big">🌈</div>
-            <div class="card-name">Wild</div>
+            <div class="card-name">Color Card</div>
             <div class="card-tag">Anytime Play</div>
             <p class="card-desc">Player chooses which color becomes active for subsequent play.</p>
             <div class="card-special-box bg-purple-subtle">
-              <strong>💡 Universal:</strong> Can be placed on any color at any turn.
+              <strong>💡 Universal:</strong> Can be placed on any color at any turn. Must pick 1 of 4 colors!
             </div>
           </div>
 
           <div class="action-card card-wild4">
-            <div class="card-top-badge bg-red">Wild Action</div>
+            <div class="card-top-badge bg-red">Color Action</div>
             <div class="card-icon-big">🔥4️⃣</div>
-            <div class="card-name">Wild Draw 4 (+4)</div>
+            <div class="card-name">Color +4</div>
             <div class="card-tag">The Finisher</div>
             <p class="card-desc">Player selects color; opponent draws 4 cards and loses their turn.</p>
             <div class="card-special-box bg-red-subtle">
-              <strong>⚠️ No Stacking:</strong> Opponent draws 4 cards immediately. No passing allowed!
+              <strong>⚠️ No Stacking:</strong> Opponent draws 4 cards immediately. Can choose color as well!
             </div>
           </div>
         </div>
@@ -242,7 +242,7 @@
               <ul class="step-sublist">
                 <li><strong class="color-red">●</strong> <span data-i18n="beginnerGuide.step2RuleA">Color (e.g. Red on Red)</span></li>
                 <li><strong class="color-blue">●</strong> <span data-i18n="beginnerGuide.step2RuleB">Number or Symbol (e.g. 7 on 7, or Skip on Skip)</span></li>
-                <li><strong class="color-rainbow">●</strong> <span data-i18n="beginnerGuide.step2RuleC">Wild Card (can be played on any card anytime!)</span></li>
+                <li><strong class="color-rainbow">●</strong> <span data-i18n="beginnerGuide.step2RuleC">Color Card (allows you to choose among 4 colors anytime!)</span></li>
               </ul>
             </div>
           </div>
@@ -291,7 +291,7 @@
                 <div class="outcome-heading" data-i18n="matchExample.playable">✅ Cards You Can Play:</div>
                 <div class="card-chip chip-green" data-i18n="matchExample.playableColor">Red 3 (Matches Color)</div>
                 <div class="card-chip chip-green" data-i18n="matchExample.playableNumber">Blue 7 (Matches Number)</div>
-                <div class="card-chip chip-green" data-i18n="matchExample.playableWild">Wild Card (Matches Anything)</div>
+                <div class="card-chip chip-green" data-i18n="matchExample.playableWild">Color Card (Choose any of 4 colors)</div>
               </div>
 
               <div class="outcome-col invalid-col">
@@ -399,6 +399,32 @@
         </a>
       </div>
     </aside>
+    <!-- Color Selection Modal (Triggered when playing Color Card or Color +4) -->
+    <div id="colorPickerOverlay" class="color-picker-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+      <div class="color-picker-modal">
+        <span class="picker-badge" data-i18n="playground.badge">Interactive Action</span>
+        <h3 id="pickerTitle" class="picker-title" data-i18n="playground.chooseColorTitle">Choose Next Active Color</h3>
+        <p class="picker-desc" data-i18n="playground.chooseColorDesc">Color Card played! Select which color the next card must match:</p>
+        <div class="color-choices-grid">
+          <button class="color-choice-btn choice-btn-red" data-color="red" aria-label="Red">
+            <span class="color-dot dot-red"></span>
+            <span class="choice-color-name" data-i18n="playground.colorRed">Red</span>
+          </button>
+          <button class="color-choice-btn choice-btn-yellow" data-color="yellow" aria-label="Yellow">
+            <span class="color-dot dot-yellow"></span>
+            <span class="choice-color-name" data-i18n="playground.colorYellow">Yellow</span>
+          </button>
+          <button class="color-choice-btn choice-btn-green" data-color="green" aria-label="Green">
+            <span class="color-dot dot-green"></span>
+            <span class="choice-color-name" data-i18n="playground.colorGreen">Green</span>
+          </button>
+          <button class="color-choice-btn choice-btn-blue" data-color="blue" aria-label="Blue">
+            <span class="color-dot dot-blue"></span>
+            <span class="choice-color-name" data-i18n="playground.colorBlue">Blue</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script type="module" src="app.js"></script>

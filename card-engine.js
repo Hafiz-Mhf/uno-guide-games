@@ -1,9 +1,20 @@
 // card-engine.js
+
 export function isPlayable(card, target) {
   if (!card || !target) return false;
-  if (card.color === 'wild' || target.color === 'wild') return true;
+
+  // Color Cards (Wild) can always be placed on anything
+  if (card.color === 'wild') return true;
+
+  // If the target on table is a Color Card with an active chosenColor, player must match that chosenColor
+  if (target.color === 'wild' && target.chosenColor) {
+    return card.color === target.chosenColor;
+  }
+
+  // Normal matching: same color OR same number/symbol
   if (card.color === target.color) return true;
   if (card.value === target.value) return true;
+
   return false;
 }
 
@@ -11,12 +22,38 @@ export function getPlayReason(card, target, lang = 'en') {
   const isEn = lang === 'en';
 
   if (card.color === 'wild') {
+    const cardName = card.value === '+4' 
+      ? (isEn ? "Color +4 Card" : "Kad Warna +4")
+      : (isEn ? "Color Card" : "Kad Warna");
     return {
       success: true,
+      needsColorChoice: true,
       message: isEn
-        ? "Legal Move! Wild cards can be placed on any color at any time."
-        : "Pergerakan Sah! Kad Wild bebas diletakkan pada bila-bila masa atas mana-mana warna."
+        ? `Legal Move! ${cardName} played. Please choose a color (Red, Yellow, Green, or Blue).`
+        : `Pergerakan Sah! ${cardName} dimainkan. Sila pilih warna seterusnya (Merah, Kuning, Hijau, atau Biru).`
     };
+  }
+
+  const activeColor = (target.color === 'wild' && target.chosenColor) 
+    ? target.chosenColor 
+    : target.color;
+
+  if (target.color === 'wild' && target.chosenColor) {
+    if (card.color === target.chosenColor) {
+      return {
+        success: true,
+        message: isEn
+          ? `Legal Move! Matches chosen color (${target.chosenColor.toUpperCase()}).`
+          : `Pergerakan Sah! Memadan warna yang dipilih (${target.chosenColor.toUpperCase()}).`
+      };
+    } else {
+      return {
+        success: false,
+        message: isEn
+          ? `Cannot Play! Active color was set to ${target.chosenColor.toUpperCase()}. Your card is ${card.color.toUpperCase()}.`
+          : `Tidak Boleh Main! Warna aktif telah ditetapkan kepada ${target.chosenColor.toUpperCase()}. Kad anda berwarna ${card.color.toUpperCase()}.`
+      };
+    }
   }
 
   if (card.color === target.color) {
@@ -74,8 +111,8 @@ export const SCENARIOS = [
   },
   {
     id: 3,
-    titleEn: "Scenario 3: Wild Cards & Recovery",
-    titleBm: "Senario 3: Kad Wild & Peluang Menang",
+    titleEn: "Scenario 3: Color +4 Card & Color Selection",
+    titleBm: "Senario 3: Kad Warna +4 & Pemilihan Warna",
     target: { color: 'green', value: '2', type: 'number' },
     hand: [
       { id: 'c11', color: 'red', value: '9', type: 'number' },
@@ -90,10 +127,13 @@ export const SCENARIOS = [
 export const DRAW_POOL = [
   { color: 'red', value: '1', type: 'number' },
   { color: 'blue', value: '2', type: 'number' },
-  { color: 'green', value: '7', type: 'number' },
-  { color: 'yellow', value: '7', type: 'number' },
+  { color: 'green', value: '8', type: 'number' },
+  { color: 'yellow', value: '5', type: 'number' },
+  { color: 'red', value: '9', type: 'number' },
+  { color: 'blue', value: '4', type: 'number' },
   { color: 'red', value: 'reverse', type: 'action' },
   { color: 'blue', value: 'skip', type: 'action' },
   { color: 'green', value: '+2', type: 'action' },
-  { color: 'wild', value: 'wild', type: 'wild' }
+  { color: 'wild', value: 'wild', type: 'wild' },
+  { color: 'wild', value: '+4', type: 'wild' }
 ];

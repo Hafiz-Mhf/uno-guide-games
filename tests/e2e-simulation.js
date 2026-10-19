@@ -55,7 +55,7 @@ for (const token of requiredTokens) {
   }
 }
 
-const requiredClasses = ['uno-card', 'card-center-oval', 'table-mat', 'shakeCard'];
+const requiredClasses = ['uno-card', 'card-center-oval', 'table-mat', 'wild-stack-visual', 'wild-quad-pip', 'color-picker-modal'];
 for (const cls of requiredClasses) {
   if (!css.includes(cls)) {
     console.error(`FAIL: Missing CSS class ${cls}`);
@@ -64,7 +64,7 @@ for (const cls of requiredClasses) {
 }
 
 // 4. Verify playground elements in index.html
-const requiredIds = ['playgroundTable', 'activeDiscardPile', 'playerHandDock', 'drawDeckBtn', 'playFeedbackBanner'];
+const requiredIds = ['playgroundTable', 'activeDiscardPile', 'playerHandDock', 'drawDeckBtn', 'playFeedbackBanner', 'colorPickerOverlay'];
 for (const id of requiredIds) {
   if (!html.includes(`id="${id}"`)) {
     console.error(`FAIL: Missing element ID in index.html: ${id}`);

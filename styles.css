@@ -1172,39 +1172,43 @@ body {
 /* ==========================================================================
    Realistic Digital UNO Card Component
    ========================================================================== */
+/* ==========================================================================
+   Realistic Digital UNO Card Component (Exact Visual Match to Official UNO)
+   ========================================================================== */
 .uno-card {
-  width: 85px;
-  height: 125px;
+  width: 90px;
+  height: 135px;
   border-radius: 12px;
   background: #FFFFFF;
-  padding: 4px;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28), 0 2px 4px rgba(0, 0, 0, 0.16);
   cursor: pointer;
   user-select: none;
   position: relative;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .uno-card {
-    width: 105px;
-    height: 155px;
-    border-radius: 14px;
-    padding: 5px;
+    width: 110px;
+    height: 165px;
+    border-radius: 15px;
+    border: 5px solid #FFFFFF;
   }
 }
 
 .uno-card:hover {
-  transform: translateY(-8px) scale(1.03);
-  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.35);
+  transform: translateY(-10px) scale(1.04);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
   z-index: 10;
 }
 
 .uno-card.shake-card {
   animation: shakeCard 0.45s ease-in-out;
   border-color: #EF4444;
-  box-shadow: 0 0 0 3px #EF4444, 0 8px 20px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 0 4px #EF4444, 0 8px 24px rgba(239, 68, 68, 0.5);
 }
 
 .uno-card.drawn-anim {
@@ -1225,7 +1229,7 @@ body {
 .card-face {
   width: 100%;
   height: 100%;
-  border-radius: 8px;
+  border-radius: 7px;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -1233,151 +1237,204 @@ body {
   justify-content: center;
 }
 
-/* Card Color Variants */
-.card-color-red .card-face {
-  background: radial-gradient(circle at 50% 50%, #EF4444 0%, #B91C1C 100%);
-}
-.card-color-yellow .card-face {
-  background: radial-gradient(circle at 50% 50%, #FBBF24 0%, #D97706 100%);
-}
-.card-color-green .card-face {
-  background: radial-gradient(circle at 50% 50%, #10B981 0%, #047857 100%);
-}
-.card-color-blue .card-face {
-  background: radial-gradient(circle at 50% 50%, #3B82F6 0%, #1D4ED8 100%);
-}
-.card-color-wild .card-face {
-  background: radial-gradient(circle at 50% 50%, #27272A 0%, #09090B 100%);
-}
+/* Authentic Saturated Card Colors from Reference Deck */
+.card-color-red .card-face { background: #C72428; }
+.card-color-yellow .card-face { background: #EAB308; }
+.card-color-green .card-face { background: #5BA832; }
+.card-color-blue .card-face { background: #1D6CB0; }
+.card-color-wild .card-face { background: #18181B; }
 
-/* Signature Angled Center Oval */
+/* The Official White-Outlined Tilted Oval */
 .card-center-oval {
   width: 78%;
-  height: 82%;
-  background: #FFFFFF;
+  height: 84%;
   border-radius: 50%;
   transform: rotate(-28deg);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   position: relative;
+  border: 2px solid #FFFFFF;
 }
 
+@media (min-width: 768px) {
+  .card-center-oval {
+    border-width: 2.5px;
+  }
+}
+
+.card-color-red .card-center-oval { background: #B91C1C; }
+.card-color-yellow .card-center-oval { background: #D97706; }
+.card-color-green .card-center-oval { background: #4D8E2A; }
+.card-color-blue .card-center-oval { background: #195893; }
+
+/* Color Card: Solid Pure White Oval (as seen in image) */
 .card-color-wild .card-center-oval {
-  background: conic-gradient(#ED1C24 0deg 90deg, #0072BC 90deg 180deg, #FFDE00 180deg 270deg, #00A651 270deg 360deg);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  background: #FFFFFF;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
-/* Center Glyph */
+/* Center Glyph: Bold White with Heavy Black Outline */
 .card-center-val {
-  font-family: 'Outfit', sans-serif;
-  font-size: 32px;
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Arial Black", sans-serif;
+  font-size: 40px;
   font-weight: 900;
   font-style: italic;
-  transform: rotate(28deg); /* counter-rotate */
+  transform: rotate(28deg);
   line-height: 1;
+  color: #FFFFFF;
+  text-shadow: 
+    -2px -2px 0 #000,
+     2px -2px 0 #000,
+    -2px  2px 0 #000,
+     2px  2px 0 #000,
+     0px  3px 0 #000,
+     0px -2px 0 #000,
+     3px  0px 0 #000,
+    -3px  0px 0 #000;
+  display: inline-block;
+  position: relative;
 }
 
 @media (min-width: 768px) {
   .card-center-val {
-    font-size: 42px;
+    font-size: 52px;
   }
 }
 
-.card-color-red .card-center-val { color: #DC2626; }
-.card-color-yellow .card-center-val { color: #D97706; }
-.card-color-green .card-center-val { color: #059669; }
-.card-color-blue .card-center-val { color: #2563EB; }
-.card-color-wild .card-center-val {
-  color: #FFFFFF;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
-  font-size: 26px;
+/* Underline for 6 and 9 (as shown on Red 9 and Blue 9 in image) */
+.card-underlined::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: -4px;
+  height: 3.5px;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+  box-shadow: 0 1px 0 #000000;
+  border-radius: 1px;
 }
 
-@media (min-width: 768px) {
-  .card-color-wild .card-center-val {
-    font-size: 34px;
-  }
+/* 4-Color Mini Overlapping Cards for Color +4 Card */
+.wild-stack-visual {
+  position: relative;
+  width: 44px;
+  height: 48px;
+  transform: rotate(28deg);
 }
 
-/* Corner Pips */
+.mini-uno-card {
+  position: absolute;
+  width: 18px;
+  height: 28px;
+  border-radius: 3px;
+  border: 1.5px solid #000000;
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mini-card-green { background: #5BA832; top: 12px; left: 0; z-index: 1; }
+.mini-card-blue  { background: #1D6CB0; top: 4px; left: 8px; z-index: 2; }
+.mini-card-red   { background: #C72428; top: 10px; left: 16px; z-index: 3; }
+.mini-card-yellow{ background: #EAB308; top: 0px; left: 24px; z-index: 4; }
+
+/* Corner Pips: Numbers with Black Stroke */
 .card-pip {
   position: absolute;
-  font-family: 'Outfit', sans-serif;
-  font-size: 11px;
+  font-family: 'Outfit', "Arial Black", sans-serif;
+  font-size: 13px;
   font-weight: 900;
   color: #FFFFFF;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-shadow: 
+    -1.5px -1.5px 0 #000,
+     1.5px -1.5px 0 #000,
+    -1.5px  1.5px 0 #000,
+     1.5px  1.5px 0 #000,
+     0px  2px 0 #000;
   line-height: 1;
   pointer-events: none;
 }
 
 @media (min-width: 768px) {
   .card-pip {
-    font-size: 13px;
+    font-size: 15px;
   }
 }
 
-.card-color-yellow .card-pip {
-  color: #FEF3C7;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-}
-
 .pip-top-left {
-  top: 4px;
+  top: 5px;
   left: 6px;
 }
 
 .pip-bottom-right {
-  bottom: 4px;
+  bottom: 5px;
   right: 6px;
   transform: rotate(180deg);
 }
 
+/* 4-Color Oval Pip for Color Card (Corner) */
+.wild-quad-pip {
+  width: 13px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  background: conic-gradient(#C72428 0deg 90deg, #1D6CB0 90deg 180deg, #EAB308 180deg 270deg, #5BA832 270deg 360deg);
+  display: inline-block;
+  transform: rotate(-25deg);
+}
+
+@media (min-width: 768px) {
+  .wild-quad-pip {
+    width: 16px;
+    height: 22px;
+  }
+}
+
 /* Face-Down Deck Card Back */
 .deck-card-back {
-  width: 85px;
-  height: 125px;
+  width: 90px;
+  height: 135px;
   border-radius: 12px;
   background: #FFFFFF;
-  padding: 4px;
+  border: 4px solid #FFFFFF;
   box-shadow: 
     0 1px 0 #CBD5E1,
     0 3px 0 #94A3B8,
     0 5px 0 #64748B,
-    0 10px 20px rgba(0, 0, 0, 0.4);
+    0 10px 22px rgba(0, 0, 0, 0.45);
   cursor: pointer;
   position: relative;
   transition: transform 0.2s;
   user-select: none;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .deck-card-back {
-    width: 105px;
-    height: 155px;
-    border-radius: 14px;
-    padding: 5px;
+    width: 110px;
+    height: 165px;
+    border-radius: 15px;
+    border: 5px solid #FFFFFF;
   }
 }
 
 .deck-card-back:hover {
-  transform: translateY(-4px);
+  transform: translateY(-5px);
 }
 
 .deck-card-back .card-face {
-  background: radial-gradient(circle at 50% 50%, #1E293B 0%, #0F172A 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #18181B;
 }
 
 .deck-center-logo {
-  transform: rotate(-25deg);
-  background: linear-gradient(135deg, var(--uno-red) 0%, var(--uno-yellow) 100%);
+  transform: rotate(-28deg);
+  background: linear-gradient(135deg, #EF4444 0%, #FBBF24 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: 'Outfit', sans-serif;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 900;
   font-style: italic;
   letter-spacing: -1px;
@@ -1385,8 +1442,142 @@ body {
 
 @media (min-width: 768px) {
   .deck-center-logo {
-    font-size: 34px;
+    font-size: 36px;
   }
+}
+
+/* Active Color Badge on Table */
+.active-color-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: var(--radius-xl);
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  margin-top: 4px;
+}
+
+.color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red { background: #C72428; }
+.dot-yellow { background: #EAB308; }
+.dot-green { background: #5BA832; }
+.dot-blue { background: #1D6CB0; }
+
+/* ==========================================================================
+   Color Selection Modal / Popup
+   ========================================================================== */
+.color-picker-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.color-picker-modal {
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-light);
+  transform: scale(0.95);
+  animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popIn {
+  to { transform: scale(1); }
+}
+
+.picker-badge {
+  display: inline-block;
+  background: #18181B;
+  color: #FFFFFF;
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 3px 10px;
+  border-radius: var(--radius-xl);
+  margin-bottom: 8px;
+}
+
+.picker-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 6px;
+  color: var(--text-main);
+}
+
+.picker-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.color-choices-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.color-choice-btn {
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+
+.color-choice-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.color-choice-btn:active {
+  transform: scale(0.98);
+}
+
+.choice-btn-red { background: linear-gradient(135deg, #EF4444 0%, #C72428 100%); }
+.choice-btn-yellow { background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%); color: #000000; }
+.choice-btn-green { background: linear-gradient(135deg, #10B981 0%, #057A3D 100%); }
+.choice-btn-blue { background: linear-gradient(135deg, #3B82F6 0%, #1D6CB0 100%); }
+
+.choice-color-name {
+  font-size: 14px;
+  letter-spacing: 0.5px;
 }
 
 /* Live Validation Banner */

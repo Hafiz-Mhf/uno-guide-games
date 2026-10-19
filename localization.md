@@ -116,7 +116,8 @@
       "colorGreen": "Green",
       "colorBlue": "Blue",
       "activeColorBadge": "Active Color:",
-      "legalColorChoice": "Color chosen: {color}! Next play must match {color}."
+      "legalColorChoice": "Color chosen: {color}! Next play must match {color}.",
+      "cancelChoice": "✕ Cancel (Keep Card)"
     }
   },
   "bm": {
@@ -233,7 +234,8 @@
       "colorGreen": "Hijau",
       "colorBlue": "Biru",
       "activeColorBadge": "Warna Semasa:",
-      "legalColorChoice": "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}."
+      "legalColorChoice": "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}.",
+      "cancelChoice": "✕ Batal (Simpan Kad)"
     }
   }
 }

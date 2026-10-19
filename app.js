@@ -61,7 +61,8 @@ export const TRANSLATIONS = {
       colorGreen: "Green",
       colorBlue: "Blue",
       activeColorBadge: "Active Color:",
-      legalColorChoice: "Color chosen: {color}! Next play must match {color}."
+      legalColorChoice: "Color chosen: {color}! Next play must match {color}.",
+      cancelChoice: "✕ Cancel (Keep Card)"
     },
     matchExample: {
       title: "Quick Match Visual Example",
@@ -178,7 +179,8 @@ export const TRANSLATIONS = {
       colorGreen: "Hijau",
       colorBlue: "Biru",
       activeColorBadge: "Warna Semasa:",
-      legalColorChoice: "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}."
+      legalColorChoice: "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}.",
+      cancelChoice: "✕ Batal (Simpan Kad)"
     },
     matchExample: {
       title: "Contoh Visual Padanan Pantas",
@@ -483,6 +485,21 @@ export function handleColorSelection(chosenColor) {
   renderPlayground();
 }
 
+export function cancelColorSelection() {
+  const overlay = document.getElementById('colorPickerOverlay');
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+  pendingWildCard = null;
+
+  const banner = document.getElementById('playFeedbackBanner');
+  const dict = TRANSLATIONS[currentLang];
+  if (banner) {
+    banner.className = 'play-feedback-banner';
+    banner.textContent = dict.playground.initialPrompt;
+  }
+}
+
 export function handleDrawCard() {
   const randomCard = DRAW_POOL[Math.floor(Math.random() * DRAW_POOL.length)];
   const newCard = {
@@ -585,6 +602,31 @@ if (typeof window !== 'undefined') {
           handleColorSelection(color);
         }
       });
+    });
+
+    // Cancel Color Picker Modal
+    const cancelModalBtn = document.getElementById('cancelColorPickerBtn');
+    if (cancelModalBtn) {
+      cancelModalBtn.addEventListener('click', cancelColorSelection);
+    }
+
+    const colorPickerOverlay = document.getElementById('colorPickerOverlay');
+    if (colorPickerOverlay) {
+      colorPickerOverlay.addEventListener('click', (e) => {
+        if (e.target === colorPickerOverlay) {
+          cancelColorSelection();
+        }
+      });
+    }
+
+    // Dismiss on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const overlay = document.getElementById('colorPickerOverlay');
+        if (overlay && overlay.style.display === 'flex') {
+          cancelColorSelection();
+        }
+      }
     });
 
     // Initial render

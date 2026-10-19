@@ -279,7 +279,7 @@ body {
    4. Content Area & View Management
    ========================================================================== */
 .content-area {
-  padding: 0 20px;
+  padding: 0 20px 96px;
   flex: 1;
 }
 
@@ -349,11 +349,11 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-.border-red { border-left: 5px solid var(--uno-red); }
-.border-yellow { border-left: 5px solid var(--uno-yellow); }
-.border-blue { border-left: 5px solid var(--uno-blue); }
-.border-green { border-left: 5px solid var(--uno-green); }
-.border-dark { border-left: 5px solid #1E293B; }
+.border-red { border-top: 3.5px solid var(--uno-red); }
+.border-yellow { border-top: 3.5px solid var(--uno-yellow); }
+.border-blue { border-top: 3.5px solid var(--uno-blue); }
+.border-green { border-top: 3.5px solid var(--uno-green); }
+.border-dark { border-top: 3.5px solid #1E293B; }
 
 .rule-icon-box {
   width: 44px;
@@ -819,7 +819,7 @@ body {
 .player-card {
   background: #FFFFFF;
   border: 1px solid var(--border-light);
-  border-left: 6px solid var(--uno-green);
+  border-top: 3.5px solid var(--uno-green);
   border-radius: var(--radius-md);
   padding: 18px;
   box-shadow: var(--shadow-sm);
@@ -1578,6 +1578,35 @@ body {
 .choice-color-name {
   font-size: 14px;
   letter-spacing: 0.5px;
+}
+
+.picker-cancel-btn {
+  margin-top: 16px;
+  background: transparent;
+  border: 1.5px solid var(--border-light);
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.picker-cancel-btn:hover {
+  background: #F1F5F9;
+  color: var(--text-main);
+  border-color: #94A3B8;
+  transform: translateY(-1px);
+}
+
+.picker-cancel-btn:active {
+  transform: scale(0.99);
 }
 
 /* Live Validation Banner */

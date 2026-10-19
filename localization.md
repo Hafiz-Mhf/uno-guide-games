@@ -97,6 +97,17 @@
       "roomLabel": "Match Room",
       "opponentLabel": "Opponent",
       "heatLabel": "Round 2 Table"
+    },
+    "playground": {
+      "badge": "Interactive Training Mat",
+      "title": "UNO Rules Playground: Can I Play This?",
+      "subtitle": "Click any card in your hand below to test legal vs illegal moves live!",
+      "tableCard": "Card on Table",
+      "drawDeck": "Draw Deck (Tap to Draw)",
+      "yourHand": "Your Hand (Click to Play)",
+      "shuffleBtn": "🎲 New Scenario",
+      "resetBtn": "🔄 Reset Scenario",
+      "initialPrompt": "👉 Click any card from your hand below to test if it's a legal move!"
     }
   },
   "bm": {
@@ -194,6 +205,17 @@
       "roomLabel": "Bilik Perlawanan",
       "opponentLabel": "Lawan",
       "heatLabel": "Meja Pusingan 2"
+    },
+    "playground": {
+      "badge": "Pentas Latihan Interaktif",
+      "title": "Latihan Peraturan UNO: Boleh Main Kad Ini?",
+      "subtitle": "Tekan mana-mana kad di tangan anda untuk menguji pergerakan sah atau tidak sah secara langsung!",
+      "tableCard": "Kad di Atas Meja",
+      "drawDeck": "Timbunan Cabutan (Tekan untuk Cabut)",
+      "yourHand": "Kad di Tangan Anda (Tekan untuk Main)",
+      "shuffleBtn": "🎲 Senario Baharu",
+      "resetBtn": "🔄 Set Semula Senario",
+      "initialPrompt": "👉 Tekan mana-mana kad di tangan anda di bawah untuk uji sama ada sah atau tidak!"
     }
   }
 }

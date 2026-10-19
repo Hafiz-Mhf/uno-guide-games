@@ -1,5 +1,6 @@
 // app.js
 import { PLAYERS, searchPlayers } from './tournament-data.js';
+import { isPlayable, getPlayReason, SCENARIOS, DRAW_POOL } from './card-engine.js';
 
 export const TRANSLATIONS = {
   en: {
@@ -41,6 +42,18 @@ export const TRANSLATIONS = {
       step4Desc: "The moment you play your second-to-last card and hold only 1 card, you MUST shout 'UNO!' (or tap the UNO button). If an opponent catches you before the next player takes a turn, you must draw a 2-card penalty!",
       step5Title: "5. Winning the Round",
       step5Desc: "The first person to discard their final card wins the round!"
+    },
+    playground: {
+      badge: "Interactive Training Mat",
+      title: "UNO Rules Playground: Can I Play This?",
+      subtitle: "Click any card in your hand below to test legal vs illegal moves live!",
+      tableCard: "Card on Table",
+      drawDeck: "Draw Deck (Tap to Draw)",
+      yourHand: "Your Hand (Click to Play)",
+      shuffleBtn: "🎲 New Scenario",
+      resetBtn: "🔄 Reset Scenario",
+      initialPrompt: "👉 Click any card from your hand below to test if it's a legal move!",
+      drewCardMsg: "Drew a card! Check if it can be played on the active card."
     },
     matchExample: {
       title: "Quick Match Visual Example",
@@ -139,6 +152,18 @@ export const TRANSLATIONS = {
       step5Title: "5. Menang Pusingan",
       step5Desc: "Pemain pertama yang berjaya menghabiskan semua kad di tangan diisytiharkan sebagai pemenang!"
     },
+    playground: {
+      badge: "Pentas Latihan Interaktif",
+      title: "Latihan Peraturan UNO: Boleh Main Kad Ini?",
+      subtitle: "Tekan mana-mana kad di tangan anda untuk menguji pergerakan sah atau tidak sah secara langsung!",
+      tableCard: "Kad di Atas Meja",
+      drawDeck: "Timbunan Cabutan (Tekan untuk Cabut)",
+      yourHand: "Kad di Tangan Anda (Tekan untuk Main)",
+      shuffleBtn: "🎲 Senario Baharu",
+      resetBtn: "🔄 Set Semula Senario",
+      initialPrompt: "👉 Tekan mana-mana kad di tangan anda di bawah untuk uji sama ada sah atau tidak!",
+      drewCardMsg: "Kad telah dicabut! Semak sama ada ia boleh dimainkan atas kad semasa."
+    },
     matchExample: {
       title: "Contoh Visual Padanan Pantas",
       topCard: "Kad Semasa di Atas Meja:",
@@ -200,6 +225,11 @@ export const TRANSLATIONS = {
 
 let currentLang = 'en';
 
+// Playground State
+let currentScenarioIdx = 0;
+let activeTableCard = { ...SCENARIOS[0].target };
+let currentHand = SCENARIOS[0].hand.map(c => ({ ...c }));
+
 export function getNestedValue(obj, path) {
   return path.split('.').reduce((acc, part) => acc && acc[part], obj);
 }
@@ -225,6 +255,7 @@ export function updateI18n() {
   }
 
   renderSearchResults();
+  renderPlayground();
 }
 
 export function renderSearchResults() {
@@ -265,6 +296,123 @@ export function renderSearchResults() {
   `).join('');
 }
 
+// Realistic UNO Card HTML Generator
+export function createCardElementHtml(card, customClass = '') {
+  const displayVal = getCardDisplayGlyph(card.value);
+  return `
+    <div class="uno-card card-color-${card.color} ${customClass}" data-id="${card.id || ''}" data-color="${card.color}" data-value="${card.value}">
+      <div class="card-face">
+        <span class="card-pip pip-top-left">${displayVal}</span>
+        <div class="card-center-oval">
+          <span class="card-center-val">${displayVal}</span>
+        </div>
+        <span class="card-pip pip-bottom-right">${displayVal}</span>
+      </div>
+    </div>
+  `;
+}
+
+function getCardDisplayGlyph(val) {
+  if (val === 'skip') return '🚫';
+  if (val === 'reverse') return '🔁';
+  if (val === 'wild') return '🌈';
+  if (val === '+4') return '+4';
+  if (val === '+2') return '+2';
+  return val;
+}
+
+// Render Table Playground
+export function renderPlayground() {
+  const activeDiscardEl = document.getElementById('activeDiscardPile');
+  const handDockEl = document.getElementById('playerHandDock');
+  if (!activeDiscardEl || !handDockEl) return;
+
+  // Render Table Active Card
+  activeDiscardEl.innerHTML = createCardElementHtml(activeTableCard, 'table-target-card');
+
+  // Render Hand Cards
+  handDockEl.innerHTML = currentHand.map(c => createCardElementHtml(c, 'hand-card-item')).join('');
+
+  // Attach card click handlers
+  handDockEl.querySelectorAll('.uno-card').forEach(cardEl => {
+    cardEl.addEventListener('click', () => {
+      const cardId = cardEl.getAttribute('data-id');
+      const card = currentHand.find(c => c.id === cardId);
+      if (card) {
+        handleCardPlay(card, cardEl);
+      }
+    });
+  });
+}
+
+export function handleCardPlay(card, cardEl) {
+  const banner = document.getElementById('playFeedbackBanner');
+  const result = getPlayReason(card, activeTableCard, currentLang);
+
+  if (result.success) {
+    // Legal Move
+    activeTableCard = { ...card };
+    currentHand = currentHand.filter(c => c.id !== card.id);
+
+    if (banner) {
+      banner.className = 'play-feedback-banner feedback-legal';
+      banner.textContent = `✅ ${result.message}`;
+    }
+
+    renderPlayground();
+  } else {
+    // Illegal Move
+    if (cardEl) {
+      cardEl.classList.remove('shake-card');
+      void cardEl.offsetWidth; // trigger reflow
+      cardEl.classList.add('shake-card');
+    }
+
+    if (banner) {
+      banner.className = 'play-feedback-banner feedback-illegal';
+      banner.textContent = `❌ ${result.message}`;
+    }
+  }
+}
+
+export function handleDrawCard() {
+  const randomCard = DRAW_POOL[Math.floor(Math.random() * DRAW_POOL.length)];
+  const newCard = {
+    ...randomCard,
+    id: 'd_' + Date.now() + Math.random().toString(36).substring(2, 6)
+  };
+  currentHand.push(newCard);
+
+  const banner = document.getElementById('playFeedbackBanner');
+  const dict = TRANSLATIONS[currentLang];
+  if (banner) {
+    banner.className = 'play-feedback-banner';
+    banner.textContent = `📥 ${dict.playground.drewCardMsg}`;
+  }
+
+  renderPlayground();
+}
+
+export function shuffleScenario() {
+  currentScenarioIdx = (currentScenarioIdx + 1) % SCENARIOS.length;
+  resetScenario();
+}
+
+export function resetScenario() {
+  const scenario = SCENARIOS[currentScenarioIdx];
+  activeTableCard = { ...scenario.target };
+  currentHand = scenario.hand.map(c => ({ ...c }));
+
+  const banner = document.getElementById('playFeedbackBanner');
+  const dict = TRANSLATIONS[currentLang];
+  if (banner) {
+    banner.className = 'play-feedback-banner';
+    banner.textContent = dict.playground.initialPrompt;
+  }
+
+  renderPlayground();
+}
+
 // Initialize DOM events
 if (typeof window !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
@@ -297,6 +445,22 @@ if (typeof window !== 'undefined') {
       searchInput.addEventListener('input', () => {
         renderSearchResults();
       });
+    }
+
+    // Playground Controls
+    const shuffleBtn = document.getElementById('shuffleScenarioBtn');
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', shuffleScenario);
+    }
+
+    const resetBtn = document.getElementById('resetScenarioBtn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', resetScenario);
+    }
+
+    const drawDeckBtn = document.getElementById('drawDeckBtn');
+    if (drawDeckBtn) {
+      drawDeckBtn.addEventListener('click', handleDrawCard);
     }
 
     // Initial render

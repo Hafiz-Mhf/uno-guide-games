@@ -177,6 +177,54 @@
           </div>
         </div>
 
+        <!-- Interactive UNO Rules Playground -->
+        <div class="uno-playground-wrap" id="playgroundTable">
+          <div class="playground-header">
+            <div>
+              <span class="playground-badge" data-i18n="playground.badge">Interactive Training Mat</span>
+              <h3 class="playground-title" data-i18n="playground.title">UNO Rules Playground: Can I Play This?</h3>
+              <p class="playground-subtitle" data-i18n="playground.subtitle">Click any card in your hand below to test legal vs illegal moves live!</p>
+            </div>
+            <div class="playground-controls">
+              <button id="shuffleScenarioBtn" class="btn-secondary-action" data-i18n="playground.shuffleBtn">🎲 New Scenario</button>
+              <button id="resetScenarioBtn" class="btn-secondary-action" data-i18n="playground.resetBtn">🔄 Reset Scenario</button>
+            </div>
+          </div>
+
+          <div class="table-mat">
+            <div class="table-active-zone">
+              <!-- Draw Deck (Face Down) -->
+              <div class="pile-wrapper">
+                <div class="pile-label" data-i18n="playground.drawDeck">Draw Deck (Tap to Draw)</div>
+                <div id="drawDeckBtn" class="deck-card-back" title="Click to draw a card">
+                  <div class="card-face">
+                    <span class="deck-center-logo">UNO</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Discard Pile (Active Card on Table) -->
+              <div class="pile-wrapper">
+                <div class="pile-label" data-i18n="playground.tableCard">Card on Table</div>
+                <div id="activeDiscardPile">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Feedback Banner -->
+            <div id="playFeedbackBanner" class="play-feedback-banner" data-i18n="playground.initialPrompt">
+              👉 Click any card from your hand below to test if it's a legal move!
+            </div>
+
+            <!-- Player Hand Fan -->
+            <div class="player-dock-header" data-i18n="playground.yourHand">Your Hand (Click to Play)</div>
+            <div id="playerHandDock" class="player-hand-dock">
+              <!-- Hand cards rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
         <div class="beginner-steps-container">
           <div class="step-box">
             <div class="step-box-badge">1</div>

@@ -138,6 +138,23 @@
       "step5": "5. Play your 150-point series. Upon completion, report the winner to the tournament desk.",
       "practiceTitle": "Pre-Event Practice Options",
       "practiceDesc": "Anyone wanting to test before game day can go to the website, create a custom test room name, and click Play Uno. Click 'Play with Buddy' to test solo against AI bots, or click 'Invite a buddy' to copy your direct room link and challenge a colleague!"
+    },
+    "roomGenerator": {
+      "badge": "⚡ Automated Tool",
+      "title": "Automated Room Generator & Direct Join Links",
+      "subtitle": "Instantly generate official tournament rooms or random practice rooms with 1-click pre-filled BuddyBoardGames links.",
+      "matchSelectLabel": "Official Match (Round 1):",
+      "randomBtn": "🎲 Generate Random Room",
+      "officialBtn": "🏆 Next Official Match",
+      "nameLabel": "Your Nickname (Optional):",
+      "namePlaceholder": "Enter nickname (e.g. Sarah, Razali)...",
+      "roomLabel": "Active Room Name:",
+      "directLinkLabel": "Pre-filled BuddyBoardGames Direct URL:",
+      "launchBtn": "🚀 Launch Pre-filled Room on BuddyBoardGames ➔",
+      "copyRoomBtn": "📋 Copy Room Name",
+      "copyLinkBtn": "🔗 Copy Direct Link",
+      "copiedToast": "Copied to clipboard! ✅",
+      "quickPicksLabel": "⚡ Quick Match Switcher (1 to 15):"
     }
   },
   "bm": {
@@ -276,6 +293,23 @@
       "step5": "5. Main siri perlawanan sehingga mencapai 150 mata. Selesai bermain, maklumkan pemenang perlawanan kepada meja urusetia.",
       "practiceTitle": "Pilihan Latihan Sebelum Acara",
       "practiceDesc": "Sesiapa yang ingin mencuba sebelum hari kejadian boleh melayari laman web tersebut, letak sebarang nama bilik percubaan, dan klik 'Play Uno'. Klik 'Play with Buddy' untuk berlatih secara solo menentang bot AI, atau klik 'Invite a buddy' untuk menyalin pautan bilik dan bermain bersama rakan sekerja!"
+    },
+    "roomGenerator": {
+      "badge": "⚡ Alat Automasi",
+      "title": "Penjana Nama Bilik & Pautan Terus Automatik",
+      "subtitle": "Jana nama bilik perlawanan rasmi atau bilik latihan rawak secara pantas dengan pautan terus BuddyBoardGames.",
+      "matchSelectLabel": "Perlawanan Rasmi (Pusingan 1):",
+      "randomBtn": "🎲 Jana Bilik Rawak",
+      "officialBtn": "🏆 Perlawanan Rasmi Seterusnya",
+      "nameLabel": "Nama Panggilan (Pilihan):",
+      "namePlaceholder": "Masukkan nama (cth: Sarah, Razali)...",
+      "roomLabel": "Nama Bilik Aktif:",
+      "directLinkLabel": "Pautan Terus BuddyBoardGames (Telah Diisi):",
+      "launchBtn": "🚀 Masuk Bilik di BuddyBoardGames ➔",
+      "copyRoomBtn": "📋 Salin Nama Bilik",
+      "copyLinkBtn": "🔗 Salin Pautan Terus",
+      "copiedToast": "Disalin ke papan keratan! ✅",
+      "quickPicksLabel": "⚡ Pilihan Pantas Perlawanan (1 hingga 15):"
     }
   }
 }

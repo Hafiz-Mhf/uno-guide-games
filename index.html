@@ -416,6 +416,64 @@
           </div>
         </div>
 
+        <!-- Automated Room Name Generator & Direct Join Links -->
+        <div class="room-generator-card" id="roomGeneratorWidget">
+          <div class="room-gen-header">
+            <div>
+              <span class="tech-pill bg-purple" data-i18n="roomGenerator.badge">⚡ Automated Tool</span>
+              <h3 class="room-gen-title" data-i18n="roomGenerator.title">Automated Room Generator & Direct Join Links</h3>
+              <p class="room-gen-subtitle" data-i18n="roomGenerator.subtitle">Instantly generate official tournament rooms or random practice rooms with 1-click pre-filled BuddyBoardGames links.</p>
+            </div>
+            <div class="room-gen-mode-toggles">
+              <button id="genNextOfficialBtn" class="btn-gen-action" data-i18n="roomGenerator.officialBtn">🏆 Next Official Match</button>
+              <button id="genRandomRoomBtn" class="btn-gen-action secondary" data-i18n="roomGenerator.randomBtn">🎲 Generate Random Room</button>
+            </div>
+          </div>
+
+          <!-- Quick Match Switcher Pills -->
+          <div class="quick-matches-wrap">
+            <span class="quick-matches-label" data-i18n="roomGenerator.quickPicksLabel">⚡ Quick Match Switcher (1 to 15):</span>
+            <div class="quick-pills-row" id="quickMatchPills">
+              <!-- Rendered dynamically 1 to 15 -->
+            </div>
+          </div>
+
+          <!-- Live Room Configuration & Output Grid -->
+          <div class="room-output-grid">
+            <div class="room-field-block">
+              <label class="field-label" for="genPlayerNameInput" data-i18n="roomGenerator.nameLabel">Your Nickname (Optional):</label>
+              <input type="text" id="genPlayerNameInput" class="room-text-input" placeholder="Enter nickname (e.g. Sarah, Razali)..." maxlength="32">
+            </div>
+
+            <div class="room-field-block">
+              <label class="field-label" for="genRoomNameDisplay" data-i18n="roomGenerator.roomLabel">Active Room Name:</label>
+              <div class="input-with-copy">
+                <input type="text" id="genRoomNameDisplay" class="room-text-input bold-code" readonly value="HR-Match-01">
+                <button id="copyRoomNameBtn" class="copy-field-btn" data-i18n="roomGenerator.copyRoomBtn" title="Copy room name">
+                  📋 Copy Room Name
+                </button>
+              </div>
+            </div>
+
+            <div class="room-field-block full-col">
+              <label class="field-label" for="genDirectLinkDisplay" data-i18n="roomGenerator.directLinkLabel">Pre-filled BuddyBoardGames Direct URL:</label>
+              <div class="input-with-copy">
+                <input type="text" id="genDirectLinkDisplay" class="room-text-input mono-url" readonly value="">
+                <button id="copyDirectLinkBtn" class="copy-field-btn" data-i18n="roomGenerator.copyLinkBtn" title="Copy direct link">
+                  🔗 Copy Direct Link
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 1-Click Launch Button -->
+          <div class="room-launch-action">
+            <a id="genLaunchDirectBtn" href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="launch-direct-game-btn" data-i18n="roomGenerator.launchBtn">
+              🚀 Launch Pre-filled Room on BuddyBoardGames ➔
+            </a>
+          </div>
+        </div>
+
         <div class="tech-setup-grid">
           <div class="tech-card">
             <span class="tech-pill bg-blue">Digital Platform</span>

@@ -139,6 +139,23 @@ export const TRANSLATIONS = {
       step5: "5. Play your 150-point series. Upon completion, report the winner to the tournament desk.",
       practiceTitle: "Pre-Event Practice Options",
       practiceDesc: "Anyone wanting to test before game day can go to the website, create a custom test room name, and click Play Uno. Click 'Play with Buddy' to test solo against AI bots, or click 'Invite a buddy' to copy your direct room link and challenge a colleague!"
+    },
+    roomGenerator: {
+      badge: "⚡ Automated Tool",
+      title: "Automated Room Generator & Direct Join Links",
+      subtitle: "Instantly generate official tournament rooms or random practice rooms with 1-click pre-filled BuddyBoardGames links.",
+      matchSelectLabel: "Official Match (Round 1):",
+      randomBtn: "🎲 Generate Random Room",
+      officialBtn: "🏆 Next Official Match",
+      nameLabel: "Your Nickname (Optional):",
+      namePlaceholder: "Enter nickname (e.g. Sarah, Razali)...",
+      roomLabel: "Active Room Name:",
+      directLinkLabel: "Pre-filled BuddyBoardGames Direct URL:",
+      launchBtn: "🚀 Launch Pre-filled Room on BuddyBoardGames ➔",
+      copyRoomBtn: "📋 Copy Room Name",
+      copyLinkBtn: "🔗 Copy Direct Link",
+      copiedToast: "Copied to clipboard! ✅",
+      quickPicksLabel: "⚡ Quick Match Switcher (1 to 15):"
     }
   },
   bm: {
@@ -277,6 +294,23 @@ export const TRANSLATIONS = {
       step5: "5. Main siri perlawanan sehingga mencapai 150 mata. Selesai bermain, maklumkan pemenang perlawanan kepada meja urusetia.",
       practiceTitle: "Pilihan Latihan Sebelum Acara",
       practiceDesc: "Sesiapa yang ingin mencuba sebelum hari kejadian boleh melayari laman web tersebut, letak sebarang nama bilik percubaan, dan klik 'Play Uno'. Klik 'Play with Buddy' untuk berlatih secara solo menentang bot AI, atau klik 'Invite a buddy' untuk menyalin pautan bilik dan bermain bersama rakan sekerja!"
+    },
+    roomGenerator: {
+      badge: "⚡ Alat Automasi",
+      title: "Penjana Nama Bilik & Pautan Terus Automatik",
+      subtitle: "Jana nama bilik perlawanan rasmi atau bilik latihan rawak secara pantas dengan pautan terus BuddyBoardGames.",
+      matchSelectLabel: "Perlawanan Rasmi (Pusingan 1):",
+      randomBtn: "🎲 Jana Bilik Rawak",
+      officialBtn: "🏆 Perlawanan Rasmi Seterusnya",
+      nameLabel: "Nama Panggilan (Pilihan):",
+      namePlaceholder: "Masukkan nama (cth: Sarah, Razali)...",
+      roomLabel: "Nama Bilik Aktif:",
+      directLinkLabel: "Pautan Terus BuddyBoardGames (Telah Diisi):",
+      launchBtn: "🚀 Masuk Bilik di BuddyBoardGames ➔",
+      copyRoomBtn: "📋 Salin Nama Bilik",
+      copyLinkBtn: "🔗 Salin Pautan Terus",
+      copiedToast: "Disalin ke papan keratan! ✅",
+      quickPicksLabel: "⚡ Pilihan Pantas Perlawanan (1 hingga 15):"
     }
   }
 };
@@ -312,10 +346,18 @@ export function updateI18n() {
     searchInput.placeholder = dict.search.placeholder;
   }
 
+  const genNameInput = document.getElementById('genPlayerNameInput');
+  if (genNameInput && dict.roomGenerator) {
+    genNameInput.placeholder = dict.roomGenerator.namePlaceholder;
+  }
+
   if (document.getElementById('searchResults')) {
     renderSearchResults();
   }
   renderPlayground();
+  if (typeof refreshRoomGeneratorDisplays === 'function') {
+    refreshRoomGeneratorDisplays();
+  }
 }
 
 export function renderSearchResults() {
@@ -586,6 +628,184 @@ export function resetScenario() {
   renderPlayground();
 }
 
+// ==========================================================================
+// Automated Room Generator & Direct Join Links for BuddyBoardGames UNO
+// ==========================================================================
+export let activeGenMatchIndex = 1;
+export let activeGenRoomName = 'HR-Match-01';
+export let activeGenPlayerName = '';
+
+export function buildBuddyBoardGamesUrl(roomName, playerName = '') {
+  const cleanRoom = (roomName || '').trim();
+  if (!cleanRoom) return 'https://buddyboardgames.com/uno';
+
+  let b64Room;
+  try {
+    b64Room = btoa(unescape(encodeURIComponent(cleanRoom)));
+  } catch (e) {
+    b64Room = btoa(cleanRoom);
+  }
+  let url = `https://buddyboardgames.com/uno?room=${encodeURIComponent(b64Room)}`;
+
+  const cleanPlayer = (playerName || '').trim();
+  if (cleanPlayer) {
+    let b64Player;
+    try {
+      b64Player = btoa(unescape(encodeURIComponent(cleanPlayer)));
+    } catch (e) {
+      b64Player = btoa(cleanPlayer);
+    }
+    url += `&name=${encodeURIComponent(b64Player)}`;
+  }
+  return url;
+}
+
+export function generateRandomRoomName() {
+  const prefixes = ['HR-UNO', 'UNO-CHAMP', 'UNO-HEAT', 'HR-SPARK', 'UNO-STRIKE', 'UNO-BLAZE'];
+  const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+  const num = Math.floor(10 + Math.random() * 90);
+  return `${prefix}-${num}`;
+}
+
+export function copyTextToClipboard(text, btnEl, originalKey) {
+  if (!text) return;
+  const dict = TRANSLATIONS[currentLang];
+  const successMsg = dict.roomGenerator?.copiedToast || 'Copied! ✅';
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).catch(() => {
+      fallbackCopyText(text);
+    });
+  } else {
+    fallbackCopyText(text);
+  }
+
+  if (btnEl) {
+    const origText = btnEl.textContent;
+    btnEl.textContent = successMsg;
+    btnEl.classList.add('copied-success');
+    setTimeout(() => {
+      const currentDict = TRANSLATIONS[currentLang];
+      btnEl.textContent = currentDict.roomGenerator?.[originalKey] || origText;
+      btnEl.classList.remove('copied-success');
+    }, 1800);
+  }
+}
+
+function fallbackCopyText(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+  } catch (err) {}
+  document.body.removeChild(textarea);
+}
+
+export function renderRoomGeneratorPills() {
+  const pillsContainer = document.getElementById('quickMatchPills');
+  if (!pillsContainer) return;
+
+  pillsContainer.innerHTML = Array.from({ length: 15 }, (_, i) => {
+    const matchNum = i + 1;
+    const isActive = activeGenMatchIndex === matchNum;
+    return `<button type="button" class="match-quick-pill ${isActive ? 'active' : ''}" data-match="${matchNum}">M-${matchNum}</button>`;
+  }).join('');
+
+  pillsContainer.querySelectorAll('.match-quick-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      const matchNum = parseInt(pill.getAttribute('data-match'), 10);
+      selectOfficialMatch(matchNum);
+    });
+  });
+}
+
+export function selectOfficialMatch(matchNum) {
+  activeGenMatchIndex = matchNum;
+  activeGenRoomName = `HR-Match-${String(matchNum).padStart(2, '0')}`;
+  refreshRoomGeneratorDisplays();
+}
+
+export function refreshRoomGeneratorDisplays() {
+  const roomDisplay = document.getElementById('genRoomNameDisplay');
+  const linkDisplay = document.getElementById('genDirectLinkDisplay');
+  const launchBtn = document.getElementById('genLaunchDirectBtn');
+  const playerInput = document.getElementById('genPlayerNameInput');
+
+  if (playerInput) {
+    activeGenPlayerName = playerInput.value;
+  }
+
+  const directUrl = buildBuddyBoardGamesUrl(activeGenRoomName, activeGenPlayerName);
+
+  if (roomDisplay) {
+    roomDisplay.value = activeGenRoomName;
+  }
+  if (linkDisplay) {
+    linkDisplay.value = directUrl;
+  }
+  if (launchBtn) {
+    launchBtn.href = directUrl;
+  }
+
+  // Update pills active state
+  document.querySelectorAll('#quickMatchPills .match-quick-pill').forEach(pill => {
+    const matchNum = parseInt(pill.getAttribute('data-match'), 10);
+    if (activeGenMatchIndex === matchNum) {
+      pill.classList.add('active');
+    } else {
+      pill.classList.remove('active');
+    }
+  });
+}
+
+export function setupRoomGeneratorEvents() {
+  renderRoomGeneratorPills();
+  refreshRoomGeneratorDisplays();
+
+  const playerInput = document.getElementById('genPlayerNameInput');
+  if (playerInput) {
+    playerInput.addEventListener('input', () => {
+      refreshRoomGeneratorDisplays();
+    });
+  }
+
+  const nextOfficialBtn = document.getElementById('genNextOfficialBtn');
+  if (nextOfficialBtn) {
+    nextOfficialBtn.addEventListener('click', () => {
+      const nextMatch = ((activeGenMatchIndex || 0) % 15) + 1;
+      selectOfficialMatch(nextMatch);
+    });
+  }
+
+  const randomRoomBtn = document.getElementById('genRandomRoomBtn');
+  if (randomRoomBtn) {
+    randomRoomBtn.addEventListener('click', () => {
+      activeGenMatchIndex = null;
+      activeGenRoomName = generateRandomRoomName();
+      refreshRoomGeneratorDisplays();
+    });
+  }
+
+  const copyRoomBtn = document.getElementById('copyRoomNameBtn');
+  if (copyRoomBtn) {
+    copyRoomBtn.addEventListener('click', () => {
+      copyTextToClipboard(activeGenRoomName, copyRoomBtn, 'copyRoomBtn');
+    });
+  }
+
+  const copyLinkBtn = document.getElementById('copyDirectLinkBtn');
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', () => {
+      const url = buildBuddyBoardGamesUrl(activeGenRoomName, activeGenPlayerName);
+      copyTextToClipboard(url, copyLinkBtn, 'copyLinkBtn');
+    });
+  }
+}
+
 // Initialize DOM events
 if (typeof window !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
@@ -671,8 +891,12 @@ if (typeof window !== 'undefined') {
       }
     });
 
+    // Setup Room Generator Widget
+    setupRoomGeneratorEvents();
+
     // Initial render
     updateI18n();
   });
 }
+
 

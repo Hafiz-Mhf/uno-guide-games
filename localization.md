@@ -3,44 +3,41 @@
 ```json
 {
   "en": {
-    "appTitle": "October UNO Championship 2026",
-    "department": "Talent Development | HR & Admin",
+    "appTitle": "HR & Admin UNO Engagement Day 2026",
+    "department": "Talent Development | Human Resource",
     "toggleText": "BM",
     "nav": {
-      "rules": "📖 Rules & House Rules",
-      "guide": "🕹️ Beginner Guide & Online Lobby",
-      "tournament": "🏆 Tournament & Match Search"
+      "guide": "🕹️ Beginner Guide & Practice Mat",
+      "rules": "📜 Official Rules & 7 House Rules",
+      "schedule": "🕒 Event Schedule & Setup"
     },
     "hero": {
-      "tagline": "HR & Admin Engagement Day 2026",
-      "eventDate": "Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM",
-      "venue": "📍 Chatter Box, Level 3, Hive 5, MRANTI",
-      "subtext": "From Digital 1v1s to the 3-Player Grand Final — May the Best Card Win!"
+      "tagline": "October Engagement Day: Guide & Official Rules",
+      "eventDate": "Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)",
+      "venue": "📍 Mranti Corporation-2-L2-E-6-Common Area Space",
+      "platform": "🎮 BuddyBoardGames UNO & Physical UNO Decks",
+      "subtext": "Casual UNO Championship — From Digital 1v1s to the 3-Player Grand Final!"
     },
     "buttons": {
       "openGame": "Launch BuddyBoardGames Lobby ➔",
-      "findMatch": "Find My Match",
-      "viewRules": "View Official Rules",
-      "joinRoom": "Join Room",
-      "howToPlay": "How to Play UNO",
-      "tournamentRules": "Tournament Rules"
+      "practiceWithBuddy": "Practice With AI Bots ➔"
     },
     "beginnerGuide": {
       "title": "First Time Playing UNO? Start Here!",
       "subtitle": "Master the fundamentals in 2 minutes. Simple, fast, and exciting!",
       "step1Title": "1. The Objective",
-      "step1Desc": "Be the first player to empty all cards from your hand before your opponents do.",
+      "step1Desc": "Be the first player to play all the cards in your hand by matching the top card of the Discard pile by Color, Number, or Symbol.",
       "step2Title": "2. How a Turn Works",
       "step2Desc": "Look at the card on top of the Discard Pile. On your turn, you must match it by:",
       "step2RuleA": "Color (e.g. Red on Red)",
       "step2RuleB": "Number or Symbol (e.g. 7 on 7, or Skip on Skip)",
-      "step2RuleC": "Color Card (allows you to choose among 4 colors anytime!)",
-      "step3Title": "3. No Match? Draw 1 Card",
-      "step3Desc": "If you cannot play a matching card, draw 1 card from the Draw Pile. If the card drawn is playable, you can play it immediately!",
+      "step2RuleC": "Color Card / Wild (allows you to choose among 4 colors anytime!)",
+      "step3Title": "3. No Match? Draw 1 Card & Pass",
+      "step3Desc": "If you don't have a matching card in hand, simply draw 1 card from the deck. If that card cannot be played right away, your turn ends there—no continuous drawing until you find a match!",
       "step4Title": "4. Shout 'UNO!' at 1 Card",
-      "step4Desc": "The moment you play your second-to-last card and hold only 1 card, you MUST shout 'UNO!' (or tap the UNO button). If an opponent catches you before the next player takes a turn, you must draw a 2-card penalty!",
+      "step4Desc": "Digital Rounds: Hit that on-screen 'UNO' button before placing down your second-to-last card. Physical Rounds: Shout 'UNO!' loud and proud the second you're down to your last card! Penalty: Draw 2 cards if caught slipping before the next player plays.",
       "step5Title": "5. Winning the Round",
-      "step5Desc": "The first person to discard their final card wins the round!"
+      "step5Desc": "The first player to discard their final card wins the round! (Yes, winning on an Action Card is 100% legal!)"
     },
     "matchExample": {
       "title": "Quick Match Visual Example",
@@ -51,52 +48,6 @@
       "playableWild": "Color Card (Choose any of 4 colors)",
       "notPlayable": "❌ Cannot Play:",
       "notPlayableDesc": "Green 4 (Wrong Color & Wrong Number)"
-    },
-    "rulesTab": {
-      "title": "Official Tournament House Rules",
-      "subtitle": "Enforced across all 15 digital matches and physical table heats.",
-      "shoutUnoTitle": "Rule 1: Calling 'UNO!' (Strict 2-Card Penalty)",
-      "shoutUnoDesc": "You must call out 'UNO!' loudly (or press the digital UNO button) the instant you have only 1 card left. If an opponent or Table Captain catches you with 1 card before the next player starts their turn, you must draw 2 penalty cards.",
-      "stackingTitle": "Rule 2: Strict No-Stacking Policy (+2 / +4)",
-      "stackingDesc": "Card stacking is strictly prohibited! You CANNOT place a +2 on a +2, or a +4 on a +4 to pass penalties. If hit with a Draw card, you must draw the cards and forfeit your turn immediately.",
-      "timerTitle": "Rule 3: 30-Second Turn Clock",
-      "timerDesc": "In Round 1 digital lobbies, turns exceeding 30 seconds are subject to automatic timeout. Table Captains may forfeit inactive players to ensure schedule integrity.",
-      "actionFinishTitle": "Rule 4: Winning on an Action Card",
-      "actionFinishDesc": "You are fully permitted to win the game by playing an Action Card (+2, Skip, Reverse, Color Card, or Color +4) as your final card.",
-      "refereeTitle": "Rule 5: Table Captain & Referee Decisions Final",
-      "refereeDesc": "Table Captains preside over each physical table in Rounds 2 & 3. Any dispute regarding card drop timing, verbal shouts, or penalties is decided exclusively by the Table Captain."
-    },
-    "guideTab": {
-      "title": "BuddyBoardGames Onboarding Guide",
-      "subtitle": "3 quick steps to connect with your opponent on tournament day.",
-      "step1": "Open BuddyBoardGames lobby and enter your real full name in the Nickname field.",
-      "step2": "Enter your assigned Room Name (e.g. HR-Match-01 to HR-Match-15) from the Tournament tab.",
-      "step3": "Tap 'Play Uno' and wait for your opponent to join. Matches are Best of 3 games."
-    },
-    "guideSteps": {
-      "step1Title": "Enter Your Real Full Name",
-      "step2Title": "Enter Assigned Room Code",
-      "step3Title": "Join Lobby & Play Best-of-3"
-    },
-    "tournamentTab": {
-      "title": "Tournament Progression (90-Minute Format)",
-      "subtitle": "From 30 HR & Admin staff to 1 Ultimate Champion.",
-      "round1Title": "Round 1: Digital 1v1s (3:15 – 3:35 PM)",
-      "round1Desc": "15 simultaneous 1v1 browser matches on BuddyBoardGames (Best of 3). 15 winners advance to Round 2.",
-      "round2Title": "Round 2: Physical Heats (3:35 – 4:00 PM)",
-      "round2Desc": "3 physical tables × 5 players (Table Alpha, Beta, Gamma) using physical UNO decks. 1 winner per table qualifies for Finals.",
-      "round3Title": "Round 3: Grand Final Showcase (4:00 – 4:20 PM)",
-      "round3Desc": "3-player championship table at the center showcase. Audience spectates live. Decides 1st, 2nd, and 3rd place!"
-    },
-    "search": {
-      "title": "Interactive Player & Table Search",
-      "placeholder": "Type your name or department (e.g. Ahmad, Sarah, Recruitment)...",
-      "emptyPrompt": "Type your name above to see your table number, opponent, and room code.",
-      "noMatch": "No participant found. Check spelling or consult your Table Captain.",
-      "tableLabel": "Table #",
-      "roomLabel": "Match Room",
-      "opponentLabel": "Opponent",
-      "heatLabel": "Round 2 Table"
     },
     "playground": {
       "badge": "Interactive Training Mat",
@@ -118,47 +69,113 @@
       "activeColorBadge": "Active Color:",
       "legalColorChoice": "Color chosen: {color}! Next play must match {color}.",
       "cancelChoice": "✕ Cancel (Keep Card)"
+    },
+    "rulesTab": {
+      "title": "Tournament House Rules & Etiquette",
+      "subtitle": "7 friendly rules to keep our casual championship fun, fair, and flowing smoothly.",
+      "rule1Title": "1. Don't Forget to Call 'UNO!' 🗣️",
+      "rule1Desc": "Digital Rounds: Hit that on-screen 'UNO' button before placing down your second-to-last card. Physical Rounds: Shout 'UNO!' loud and proud the second you're down to your last card! Penalty: If someone catches you slipping before the next person plays, you'll have to draw 2 penalty cards. Eyes peeled, everyone!",
+      "rule2Title": "2. No Playable Card? Draw One & Pass 🃏",
+      "rule2Desc": "If you don't have a matching card in hand, simply draw one card from the deck. If that card can't be played right away, your turn ends there—no continuous drawing until you find a match!",
+      "rule3Title": "3. One Card at a Time (No Multiple Drops) ✋",
+      "rule3Desc": "Got two Blue 7s or three Yellow 4s? Nice hand, but you can only play one card per turn! No dropping matching sets or multiples at the same time.",
+      "rule4Title": "4. No Stacking (+2 and +4 Stay With You) 🛑",
+      "rule4Desc": "Stacking is strictly off the table—you can't slap a +2 onto another +2 (or a +4 onto a +4) to pass the pain to your neighbor. If it lands on you, take the hit, draw your cards, and skip your turn gracefully!",
+      "rule5Title": "5. Take Your Time, But Keep It Flowing ⏳",
+      "rule5Desc": "No stressful timers here! Feel free to think through your master plan and strategize. Just keep the game moving so everyone finishes on schedule—our organizers will only give a friendly nudge if a turn takes a bit too long.",
+      "rule6Title": "6. Yes, You Can Finish on an Action Card! 🎉",
+      "rule6Desc": "Want to end the game on a high note with a Skip, Reverse, +2, or Color Card / Wild? Go right ahead! Winning on an Action card is 100% legal here.",
+      "rule7Title": "7. Respect the Table Captains & Referees 🤝",
+      "rule7Desc": "Every physical table in Round 2 will have a designated Table Captain to keep things running smooth and fair. If any playful arguments break out, their word (or the Tournament Director's) is final!"
+    },
+    "cardEffects": {
+      "title": "Card Types & Special Mechanics",
+      "subtitle": "Special effects in play during Round 1 (1v1 Digital) vs Rounds 2 & 3 (Multi-Player Physical).",
+      "numberTitle": "Number Cards (0–9)",
+      "numberDesc": "Standard colored cards (Red, Yellow, Green, Blue) played by matching color or number.",
+      "skipTitle": "Skip Card",
+      "skipDesc": "Rounds 2 & 3: Skips next player's turn.\nRound 1 (1v1): Skips opponent; take another turn immediately!",
+      "reverseTitle": "Reverse Card",
+      "reverseDesc": "Rounds 2 & 3: Reverses play direction.\nRound 1 (1v1): Acts as a Skip card; take another turn immediately!",
+      "draw2Title": "Draw 2 (+2)",
+      "draw2Desc": "Next player must draw 2 cards and forfeit their turn (No stacking allowed).",
+      "colorCardTitle": "Color Card / Wild",
+      "colorCardDesc": "Can be played on any color or number anytime. Player announces the next active color.",
+      "color4Title": "Color +4 / Wild Draw 4",
+      "color4Desc": "Player chooses next color; next player draws 4 cards and loses their turn (No stacking)."
+    },
+    "scheduleTab": {
+      "title": "Event Schedule & Run of Show",
+      "subtitle": "90 minutes of casual, high-energy gaming from digital matches to physical finals.",
+      "r1Time": "3:00 PM – 3:15 PM (15 mins)",
+      "r1Stage": "Check-In & Onboarding",
+      "r1Desc": "Arrival at Mranti Corporation-2-L2-E-6-Common Area Space, device Wi-Fi check, scanning the event guide, and room/match allocations.",
+      "r2Time": "3:15 PM – 3:35 PM (20 mins)",
+      "r2Stage": "Round 1 — Digital 1v1",
+      "r2Desc": "30 players compete in 15 simultaneous 1v1 head-to-head browser matches (Best of 3 / 150-point series). The 15 winners advance.",
+      "r3Time": "3:35 PM – 4:00 PM (25 mins)",
+      "r3Stage": "Round 2 — Physical Heats",
+      "r3Desc": "15 qualifying players split across 3 physical card tables (5 players per table). Table winners advance to the Grand Final.",
+      "r4Time": "4:00 PM – 4:20 PM (20 mins)",
+      "r4Stage": "Round 3 — Grand Final",
+      "r4Desc": "The 3 finalists face off at the central championship table while the rest of the department spectates and cheers.",
+      "r5Time": "4:20 PM – 4:30 PM (10 mins)",
+      "r5Stage": "Awards & Wrap-Up",
+      "r5Desc": "Prize presentation for 1st, 2nd, and 3rd place winners, team photo, and light refreshments.",
+      "consolationTitle": "☕ Consolation / Casual Play (Open Side Tables)",
+      "consolationDesc": "Players eliminated in Rounds 1 and 2 are encouraged to join open side tables with physical card decks to enjoy casual rounds and cheer on colleagues!"
+    },
+    "technicalSetup": {
+      "title": "Player Guide & Technical Setup",
+      "subtitle": "Quick instructions to connect with your opponent on BuddyBoardGames.",
+      "platformTitle": "Digital Platform (Round 1)",
+      "platformDesc": "Website: buddyboardgames.com/uno • Compatibility: Works directly in any standard smartphone, tablet, or laptop browser (Chrome, Safari, Edge, Firefox). No app installation or registration needed. (Note: May contain web ads. Install adblock extension at your own discretion).",
+      "stepsTitle": "Step-by-Step Match Joining Instructions",
+      "step1": "1. Open the browser on your fully charged device and navigate to buddyboardgames.com/uno.",
+      "step2": "2. Enter your nickname in the 'Your name' field so organizers can record match results accurately.",
+      "step3": "3. Enter your pre-assigned Room Name (e.g., HR-Match-01 through HR-Match-15).",
+      "step4": "4. Click 'Play Uno' and wait for your paired opponent to enter.",
+      "step5": "5. Play your 150-point series. Upon completion, report the winner to the tournament desk.",
+      "practiceTitle": "Pre-Event Practice Options",
+      "practiceDesc": "Anyone wanting to test before game day can go to the website, create a custom test room name, and click Play Uno. Click 'Play with Buddy' to test solo against AI bots, or click 'Invite a buddy' to copy your direct room link and challenge a colleague!"
     }
   },
   "bm": {
-    "appTitle": "Kejohanan UNO 2026",
-    "department": "Pembangunan Bakat | HR & Pentadbiran",
+    "appTitle": "Hari Penglibatan UNO HR & Pentadbiran 2026",
+    "department": "Pembangunan Bakat | Sumber Manusia",
     "toggleText": "EN",
     "nav": {
-      "rules": "📖 Peraturan & Syarat Khas",
-      "guide": "🕹️ Panduan Pemain Baharu & Bilik Digital",
-      "tournament": "🏆 Kejohanan & Carian Lawan"
+      "guide": "🕹️ Panduan Pemain & Pentas Latihan",
+      "rules": "📜 Peraturan Rasmi & 7 Syarat Santai",
+      "schedule": "🕒 Jadual Acara & Panduan Bilik"
     },
     "hero": {
-      "tagline": "Hari Penglibatan HR & Pentadbiran 2026",
-      "eventDate": "Rabu, 28 Oktober 2026 • 3:00 PM – 4:30 PM",
-      "venue": "📍 Chatter Box, Aras 3, Hive 5, MRANTI",
-      "subtext": "Dari 1v1 Digital ke Pentas Akhir 3 Penjuru — Semoga Kad Terbaik Menang!"
+      "tagline": "Hari Penglibatan Oktober: Panduan & Peraturan Rasmi",
+      "eventDate": "Rabu, 28 Oktober 2026 • 3:00 PM – 4:30 PM (90 Minit)",
+      "venue": "📍 Mranti Corporation-2-L2-E-6-Common Area Space",
+      "platform": "🎮 BuddyBoardGames UNO & Kad UNO Fizikal",
+      "subtext": "Kejohanan UNO Santai — Dari 1v1 Digital ke Pentas Akhir 3 Penjuru!"
     },
     "buttons": {
       "openGame": "Buka Bilik BuddyBoardGames ➔",
-      "findMatch": "Cari Perlawanan Saya",
-      "viewRules": "Lihat Peraturan Rasmi",
-      "joinRoom": "Masuk Bilik",
-      "howToPlay": "Cara Bermain UNO",
-      "tournamentRules": "Peraturan Kejohanan"
+      "practiceWithBuddy": "Latihan Menentang Bot AI ➔"
     },
     "beginnerGuide": {
       "title": "Pertama Kali Main UNO? Mula Di Sini!",
       "subtitle": "Kuasai asas dalam masa 2 minit. Mudah, pantas, dan menyeronokkan!",
       "step1Title": "1. Objektif Utama",
-      "step1Desc": "Menjadi pemain pertama yang menghabiskan semua kad di tangan sebelum pihak lawan.",
+      "step1Desc": "Menjadi pemain pertama yang menghabiskan semua kad di tangan dengan memadankan kad teratas pada longgokan buangan mengikut Warna, Nombor, atau Simbol.",
       "step2Title": "2. Cara Giliran Berjalan",
       "step2Desc": "Lihat kad di atas timbunan buangan. Pada giliran anda, padankan kad mengikut:",
       "step2RuleA": "Warna (cth: Merah atas Merah)",
       "step2RuleB": "Nombor atau Simbol (cth: 7 atas 7, atau Skip atas Skip)",
-      "step2RuleC": "Kad Warna (membolehkan anda memilih antara 4 warna bila-bila masa!)",
-      "step3Title": "3. Tiada Padanan? Ambil 1 Kad",
-      "step3Desc": "Jika tiada kad yang sepadan, ambil 1 kad dari timbunan cabutan. Jika kad yang diambil boleh dimainkan, anda boleh terus meletakkannya!",
+      "step2RuleC": "Kad Warna / Wild (membolehkan anda memilih antara 4 warna bila-bila masa!)",
+      "step3Title": "3. Tiada Kad Sesuai? Cabut Satu & Giliran Tamat",
+      "step3Desc": "Jika anda tiada kad yang sepadan di tangan, hanya cabut satu kad sahaja daripada dek. Sekiranya kad tersebut masih tidak boleh dimainkan, giliran anda tamat di situ—tidak dibenarkan mencabut kad berulang kali sehingga dapat!",
       "step4Title": "4. Wajib Laung 'UNO!' Bila Tinggal 1 Kad",
-      "step4Desc": "Sebaik sahaja anda meletakkan kad kedua terakhir dan tinggal HANYA 1 KAD, anda WAJIB melaungkan 'UNO!' (atau tekan butang UNO dalam pelayar). Jika pihak lawan menangkap anda sebelum giliran seterusnya, anda dikenakan denda mengambil 2 kad!",
+      "step4Desc": "Pusingan Digital: Tekan butang 'UNO' pada skrin sebelum meletakkan kad kedua terakhir anda. Pusingan Fizikal: Jerit 'UNO!' dengan kuat dan jelas sebaik sahaja kad anda tinggal sekeping di tangan! Denda: Ambil 2 kad penalti jika ditangkap sebelum giliran seterusnya.",
       "step5Title": "5. Menang Pusingan",
-      "step5Desc": "Pemain pertama yang berjaya menghabiskan semua kad di tangan diisytiharkan sebagai pemenang!"
+      "step5Desc": "Pemain pertama yang berjaya menghabiskan semua kad di tangan diisytiharkan sebagai pemenang! (Boleh tamatkan permainan menggunakan Kad Aksi!)"
     },
     "matchExample": {
       "title": "Contoh Visual Padanan Pantas",
@@ -169,52 +186,6 @@
       "playableWild": "Kad Warna (Bebas pilih antara 4 warna)",
       "notPlayable": "❌ Tidak Boleh Diletak:",
       "notPlayableDesc": "Hijau 4 (Warna & Nombor Tidak Sama)"
-    },
-    "rulesTab": {
-      "title": "Peraturan Rasmi Pertandingan",
-      "subtitle": "Dikuatkuasakan dalam semua 15 perlawanan digital dan meja fizikal.",
-      "shoutUnoTitle": "Peraturan 1: Laungan Wajib 'UNO!' (Denda 2 Kad)",
-      "shoutUnoDesc": "Wajib sebut 'UNO!' dengan lantang (atau tekan butang UNO di skrin) sebaik sahaja tinggal 1 kad di tangan. Jika tertangkap oleh lawan atau Ketua Meja sebelum pemain seterusnya jalan, anda wajib mengambil 2 kad denda.",
-      "stackingTitle": "Peraturan 2: Tiada 'Stacking' Kad (+2 / +4)",
-      "stackingDesc": "Penindanan kad dilarang sama sekali! Anda TIDAK BOLEH menepis kad +2 dengan +2, atau +4 dengan +4. Pemain yang terkena kad penalti wajib mengambil kad dan hilang giliran serta-merta.",
-      "timerTitle": "Peraturan 3: Had Masa Giliran (30 Saat)",
-      "timerDesc": "Dalam perlawanan digital Pusingan 1, masa maksimum setiap giliran ialah 30 saat. Kelewatan boleh menyebabkan giliran terbatal bagi memastikan kelancaran jadual.",
-      "actionFinishTitle": "Peraturan 4: Menamatkan Permainan dengan Kad Aksi",
-      "actionFinishDesc": "Pemain dibenarkan sepenuhnya untuk memenangi permainan dengan meletakkan Kad Aksi (+2, Skip, Reverse, Kad Warna, atau Kad Warna +4) sebagai kad terakhir mereka.",
-      "refereeTitle": "Peraturan 5: Keputusan Ketua Meja & Pengadil Muktamad",
-      "refereeDesc": "Ketua Meja bertindak sebagai pengadil di setiap meja fizikal Pusingan 2 & 3. Sebarang pertikaian mengenai masa, laungan atau denda diputuskan secara muktamad oleh Ketua Meja."
-    },
-    "guideTab": {
-      "title": "Panduan Masuk Platform BuddyBoardGames",
-      "subtitle": "3 langkah pantas untuk berhubung dengan lawan pada hari perlawanan.",
-      "step1": "Buka pautan permainan dan masukkan nama penuh sebenar anda sebagai nama samaran.",
-      "step2": "Masukkan nama bilik yang ditetapkan (cth: HR-Match-01 hingga HR-Match-15) dari tab Kejohanan.",
-      "step3": "Tekan butang 'Play Uno' dan tunggu lawan anda masuk. Pusingan 1 dimainkan format 'Best of 3'."
-    },
-    "guideSteps": {
-      "step1Title": "Masukkan Nama Penuh Sebenar",
-      "step2Title": "Masukkan Kod Bilik Ditetapkan",
-      "step3Title": "Masuk Bilik & Main Best-of-3"
-    },
-    "tournamentTab": {
-      "title": "Peringkat Kejohanan (Format 90 Minit)",
-      "subtitle": "Daripada 30 staf HR & Pentadbiran ke Pentas Juara Mutlak.",
-      "round1Title": "Pusingan 1: Digital 1v1 (3:15 – 3:35 PM)",
-      "round1Desc": "15 perlawanan 1v1 serentak di pelayar web BuddyBoardGames (Best of 3). 15 pemenang mara ke Pusingan 2.",
-      "round2Title": "Pusingan 2: Meja Fizikal (3:35 – 4:00 PM)",
-      "round2Desc": "3 meja fizikal × 5 pemain (Meja Alpha, Beta, Gamma) menggunakan kad fizikal. Johan setiap meja mara ke pusingan akhir.",
-      "round3Title": "Pusingan 3: Pentas Akhir (4:00 – 4:20 PM)",
-      "round3Desc": "Perlawanan 3 penjuru di meja utama disaksikan semua hadirin. Menentukan tempat Pertama, Kedua, dan Ketiga!"
-    },
-    "search": {
-      "title": "Carian Interaktif Pemain & Meja",
-      "placeholder": "Taip nama atau bahagian anda (cth: Ahmad, Sarah, Recruitment)...",
-      "emptyPrompt": "Taip nama anda di atas untuk semak nombor meja, nama lawan, dan kod bilik.",
-      "noMatch": "Peserta tidak dijumpai. Sila semak ejaan atau rujuk Ketua Meja anda.",
-      "tableLabel": "Meja #",
-      "roomLabel": "Bilik Perlawanan",
-      "opponentLabel": "Lawan",
-      "heatLabel": "Meja Pusingan 2"
     },
     "playground": {
       "badge": "Pentas Latihan Interaktif",
@@ -236,6 +207,75 @@
       "activeColorBadge": "Warna Semasa:",
       "legalColorChoice": "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}.",
       "cancelChoice": "✕ Batal (Simpan Kad)"
+    },
+    "rulesTab": {
+      "title": "Peraturan & Etika (House Rules)",
+      "subtitle": "7 peraturan santai bagi memastikan kejohanan berjalan lancar, adil, dan menyeronokkan.",
+      "rule1Title": "1. Wajib Cakap 'UNO!' 🗣️",
+      "rule1Desc": "Pusingan Digital: Tekan butang 'UNO' pada skrin sebelum meletakkan kad kedua terakhir anda. Pusingan Fizikal: Jerit 'UNO!' dengan kuat dan jelas sebaik sahaja kad anda tinggal sekeping di tangan! Denda: Jika anda terlupa dan ditangkap oleh pemain lain sebelum pemain seterusnya membuat giliran, anda wajib mengambil 2 keping kad penalti. Mata kena sentiasa peka!",
+      "rule2Title": "2. Tiada Kad Sesuai? Cabut Satu & Giliran Tamat 🃏",
+      "rule2Desc": "Jika anda tiada kad yang sepadan di tangan, hanya cabut satu kad sahaja daripada dek. Sekiranya kad tersebut masih tidak boleh dimainkan, giliran anda tamat di situ—tidak dibenarkan mencabut kad berulang kali sehingga dapat.",
+      "rule3Title": "3. Satu Kad Sahaja Setiap Giliran ✋",
+      "rule3Desc": "Walaupun anda mempunyai sepasang nombor yang sama (contohnya dua kad Biru 7 atau tiga kad Kuning 4), anda hanya dibenarkan meletakkan satu kad sahaja bagi setiap giliran. Tindakan membuang beberapa kad serentak tidak dibenarkan sama sekali.",
+      "rule4Title": "4. Tiada 'Stacking' (Terima Kad Denda Seadanya) 🛑",
+      "rule4Desc": "Konsep menindan kad denda adalah dilarang sama sekali—anda tidak boleh meletakkan +2 di atas kad +2 lain (atau +4 di atas +4) untuk memindahkan penalti kepada rakan sebelah. Jika giliran anda dikenakan denda, ambil kad tersebut dengan tenang dan lepaskan giliran anda.",
+      "rule5Title": "5. Ambil Masa Berfikir, Tapi Pastikan Permainan Berjalan ⏳",
+      "rule5Desc": "Tiada had masa pusingan yang ketat; anda bebas menyusun strategi kemenangan sebaiknya. Cuma pastikan permainan kekal bergerak aktif supaya tamat mengikut jadual—urusetia hanya akan memberikan peringatan mesra sekiranya sesuatu giliran mengambil masa terlalu lama.",
+      "rule6Title": "6. Boleh Tamatkan Permainan Menggunakan Kad Aksi! 🎉",
+      "rule6Desc": "Ingin menghabiskan kad terakhir dengan menggunakan kad Skip, Reverse, +2, atau Kad Warna / Wild? Boleh, tiada masalah! Kemenangan anda sah.",
+      "rule7Title": "7. Hormati Ketua Meja (Table Captain) & Pengadil 🤝",
+      "rule7Desc": "Setiap meja fizikal pada Pusingan 2 akan mempunyai Ketua Meja yang dilantik bagi memastikan permainan lancar dan adil. Sekiranya timbul sebarang keraguan atau pertikaian santai, keputusan Ketua Meja (atau Pengadil) adalah muktamad!"
+    },
+    "cardEffects": {
+      "title": "Jenis Kad & Fungsi Dalam Permainan",
+      "subtitle": "Kesan khas kad semasa Pusingan 1 (1v1 Digital) berbanding Pusingan 2 & 3 (Meja Fizikal).",
+      "numberTitle": "Kad Nombor (0–9)",
+      "numberDesc": "Kad berwarna standard (Merah, Kuning, Hijau, Biru) yang dipadankan mengikut warna atau nombor yang sama.",
+      "skipTitle": "Kad Skip",
+      "skipDesc": "Pusingan 2 & 3: Giliran pemain seterusnya dibatalkan.\nPusingan 1 (1v1): Giliran pihak lawan dibatalkan; anda jalan sekali lagi serta-merta.",
+      "reverseTitle": "Kad Reverse",
+      "reverseDesc": "Pusingan 2 & 3: Menukar arah putaran giliran pemain.\nPusingan 1 (1v1): Berfungsi sama seperti kad Skip; anda jalan sekali lagi serta-merta.",
+      "draw2Title": "Kad Draw 2 (+2)",
+      "draw2Desc": "Pemain seterusnya wajib mengambil 2 keping kad dan hilang gilirannya (Tiada stacking dibenarkan).",
+      "colorCardTitle": "Kad Warna / Wild",
+      "colorCardDesc": "Boleh dimainkan atas mana-mana kad atau warna. Pemain bebas memilih warna pusingan seterusnya.",
+      "color4Title": "Kad Warna +4 / Wild Draw 4",
+      "color4Desc": "Pemain bebas memilih warna seterusnya; pemain seterusnya wajib mengambil 4 keping kad dan hilang giliran (Tiada stacking)."
+    },
+    "scheduleTab": {
+      "title": "Jadual Acara & Atur Cara Penuh",
+      "subtitle": "90 minit permainan santai dan penuh semangat dari perlawanan digital ke pentas akhir.",
+      "r1Time": "3:00 PM – 3:15 PM (15 minit)",
+      "r1Stage": "Pendaftaran & Taklimat",
+      "r1Desc": "Berkumpul di Common Area Space, semakan sambungan Wi-Fi peranti, imbas panduan acara, dan pengagihan bilik perlawanan.",
+      "r2Time": "3:15 PM – 3:35 PM (20 minit)",
+      "r2Stage": "Pusingan 1 — 1v1 Digital",
+      "r2Desc": "30 pemain bertanding serentak dalam 15 perlawanan 1v1 di pelayar web (Siri 150 mata). 15 pemenang mara ke pusingan seterusnya.",
+      "r3Time": "3:35 PM – 4:00 PM (25 minit)",
+      "r3Stage": "Pusingan 2 — Perlawanan Kad Fizikal",
+      "r3Desc": "15 pemain dibahagikan kepada 3 meja kad fizikal (5 pemain setiap meja). Pemenang setiap meja mara ke Pentas Akhir.",
+      "r4Time": "4:00 PM – 4:20 PM (20 minit)",
+      "r4Stage": "Pusingan 3 — Pentas Akhir",
+      "r4Desc": "3 finalis berentap di meja utama sambil disorak dan disokong oleh seluruh rakan sekerja.",
+      "r5Time": "4:20 PM – 4:30 PM (10 minit)",
+      "r5Stage": "Penyampaian Hadiah & Penutup",
+      "r5Desc": "Sesi penyampaian hadiah bagi tempat Pertama, Kedua, dan Ketiga, sesi bergambar, serta jamuan ringan.",
+      "consolationTitle": "☕ Meja Santai (Pilihan)",
+      "consolationDesc": "Pemain yang tersingkir pada Pusingan 1 dan Pusingan 2 dialu-alukan untuk menyertai meja kosong lain bagi terus bermain secara santai serta memberi sokongan kepada rakan sekerja yang lain!"
+    },
+    "technicalSetup": {
+      "title": "Panduan Pemain & Persediaan Teknikal",
+      "subtitle": "Langkah pantas untuk masuk ke bilik perlawanan BuddyBoardGames.",
+      "platformTitle": "Platform Digital (Pusingan 1)",
+      "platformDesc": "Laman Web: buddyboardgames.com/uno • Keserasian: Boleh diakses terus menggunakan mana-mana pelayar web telefon pintar, tablet, atau komputer riba (Chrome, Safari, Edge, Firefox). Tiada pemasangan aplikasi atau pendaftaran akaun diperlukan. (Nota: Laman web mungkin mengandungi iklan. Pemasangan penyekat iklan adalah atas budi bicara sendiri).",
+      "stepsTitle": "Langkah Masuk Perlawanan (Step-by-Step)",
+      "step1": "1. Buka pelayar web pada peranti anda (pastikan bateri penuh) dan layari buddyboardgames.com/uno.",
+      "step2": "2. Masukkan nama panggilan (nickname) anda pada ruangan 'Your name' supaya urusetia dapat merekodkan keputusan perlawanan dengan tepat.",
+      "step3": "3. Masukkan nama bilik yang telah ditetapkan untuk anda (contoh: HR-Match-01 hingga HR-Match-15).",
+      "step4": "4. Klik 'Play Uno' dan tunggu lawan anda masuk ke bilik yang sama.",
+      "step5": "5. Main siri perlawanan sehingga mencapai 150 mata. Selesai bermain, maklumkan pemenang perlawanan kepada meja urusetia.",
+      "practiceTitle": "Pilihan Latihan Sebelum Acara",
+      "practiceDesc": "Sesiapa yang ingin mencuba sebelum hari kejadian boleh melayari laman web tersebut, letak sebarang nama bilik percubaan, dan klik 'Play Uno'. Klik 'Play with Buddy' untuk berlatih secara solo menentang bot AI, atau klik 'Invite a buddy' untuk menyalin pautan bilik dan bermain bersama rakan sekerja!"
     }
   }
 }

@@ -8,7 +8,7 @@ if (!TRANSLATIONS.en || !TRANSLATIONS.bm) {
   process.exit(1);
 }
 
-const requiredKeys = ['appTitle', 'department', 'buttons', 'rulesTab', 'guideTab', 'tournamentTab'];
+const requiredKeys = ['appTitle', 'department', 'buttons', 'rulesTab', 'cardEffects', 'scheduleTab', 'technicalSetup', 'beginnerGuide', 'playground'];
 for (const key of requiredKeys) {
   if (!TRANSLATIONS.en[key] || !TRANSLATIONS.bm[key]) {
     console.error(`FAIL: Missing key ${key} in translations`);

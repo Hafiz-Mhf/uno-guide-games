@@ -10,7 +10,7 @@ export const TRANSLATIONS = {
     nav: {
       guide: "🕹️ Beginner Guide & Practice Mat",
       rules: "📜 Official Rules & 7 House Rules",
-      schedule: "🕒 Event Schedule & Setup"
+      schedule: "🎮 Digital Platform & Room Setup"
     },
     hero: {
       tagline: "October Engagement Day: Guide & Official Rules",
@@ -165,7 +165,7 @@ export const TRANSLATIONS = {
     nav: {
       guide: "🕹️ Panduan Pemain & Pentas Latihan",
       rules: "📜 Peraturan Rasmi & 7 Syarat Santai",
-      schedule: "🕒 Jadual Acara & Panduan Bilik"
+      schedule: "🎮 Platform Digital & Penjana Bilik"
     },
     hero: {
       tagline: "Hari Penglibatan Oktober: Panduan & Peraturan Rasmi",

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
   <div id="app-container">
@@ -221,60 +221,67 @@
         </div>
 
         <div class="rules-highlight-grid">
-          <div class="rule-feature-card border-yellow">
-            <div class="rule-icon-box bg-yellow">🗣️</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule1Title">1. Don't Forget to Call 'UNO!' 🗣️</h4>
-              <p data-i18n="rulesTab.rule1Desc">Digital Rounds: Hit that on-screen 'UNO' button before placing down your second-to-last card. Physical Rounds: Shout 'UNO!' loud and proud the second you're down to your last card! Penalty: If someone catches you slipping before the next person plays, you'll have to draw 2 penalty cards. Eyes peeled, everyone!</p>
+          <div class="rule-feature-card">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">01</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule1Title">1. Don't Forget to Call 'UNO!' 🗣️</h4>
+              <span class="rule-verdict-pill">Draw 2 if Caught</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule1Desc">Digital Rounds: Hit that on-screen 'UNO' button before placing down your second-to-last card. Physical Rounds: Shout 'UNO!' loud and proud the second you're down to your last card! Penalty: If someone catches you slipping before the next person plays, you'll have to draw 2 penalty cards. Eyes peeled, everyone!</p>
           </div>
 
-          <div class="rule-feature-card border-blue">
-            <div class="rule-icon-box bg-blue">🃏</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule2Title">2. No Playable Card? Draw One & Pass 🃏</h4>
-              <p data-i18n="rulesTab.rule2Desc">If you don't have a matching card in hand, simply draw one card from the deck. If that card can't be played right away, your turn ends there—no continuous drawing until you find a match!</p>
+          <div class="rule-feature-card">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">02</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule2Title">2. No Playable Card? Draw One & Pass 🃏</h4>
+              <span class="rule-verdict-pill">No Continuous Draw</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule2Desc">If you don't have a matching card in hand, simply draw one card from the deck. If that card can't be played right away, your turn ends there—no continuous drawing until you find a match!</p>
           </div>
 
-          <div class="rule-feature-card border-red">
-            <div class="rule-icon-box bg-red">✋</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule3Title">3. One Card at a Time (No Multiple Drops) ✋</h4>
-              <p data-i18n="rulesTab.rule3Desc">Got two Blue 7s or three Yellow 4s? Nice hand, but you can only play one card per turn! No dropping matching sets or multiples at the same time.</p>
+          <div class="rule-feature-card">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">03</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule3Title">3. One Card at a Time (No Multiple Drops) ✋</h4>
+              <span class="rule-verdict-pill">Single Drop Only</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule3Desc">Got two Blue 7s or three Yellow 4s? Nice hand, but you can only play one card per turn! No dropping matching sets or multiples at the same time.</p>
           </div>
 
-          <div class="rule-feature-card border-red">
-            <div class="rule-icon-box bg-red">🛑</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule4Title">4. No Stacking (+2 and +4 Stay With You) 🛑</h4>
-              <p data-i18n="rulesTab.rule4Desc">Stacking is strictly off the table—you can't slap a +2 onto another +2 (or a +4 onto a +4) to pass the pain to your neighbor. If it lands on you, take the hit, draw your cards, and skip your turn gracefully!</p>
+          <div class="rule-feature-card">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">04</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule4Title">4. No Stacking (+2 and +4 Stay With You) 🛑</h4>
+              <span class="rule-verdict-pill">Strictly No Stacking</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule4Desc">Stacking is strictly off the table—you can't slap a +2 onto another +2 (or a +4 onto a +4) to pass the pain to your neighbor. If it lands on you, take the hit, draw your cards, and skip your turn gracefully!</p>
           </div>
 
-          <div class="rule-feature-card border-green">
-            <div class="rule-icon-box bg-green">⏳</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule5Title">5. Take Your Time, But Keep It Flowing ⏳</h4>
-              <p data-i18n="rulesTab.rule5Desc">No stressful timers here! Feel free to think through your master plan and strategize. Just keep the game moving so everyone finishes on schedule—our organizers will only give a friendly nudge if a turn takes a bit too long.</p>
+          <div class="rule-feature-card">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">05</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule5Title">5. Take Your Time, But Keep It Flowing ⏳</h4>
+              <span class="rule-verdict-pill">Friendly Pacing</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule5Desc">No stressful timers here! Feel free to think through your master plan and strategize. Just keep the game moving so everyone finishes on schedule—our organizers will only give a friendly nudge if a turn takes a bit too long.</p>
           </div>
 
-          <div class="rule-feature-card border-purple">
-            <div class="rule-icon-box bg-purple">🎉</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule6Title">6. Yes, You Can Finish on an Action Card! 🎉</h4>
-              <p data-i18n="rulesTab.rule6Desc">Want to end the game on a high note with a Skip, Reverse, +2, or Color Card / Wild? Go right ahead! Winning on an Action card is 100% legal here.</p>
+          <div class="rule-feature-card">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">06</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule6Title">6. Yes, You Can Finish on an Action Card! 🎉</h4>
+              <span class="rule-verdict-pill">100% Legal Win</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule6Desc">Want to end the game on a high note with a Skip, Reverse, +2, or Color Card / Wild? Go right ahead! Winning on an Action card is 100% legal here.</p>
           </div>
 
-          <div class="rule-feature-card border-dark full-width">
-            <div class="rule-icon-box bg-dark">🤝</div>
-            <div class="rule-content">
-              <h4 data-i18n="rulesTab.rule7Title">7. Respect the Table Captains & Referees 🤝</h4>
-              <p data-i18n="rulesTab.rule7Desc">Every physical table in Round 2 will have a designated Table Captain to keep things running smooth and fair. If any playful arguments break out, their word (or the Tournament Director's) is final!</p>
+          <div class="rule-feature-card full-width">
+            <div class="rule-card-header">
+              <span class="rule-num-pill">07</span>
+              <h4 class="rule-title" data-i18n="rulesTab.rule7Title">7. Respect the Table Captains & Referees 🤝</h4>
+              <span class="rule-verdict-pill">Final Ruling</span>
             </div>
+            <p class="rule-desc" data-i18n="rulesTab.rule7Desc">Every physical table in Round 2 will have a designated Table Captain to keep things running smooth and fair. If any playful arguments break out, their word (or the Tournament Director's) is final!</p>
           </div>
         </div>
 
@@ -287,69 +294,105 @@
         </div>
 
         <div class="cards-responsive-grid">
-          <div class="action-card card-number">
-            <div class="card-top-badge bg-blue">Base Cards</div>
-            <div class="card-icon-big">🔢</div>
-            <div class="card-name" data-i18n="cardEffects.numberTitle">Number Cards (0–9)</div>
-            <div class="card-tag">Standard Play</div>
+          <div class="action-card">
+            <div class="mechanic-card-header">
+              <div class="mechanic-title-group">
+                <span class="mechanic-icon">🔢</span>
+                <div>
+                  <h4 class="card-name" data-i18n="cardEffects.numberTitle">Number Cards (0–9)</h4>
+                  <span class="card-tag">Standard Play</span>
+                </div>
+              </div>
+            </div>
             <p class="card-desc" data-i18n="cardEffects.numberDesc">Standard colored cards (Red, Yellow, Green, Blue) played by matching color or number.</p>
-            <div class="card-special-box bg-blue-subtle">
-              <strong>Match Rule:</strong> Match active color or face number.
+            <div class="card-special-box">
+              <span class="special-label">Match Rule:</span>
+              <span class="special-val">Match active top card by color or face number.</span>
             </div>
           </div>
 
-          <div class="action-card card-skip">
-            <div class="card-top-badge bg-blue">Action Card</div>
-            <div class="card-icon-big">🚫</div>
-            <div class="card-name" data-i18n="cardEffects.skipTitle">Skip Card</div>
-            <div class="card-tag">Multi-Player & 1v1</div>
+          <div class="action-card">
+            <div class="mechanic-card-header">
+              <div class="mechanic-title-group">
+                <span class="mechanic-icon">🚫</span>
+                <div>
+                  <h4 class="card-name" data-i18n="cardEffects.skipTitle">Skip Card</h4>
+                  <span class="card-tag">Turn Action</span>
+                </div>
+              </div>
+            </div>
             <p class="card-desc" data-i18n="cardEffects.skipDesc">Rounds 2 & 3: Skips next player's turn. Round 1 (1v1): Skips opponent; take another turn immediately!</p>
-            <div class="card-special-box bg-blue-subtle">
-              <strong>⚡ 1v1 Special:</strong> Opponent skipped; play again immediately!
+            <div class="card-special-box">
+              <span class="special-label">⚡ 1v1 Round 1:</span>
+              <span class="special-val">Opponent skipped; play again immediately!</span>
             </div>
           </div>
 
-          <div class="action-card card-reverse">
-            <div class="card-top-badge bg-yellow">Action Card</div>
-            <div class="card-icon-big">🔁</div>
-            <div class="card-name" data-i18n="cardEffects.reverseTitle">Reverse Card</div>
-            <div class="card-tag">Multi-Player & 1v1</div>
+          <div class="action-card">
+            <div class="mechanic-card-header">
+              <div class="mechanic-title-group">
+                <span class="mechanic-icon">🔁</span>
+                <div>
+                  <h4 class="card-name" data-i18n="cardEffects.reverseTitle">Reverse Card</h4>
+                  <span class="card-tag">Direction Action</span>
+                </div>
+              </div>
+            </div>
             <p class="card-desc" data-i18n="cardEffects.reverseDesc">Rounds 2 & 3: Reverses play direction. Round 1 (1v1): Acts as a Skip card; take another turn immediately!</p>
-            <div class="card-special-box bg-yellow-subtle">
-              <strong>⚡ 1v1 Special:</strong> Acts as Skip; play again immediately!
+            <div class="card-special-box">
+              <span class="special-label">⚡ 1v1 Round 1:</span>
+              <span class="special-val">Acts as Skip; play again immediately!</span>
             </div>
           </div>
 
-          <div class="action-card card-draw2">
-            <div class="card-top-badge bg-green">Action Card</div>
-            <div class="card-icon-big">➕2️⃣</div>
-            <div class="card-name" data-i18n="cardEffects.draw2Title">Draw 2 (+2)</div>
-            <div class="card-tag">No Stacking</div>
+          <div class="action-card">
+            <div class="mechanic-card-header">
+              <div class="mechanic-title-group">
+                <span class="mechanic-icon">➕2️⃣</span>
+                <div>
+                  <h4 class="card-name" data-i18n="cardEffects.draw2Title">Draw 2 (+2)</h4>
+                  <span class="card-tag">Penalty Action</span>
+                </div>
+              </div>
+            </div>
             <p class="card-desc" data-i18n="cardEffects.draw2Desc">Next player must draw 2 cards and forfeit their turn (No stacking allowed).</p>
-            <div class="card-special-box bg-green-subtle">
-              <strong>⚠️ No Stacking:</strong> Opponent takes 2 cards & loses turn.
+            <div class="card-special-box">
+              <span class="special-label">⚠️ House Rule:</span>
+              <span class="special-val">Draw 2 & lose turn. Strictly no stacking.</span>
             </div>
           </div>
 
-          <div class="action-card card-wild">
-            <div class="card-top-badge bg-purple">Color Card</div>
-            <div class="card-icon-big">🌈</div>
-            <div class="card-name" data-i18n="cardEffects.colorCardTitle">Color Card / Wild</div>
-            <div class="card-tag">Anytime Play</div>
+          <div class="action-card">
+            <div class="mechanic-card-header">
+              <div class="mechanic-title-group">
+                <span class="mechanic-icon">🌈</span>
+                <div>
+                  <h4 class="card-name" data-i18n="cardEffects.colorCardTitle">Color Card / Wild</h4>
+                  <span class="card-tag">Anytime Play</span>
+                </div>
+              </div>
+            </div>
             <p class="card-desc" data-i18n="cardEffects.colorCardDesc">Can be played on any color or number anytime. Player announces the next active color.</p>
-            <div class="card-special-box bg-purple-subtle">
-              <strong>🎨 4 Colors:</strong> Choose Red, Yellow, Green, or Blue.
+            <div class="card-special-box">
+              <span class="special-label">🎨 Color Choice:</span>
+              <span class="special-val">Choose Red, Yellow, Green, or Blue.</span>
             </div>
           </div>
 
-          <div class="action-card card-wild4">
-            <div class="card-top-badge bg-red">Color Action</div>
-            <div class="card-icon-big">🔥4️⃣</div>
-            <div class="card-name" data-i18n="cardEffects.color4Title">Color +4 / Wild Draw 4</div>
-            <div class="card-tag">No Stacking</div>
+          <div class="action-card">
+            <div class="mechanic-card-header">
+              <div class="mechanic-title-group">
+                <span class="mechanic-icon">🔥4️⃣</span>
+                <div>
+                  <h4 class="card-name" data-i18n="cardEffects.color4Title">Color +4 / Wild Draw 4</h4>
+                  <span class="card-tag">Penalty Action</span>
+                </div>
+              </div>
+            </div>
             <p class="card-desc" data-i18n="cardEffects.color4Desc">Player chooses next color; next player draws 4 cards and loses their turn (No stacking).</p>
-            <div class="card-special-box bg-red-subtle">
-              <strong>⚠️ Penalty + Color:</strong> Draw 4 immediately & pick color.
+            <div class="card-special-box">
+              <span class="special-label">⚠️ House Rule:</span>
+              <span class="special-val">Draw 4, lose turn & choose color. No stacking!</span>
             </div>
           </div>
         </div>

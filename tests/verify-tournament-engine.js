@@ -8,7 +8,11 @@ import {
   addPlayer,
   removePlayer,
   bulkImportRoster,
-  setAllCheckInStatus
+  setAllCheckInStatus,
+  generateRound1Pairings,
+  recordMatchWinner,
+  computeRound2Heats,
+  formatMatchupsClipboard
 } from '../tournament-engine.js';
 
 console.log('Testing tournament-engine state lifecycle...');
@@ -100,3 +104,59 @@ if (!s.roster.find(p => p.name === 'Alice Tan') || !s.roster.find(p => p.name ==
 }
 
 console.log('PASS: Task 2 tests passed.');
+
+console.log('Testing pairing generation, BYE handling, and Round 2 calculation...');
+
+// Test 1: Even count (30 players) -> 15 matches, 0 BYE
+const mock30 = Array.from({ length: 30 }, (_, i) => ({ id: `p${i+1}`, name: `Player ${i+1}`, dept: 'HR', checkedIn: true }));
+const evenResult = generateRound1Pairings(mock30);
+if (evenResult.matches.length !== 15 || evenResult.byePlayer !== null) {
+  console.error(`FAIL: Expected 15 matches and null byePlayer, got matches: ${evenResult.matches.length}, bye: ${evenResult.byePlayer}`);
+  process.exit(1);
+}
+
+// Test 2: Odd count (29 players) -> 14 matches, 1 BYE
+const mock29 = Array.from({ length: 29 }, (_, i) => ({ id: `p${i+1}`, name: `Player ${i+1}`, dept: 'HR', checkedIn: true }));
+const oddResult = generateRound1Pairings(mock29);
+if (oddResult.matches.length !== 14 || !oddResult.byePlayer) {
+  console.error(`FAIL: Expected 14 matches and valid byePlayer for 29 players`);
+  process.exit(1);
+}
+
+// Test 3: Record winner
+let stateWithMatches = {
+  ...createDefaultTournamentState(),
+  round1: {
+    generatedAt: new Date().toISOString(),
+    byePlayer: oddResult.byePlayer,
+    matches: oddResult.matches
+  }
+};
+
+const firstMatchId = stateWithMatches.round1.matches[0].matchId;
+const winnerId = stateWithMatches.round1.matches[0].player1.id;
+stateWithMatches = recordMatchWinner(stateWithMatches, firstMatchId, winnerId);
+if (stateWithMatches.round1.matches[0].winnerId !== winnerId) {
+  console.error('FAIL: recordMatchWinner failed to assign winnerId');
+  process.exit(1);
+}
+
+// Test 4: Compute Round 2 heats
+// Mark all 14 matches with winner
+stateWithMatches.round1.matches.forEach(m => {
+  m.winnerId = m.player1.id;
+});
+const heats = computeRound2Heats(stateWithMatches.round1.byePlayer, stateWithMatches.round1.matches);
+if (heats.tableAlpha.length !== 5 || heats.tableBeta.length !== 5 || heats.tableGamma.length !== 5) {
+  console.error(`FAIL: Heats must distribute 15 players across 3 tables (Alpha: ${heats.tableAlpha.length}, Beta: ${heats.tableBeta.length}, Gamma: ${heats.tableGamma.length})`);
+  process.exit(1);
+}
+
+// Test 5: Clipboard formatting
+const clipText = formatMatchupsClipboard(stateWithMatches.round1);
+if (!clipText.includes('HR-Match-01') || !clipText.includes('[BYE Pass]')) {
+  console.error('FAIL: formatMatchupsClipboard missing essential markers');
+  process.exit(1);
+}
+
+console.log('PASS: Task 3 tests passed.');

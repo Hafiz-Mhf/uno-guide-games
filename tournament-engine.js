@@ -109,3 +109,101 @@ export function bulkImportRoster(state, rawText) {
 
   return { ...state, roster: [...state.roster, ...newPlayers] };
 }
+
+export function generateRound1Pairings(checkedInPlayers, randomFn = Math.random) {
+  if (!checkedInPlayers || checkedInPlayers.length < 2) {
+    throw new Error('At least 2 checked-in players required to generate pairings.');
+  }
+
+  // Fisher-Yates uniform shuffle
+  const pool = [...checkedInPlayers];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(randomFn() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  let byePlayer = null;
+  if (pool.length % 2 !== 0) {
+    byePlayer = pool.pop();
+  }
+
+  const matches = [];
+  const totalMatches = pool.length / 2;
+
+  for (let i = 0; i < totalMatches; i++) {
+    const p1 = pool[i * 2];
+    const p2 = pool[i * 2 + 1];
+    const matchNum = i + 1;
+    const matchId = `HR-Match-${String(matchNum).padStart(2, '0')}`;
+
+    matches.push({
+      matchId,
+      tableNum: matchNum,
+      player1: { id: p1.id, name: p1.name, dept: p1.dept || 'General' },
+      player2: { id: p2.id, name: p2.name, dept: p2.dept || 'General' },
+      winnerId: null
+    });
+  }
+
+  return { byePlayer, matches, generatedAt: new Date().toISOString() };
+}
+
+export function recordMatchWinner(state, matchId, winnerId) {
+  const matches = state.round1.matches.map(m => {
+    if (m.matchId !== matchId) return m;
+    return {
+      ...m,
+      winnerId: m.winnerId === winnerId ? null : winnerId
+    };
+  });
+  return {
+    ...state,
+    round1: {
+      ...state.round1,
+      matches
+    }
+  };
+}
+
+export function computeRound2Heats(byePlayer, matches) {
+  const qualifiers = [];
+  if (byePlayer) {
+    qualifiers.push(byePlayer);
+  }
+  if (Array.isArray(matches)) {
+    matches.forEach(m => {
+      if (m.winnerId === m.player1.id) qualifiers.push(m.player1);
+      else if (m.winnerId === m.player2.id) qualifiers.push(m.player2);
+    });
+  }
+
+  return {
+    tableAlpha: qualifiers.slice(0, 5),
+    tableBeta: qualifiers.slice(5, 10),
+    tableGamma: qualifiers.slice(10, 15),
+    totalQualifiers: qualifiers.length,
+    remainingToAdvance: Math.max(0, 15 - qualifiers.length)
+  };
+}
+
+export function formatMatchupsClipboard(round1State) {
+  if (!round1State || !Array.isArray(round1State.matches)) return '';
+  const lines = [
+    '🎮 HR & Admin UNO Championship 2026',
+    '🏆 Round 1 Digital 1v1 Matchups:',
+    ''
+  ];
+
+  round1State.matches.forEach(m => {
+    lines.push(`• Table ${m.tableNum} (${m.matchId}): ${m.player1.name} vs ${m.player2.name}`);
+  });
+
+  if (round1State.byePlayer) {
+    lines.push('');
+    lines.push(`🎁 [BYE Pass]: ${round1State.byePlayer.name} (${round1State.byePlayer.dept}) advances directly to Round 2!`);
+  }
+
+  lines.push('');
+  lines.push('🎮 Digital Game Room: https://buddyboardgames.com/uno');
+  return lines.join('\n');
+}

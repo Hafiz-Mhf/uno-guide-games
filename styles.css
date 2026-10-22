@@ -3225,6 +3225,7 @@ body {
   color: var(--corp-text-muted);
 }
 
+.guidelines-grid-3,
 .guidelines-grid-4 {
   display: grid;
   grid-template-columns: 1fr;
@@ -3233,6 +3234,7 @@ body {
 }
 
 @media (min-width: 640px) {
+  .guidelines-grid-3,
   .guidelines-grid-4 {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -3241,6 +3243,9 @@ body {
 @media (min-width: 1024px) {
   .guidelines-grid-4 {
     grid-template-columns: repeat(4, 1fr);
+  }
+  .guidelines-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

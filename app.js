@@ -29,7 +29,7 @@ export const TRANSLATIONS = {
     guidelines: {
       badge: "Official Event Walkthrough",
       title: "Event Guidelines: 4 Steps to Victory",
-      subtitle: "Official guidelines brought to you by Talent Development | Human Resource",
+      subtitle: "Official guidelines brought to you by Talent Development | HR • Admin Engagement Day",
       step1Tag: "Before Event",
       step1Title: "RSVP & Practice",
       step1Point1: "RSVP 'Yes' on your calendar invite",
@@ -39,18 +39,18 @@ export const TRANSLATIONS = {
       step2Point1: "Report to Common Area, Level 2, Hive 5",
       step2Point2: "Open your browser to join assigned match room",
       step3Tag: "Tournament Flow",
-      step3Title: "Digital to Physical",
+      step3Title: "🏆 SPECIAL PRIZES AWAIT THE WINNERS!",
       step3Point1: "Round 1: Play digital 1v1 rounds",
       step3Point2: "Round 2: Advance to physical card tables",
       step3Point3: "Round 3: The Grand Final!",
       step4Tag: "Fair Play",
-      step4Title: "Key Rules & Etiquette",
-      step4Point1: "Call 'UNO!' on your last card (2-card penalty if caught)",
-      step4Point2: "Play only one card per turn (no multiple drops)",
-      step4Point3: "No Stacking (no +2 on +2 or +4 on +4)",
-      step4Point4: "Draw 1 and Pass if you have no playable card",
+      step4Title: "Key Rules: Fair Play",
+      step4Point1: "Call 'UNO!' on your last card",
+      step4Point2: "Play only one card per turn",
+      step4Point3: "No Stacking (no double power cards, no double number cards)",
+      step4Point4: "No card? Draw 1 and pass to the next player",
       punsTitle: "Event Spirit:",
-      motto: "Ready to shout 'UNO!'? See you there and bring your best game face to win!"
+      motto: "Brought to you by Talent Development • Ready to shout 'UNO!'? See you there and bring your best game face to win!"
     },
     posterModal: {
       badge: "Official Event Assets",
@@ -239,7 +239,7 @@ export const TRANSLATIONS = {
     guidelines: {
       badge: "Panduan Acara Rasmi",
       title: "Garis Panduan Acara: 4 Langkah Menuju Kemenangan",
-      subtitle: "Garis panduan rasmi dibawakan oleh Pembangunan Bakat | Sumber Manusia",
+      subtitle: "Garis panduan rasmi dibawakan oleh Pembangunan Bakat | Hari Penglibatan HR & Pentadbiran",
       step1Tag: "Sebelum Acara",
       step1Title: "RSVP & Latihan Awal",
       step1Point1: "Sahkan RSVP 'Yes' pada jemputan kalendar anda",
@@ -249,18 +249,18 @@ export const TRANSLATIONS = {
       step2Point1: "Hadir ke Common Area, Aras 2, Hive 5",
       step2Point2: "Buka pelayar web untuk menyertai bilik perlawanan",
       step3Tag: "Aliran Kejohanan",
-      step3Title: "Dari Digital ke Meja Fizikal",
+      step3Title: "🏆 HADIAH ISTIMEWA MENANTI PARA PEMENANG!",
       step3Point1: "Pusingan 1: Perlawanan 1v1 digital",
       step3Point2: "Pusingan 2: Mara ke meja kad fizikal",
       step3Point3: "Pusingan 3: Pentas Akhir Grand Final!",
       step4Tag: "Semangat Kesukanan",
-      step4Title: "Syarat Utama & Etika",
-      step4Point1: "Laung 'UNO!' bila tinggal 1 kad (denda 2 kad jika ditangkap)",
-      step4Point2: "Satu kad sahaja setiap giliran (tiada buangan serentak)",
-      step4Point3: "Tiada 'Stacking' (dilarang tindan +2 atau +4)",
-      step4Point4: "Cabut 1 & Lepas Giliran jika tiada kad yang sepadan",
+      step4Title: "Peraturan Utama: Permainan Adil",
+      step4Point1: "Sebut 'UNO!' pada kad terakhir anda",
+      step4Point2: "Main satu kad sahaja setiap giliran",
+      step4Point3: "Tiada 'Stacking' (tiada kad kuasa berganda, tiada kad nombor berganda)",
+      step4Point4: "Tiada kad? Cabut 1 dan serah kepada pemain seterusnya",
       punsTitle: "Semangat Acara:",
-      motto: "Bersedia laung 'UNO!'? Tunjukkan prestasi terbaik anda untuk menang!"
+      motto: "Dibawakan khas oleh Pembangunan Bakat (Talent Development) • Bersedia laung 'UNO!'? Tunjukkan prestasi terbaik anda untuk menang!"
     },
     posterModal: {
       badge: "Bahan Rasmi Acara",
@@ -1008,9 +1008,64 @@ export function shuffleFooterTip() {
   }
 }
 
-// Initialize DOM events
+// Official Poster Lightbox Modal Functions (Global & Resilient)
+export function openPosterModal(posterType = 'announcement') {
+  const posterModalOverlay = document.getElementById('posterModalOverlay');
+  if (posterModalOverlay) {
+    posterModalOverlay.style.display = 'flex';
+    posterModalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    switchPosterTab(posterType);
+  }
+}
+
+export function closePosterModal() {
+  const posterModalOverlay = document.getElementById('posterModalOverlay');
+  if (posterModalOverlay) {
+    posterModalOverlay.style.display = 'none';
+    posterModalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
+export function switchPosterTab(posterType) {
+  const activePosterImg = document.getElementById('activePosterImg');
+  const downloadPosterBtn = document.getElementById('downloadPosterBtn');
+  const posterTabs = document.querySelectorAll('.poster-tab-btn');
+
+  posterTabs.forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-poster') === posterType);
+  });
+
+  if (posterType === 'guidelines') {
+    if (activePosterImg) {
+      activePosterImg.src = 'official-guidelines.jpg';
+      activePosterImg.alt = 'Official UNO Event Guidelines Poster';
+    }
+    if (downloadPosterBtn) {
+      downloadPosterBtn.href = 'official-guidelines.jpg';
+      downloadPosterBtn.download = 'UNO-Guidelines-Poster.jpg';
+    }
+  } else {
+    if (activePosterImg) {
+      activePosterImg.src = 'official-poster.jpg';
+      activePosterImg.alt = 'Official UNO Event Announcement Poster';
+    }
+    if (downloadPosterBtn) {
+      downloadPosterBtn.href = 'official-poster.jpg';
+      downloadPosterBtn.download = 'UNO-Engagement-Day-Poster.jpg';
+    }
+  }
+}
+
 if (typeof window !== 'undefined') {
-  document.addEventListener('DOMContentLoaded', () => {
+  window.openPosterModal = openPosterModal;
+  window.closePosterModal = closePosterModal;
+  window.switchPosterTab = switchPosterTab;
+}
+
+// Initialize Application
+export function initApp() {
     // Tab switching
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1103,91 +1158,86 @@ if (typeof window !== 'undefined') {
           cancelColorSelection();
         }
         const pOverlay = document.getElementById('posterModalOverlay');
-        if (pOverlay && pOverlay.style.display === 'flex') {
-          pOverlay.style.display = 'none';
-        }
+      if (pOverlay && (pOverlay.style.display === 'flex' || pOverlay.classList.contains('active'))) {
+        closePosterModal();
       }
-    });
-
-    // Setup Official Poster Modal Events
-    const viewPostersBtn = document.getElementById('viewPostersBtn');
-    const posterModalOverlay = document.getElementById('posterModalOverlay');
-    const closePosterModalBtn = document.getElementById('closePosterModalBtn');
-    const dismissPosterBtn = document.getElementById('dismissPosterBtn');
-    const activePosterImg = document.getElementById('activePosterImg');
-    const downloadPosterBtn = document.getElementById('downloadPosterBtn');
-    const posterTabs = document.querySelectorAll('.poster-tab-btn');
-
-    if (viewPostersBtn && posterModalOverlay) {
-      const openPosterModal = () => {
-        posterModalOverlay.style.display = 'flex';
-      };
-      const closePosterModal = () => {
-        posterModalOverlay.style.display = 'none';
-      };
-
-      viewPostersBtn.addEventListener('click', openPosterModal);
-      if (closePosterModalBtn) closePosterModalBtn.addEventListener('click', closePosterModal);
-      if (dismissPosterBtn) dismissPosterBtn.addEventListener('click', closePosterModal);
-      posterModalOverlay.addEventListener('click', (e) => {
-        if (e.target === posterModalOverlay) closePosterModal();
-      });
-
-      posterTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          posterTabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          const posterType = tab.getAttribute('data-poster');
-          if (posterType === 'guidelines') {
-            if (activePosterImg) {
-              activePosterImg.src = 'official-guidelines.jpg';
-              activePosterImg.alt = 'Official UNO Event Guidelines Poster';
-            }
-            if (downloadPosterBtn) {
-              downloadPosterBtn.href = 'official-guidelines.jpg';
-              downloadPosterBtn.download = 'UNO-Guidelines-Poster.jpg';
-            }
-          } else {
-            if (activePosterImg) {
-              activePosterImg.src = 'official-poster.jpg';
-              activePosterImg.alt = 'Official UNO Event Announcement Poster';
-            }
-            if (downloadPosterBtn) {
-              downloadPosterBtn.href = 'official-poster.jpg';
-              downloadPosterBtn.download = 'UNO-Engagement-Day-Poster.jpg';
-            }
-          }
-        });
-      });
     }
+  });
 
-    // Setup Room Generator Widget
-    setupRoomGeneratorEvents();
+  // Setup Official Poster Modal Events
+  const viewPostersBtn = document.getElementById('viewPostersBtn');
+  const posterModalOverlay = document.getElementById('posterModalOverlay');
+  const closePosterModalBtn = document.getElementById('closePosterModalBtn');
+  const dismissPosterBtn = document.getElementById('dismissPosterBtn');
+  const posterTabs = document.querySelectorAll('.poster-tab-btn');
 
-    // Setup Footer Interactive Events
-    const shuffleTipBtn = document.getElementById('shuffleFooterTipBtn');
-    if (shuffleTipBtn) {
-      shuffleTipBtn.addEventListener('click', shuffleFooterTip);
-    }
-
-    document.querySelectorAll('[data-switch-tab]').forEach(el => {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        const tab = el.getAttribute('data-switch-tab');
-        const tabBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
-        if (tabBtn) tabBtn.click();
-      });
+  if (viewPostersBtn) {
+    viewPostersBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openPosterModal('announcement');
     });
+  }
+  if (closePosterModalBtn) {
+    closePosterModalBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closePosterModal();
+    });
+  }
+  if (dismissPosterBtn) {
+    dismissPosterBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      closePosterModal();
+    });
+  }
+  if (posterModalOverlay) {
+    posterModalOverlay.addEventListener('click', (e) => {
+      if (e.target === posterModalOverlay) closePosterModal();
+    });
+  }
 
-    // Initial render
-    updateI18n();
-
-    // Sync header quick nav pills on initial load
-    const activeTab = document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'guide';
-    document.querySelectorAll('.quick-nav-pill').forEach(p => {
-      p.classList.toggle('active', p.getAttribute('data-switch-tab') === activeTab);
+  posterTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      const posterType = tab.getAttribute('data-poster') || 'announcement';
+      switchPosterTab(posterType);
     });
   });
+
+  // Setup Room Generator Widget
+  setupRoomGeneratorEvents();
+
+  // Setup Footer Interactive Events
+  const shuffleTipBtn = document.getElementById('shuffleFooterTipBtn');
+  if (shuffleTipBtn) {
+    shuffleTipBtn.addEventListener('click', shuffleFooterTip);
+  }
+
+  document.querySelectorAll('[data-switch-tab]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tab = el.getAttribute('data-switch-tab');
+      const tabBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+      if (tabBtn) tabBtn.click();
+    });
+  });
+
+  // Initial render
+  updateI18n();
+
+  // Sync header quick nav pills on initial load
+  const activeTab = document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'guide';
+  document.querySelectorAll('.quick-nav-pill').forEach(p => {
+    p.classList.toggle('active', p.getAttribute('data-switch-tab') === activeTab);
+  });
+}
+
+// Fail-safe self-initialization
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
 }
 
 

@@ -7,7 +7,39 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script>
+    function openPosterModalDirect(type) {
+      if (window.openPosterModal) {
+        window.openPosterModal(type || 'announcement');
+      } else {
+        var modal = document.getElementById('posterModalOverlay');
+        if (modal) {
+          modal.style.display = 'flex';
+          modal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          if (window.switchPosterTab) window.switchPosterTab(type || 'announcement');
+        }
+      }
+    }
+    function closePosterModalDirect() {
+      if (window.closePosterModal) {
+        window.closePosterModal();
+      } else {
+        var modal = document.getElementById('posterModalOverlay');
+        if (modal) {
+          modal.style.display = 'none';
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
+    }
+    function switchPosterTabDirect(type) {
+      if (window.switchPosterTab) {
+        window.switchPosterTab(type);
+      }
+    }
+  </script>
 </head>
 <body>
   <div id="app-container">
@@ -100,7 +132,7 @@
           <a href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="hero-btn-secondary" data-i18n="buttons.openGame">
             Launch BuddyBoardGames Lobby ↗
           </a>
-          <button id="viewPostersBtn" class="hero-btn-ghost" data-i18n="buttons.viewPosters">
+          <button id="viewPostersBtn" class="hero-btn-ghost" type="button" onclick="openPosterModalDirect('announcement')" data-i18n="buttons.viewPosters">
             🖼️ View Official Posters
           </button>
         </div>
@@ -122,10 +154,15 @@
       <section id="guideView" class="tab-content active">
         <!-- Official 4-Step Event Guidelines Card (From Official Poster) -->
         <section class="official-guidelines-card">
-          <div class="guidelines-card-header">
-            <span class="badge-pill-cyan" data-i18n="guidelines.badge">Official Event Walkthrough</span>
-            <h3 class="guidelines-main-title" data-i18n="guidelines.title">Event Guidelines: 4 Steps to Victory</h3>
-            <p class="guidelines-subtitle" data-i18n="guidelines.subtitle">Official guidelines brought to you by Talent Development | Human Resource</p>
+          <div class="guidelines-card-header-row">
+            <div>
+              <span class="badge-pill-cyan" data-i18n="guidelines.badge">Official Event Walkthrough</span>
+              <h3 class="guidelines-main-title" data-i18n="guidelines.title">Event Guidelines: 4 Steps to Victory</h3>
+              <p class="guidelines-subtitle" data-i18n="guidelines.subtitle">Official guidelines brought to you by Talent Development | HR • Admin Engagement Day</p>
+            </div>
+            <button class="guidelines-view-poster-btn" type="button" onclick="openPosterModalDirect('guidelines')">
+              🖼️ View Revised Poster ↗
+            </button>
           </div>
           
           <div class="guidelines-grid-4">
@@ -161,7 +198,7 @@
                 <span class="step-circle step-circle-3">3</span>
                 <span class="step-timing-tag" data-i18n="guidelines.step3Tag">Tournament Flow</span>
               </div>
-              <h4 class="col-step-title" data-i18n="guidelines.step3Title">Digital to Physical</h4>
+              <h4 class="col-step-title" data-i18n="guidelines.step3Title">🏆 SPECIAL PRIZES AWAIT THE WINNERS!</h4>
               <ul class="col-step-list">
                 <li data-i18n="guidelines.step3Point1">Round 1: Play digital 1v1 rounds</li>
                 <li data-i18n="guidelines.step3Point2">Round 2: Advance to physical card tables</li>
@@ -175,12 +212,12 @@
                 <span class="step-circle step-circle-4">4</span>
                 <span class="step-timing-tag" data-i18n="guidelines.step4Tag">Fair Play</span>
               </div>
-              <h4 class="col-step-title" data-i18n="guidelines.step4Title">Key Rules & Etiquette</h4>
+              <h4 class="col-step-title" data-i18n="guidelines.step4Title">Key Rules: Fair Play</h4>
               <ul class="col-step-list">
-                <li data-i18n="guidelines.step4Point1">Call 'UNO!' on your last card (2-card penalty if caught)</li>
-                <li data-i18n="guidelines.step4Point2">Play only one card per turn (no multiple drops)</li>
-                <li data-i18n="guidelines.step4Point3">No Stacking (no +2 on +2 or +4 on +4)</li>
-                <li data-i18n="guidelines.step4Point4">Draw 1 and Pass if you have no playable card</li>
+                <li data-i18n="guidelines.step4Point1">Call 'UNO!' on your last card</li>
+                <li data-i18n="guidelines.step4Point2">Play only one card per turn</li>
+                <li data-i18n="guidelines.step4Point3">No Stacking (no double power cards, no double number cards)</li>
+                <li data-i18n="guidelines.step4Point4">No card? Draw 1 and pass to the next player</li>
               </ul>
             </div>
           </div>
@@ -191,7 +228,7 @@
             <span class="pun-chip chip-red">🃏 +2 Team Spirit</span>
             <span class="pun-chip chip-blue">🛑 Skip Monday Blues</span>
             <span class="pun-chip chip-yellow">🔄 Reverse Stress</span>
-            <span class="puns-motto" data-i18n="guidelines.motto">Ready to shout 'UNO!'? See you there and bring your best game face to win!</span>
+            <span class="puns-motto" data-i18n="guidelines.motto">Brought to you by Talent Development • Ready to shout 'UNO!'? See you there and bring your best game face to win!</span>
           </div>
         </section>
 
@@ -773,13 +810,13 @@
             <span class="poster-badge" data-i18n="posterModal.badge">Official Event Assets</span>
             <h3 id="posterModalTitle" class="poster-modal-title" data-i18n="posterModal.title">Official Event Posters & Guidelines</h3>
           </div>
-          <button id="closePosterModalBtn" class="poster-close-btn" aria-label="Close modal">✕</button>
+          <button id="closePosterModalBtn" class="poster-close-btn" type="button" onclick="closePosterModalDirect()" aria-label="Close modal">✕</button>
         </div>
 
         <!-- Poster Tabs / Switcher -->
         <div class="poster-switch-nav">
-          <button class="poster-tab-btn active" data-poster="announcement" data-i18n="posterModal.tabAnnouncement">📢 Event Announcement Poster</button>
-          <button class="poster-tab-btn" data-poster="guidelines" data-i18n="posterModal.tabGuidelines">📋 Official Guidelines Poster</button>
+          <button class="poster-tab-btn active" data-poster="announcement" type="button" onclick="switchPosterTabDirect('announcement')" data-i18n="posterModal.tabAnnouncement">📢 Event Announcement Poster</button>
+          <button class="poster-tab-btn" data-poster="guidelines" type="button" onclick="switchPosterTabDirect('guidelines')" data-i18n="posterModal.tabGuidelines">📋 Official Guidelines Poster</button>
         </div>
 
         <div class="poster-view-container">
@@ -790,7 +827,7 @@
           <a id="downloadPosterBtn" href="official-poster.jpg" download="UNO-Engagement-Day-Poster.jpg" class="poster-download-btn" data-i18n="posterModal.download">
             ⬇️ Download Full Resolution Poster
           </a>
-          <button id="dismissPosterBtn" class="poster-dismiss-btn" data-i18n="posterModal.dismiss">
+          <button id="dismissPosterBtn" class="poster-dismiss-btn" type="button" onclick="closePosterModalDirect()" data-i18n="posterModal.dismiss">
             Close
           </button>
         </div>
@@ -798,6 +835,6 @@
     </div>
   </div>
 
-  <script type="module" src="app.js"></script>
+  <script type="module" src="app.js?v=6"></script>
 </body>
 </html>

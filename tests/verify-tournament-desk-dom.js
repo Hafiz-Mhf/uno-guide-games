@@ -27,7 +27,6 @@ const requiredIds = [
   'deskRosterList',
   'deskAddPlayerBtn',
   'deskPlayerNameInput',
-  'deskPlayerDeptInput',
   'deskBulkImportBtn',
   'deskRandomizeBtn',
   'deskCopyMatchupsBtn',

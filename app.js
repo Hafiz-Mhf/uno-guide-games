@@ -241,12 +241,12 @@ export const TRANSLATIONS = {
       },
       roster: {
         title: "Player Roster & Check-In",
-        searchPlaceholder: "Search player by name or department...",
-        namePlaceholder: "Player name...",
-        deptPlaceholder: "Department...",
+        searchPlaceholder: "Search player by name...",
+        namePlaceholder: "Enter player name...",
         addBtn: "+ Add Player",
         bulkToggle: "📝 Bulk Import / Paste",
-        bulkPlaceholder: "Paste names (one per line, or 'Name | Dept'):\nAlice Tan | HR\nBob Wong | IT",
+        bulkLabel: "Paste names (one per line):",
+        bulkPlaceholder: "Paste names (one per line):\nAlice Tan\nBob Wong\nCharlie Lee",
         bulkImportBtn: "Import to Roster",
         checkAllBtn: "Check In All",
         uncheckAllBtn: "Clear Check-Ins",
@@ -508,12 +508,12 @@ export const TRANSLATIONS = {
       },
       roster: {
         title: "Senarai Pemain & Daftar Masuk",
-        searchPlaceholder: "Cari pemain mengikut nama atau jabatan...",
-        namePlaceholder: "Nama pemain...",
-        deptPlaceholder: "Jabatan...",
+        searchPlaceholder: "Cari pemain mengikut nama...",
+        namePlaceholder: "Masukkan nama pemain...",
         addBtn: "+ Tambah Pemain",
         bulkToggle: "📝 Import Pukal / Tampal",
-        bulkPlaceholder: "Tampal nama (satu per baris, atau 'Nama | Jabatan'):\nAlice Tan | HR\nBob Wong | IT",
+        bulkLabel: "Tampal nama (satu per baris):",
+        bulkPlaceholder: "Tampal nama (satu per baris):\nAlice Tan\nBob Wong\nCharlie Lee",
         bulkImportBtn: "Import ke Senarai",
         checkAllBtn: "Tanda Hadir Semua",
         uncheckAllBtn: "Kosongkan Kehadiran",
@@ -597,9 +597,6 @@ export function updateI18n() {
   if (deskDict) {
     const pNameInput = document.getElementById('deskPlayerNameInput');
     if (pNameInput) pNameInput.placeholder = deskDict.roster.namePlaceholder;
-
-    const pDeptInput = document.getElementById('deskPlayerDeptInput');
-    if (pDeptInput) pDeptInput.placeholder = deskDict.roster.deptPlaceholder;
 
     const rosterSearchInput = document.getElementById('deskRosterSearch');
     if (rosterSearchInput) rosterSearchInput.placeholder = deskDict.roster.searchPlaceholder;
@@ -1420,32 +1417,21 @@ export function setupTournamentDeskEvents() {
   // Add single player
   const addBtn = document.getElementById('deskAddPlayerBtn');
   const nameInput = document.getElementById('deskPlayerNameInput');
-  const deptInput = document.getElementById('deskPlayerDeptInput');
 
   function handleAddPlayer() {
     if (!nameInput) return;
     const name = nameInput.value.trim();
-    const dept = deptInput ? deptInput.value.trim() : 'General';
     if (!name) return;
 
-    tournamentState = addPlayer(tournamentState, name, dept);
+    tournamentState = addPlayer(tournamentState, name, '');
     saveTournamentState(localStorage, tournamentState);
     nameInput.value = '';
-    if (deptInput) deptInput.value = '';
     renderTournamentDesk();
   }
 
   if (addBtn) addBtn.addEventListener('click', handleAddPlayer);
   if (nameInput) {
     nameInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        handleAddPlayer();
-      }
-    });
-  }
-  if (deptInput) {
-    deptInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         handleAddPlayer();

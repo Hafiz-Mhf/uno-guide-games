@@ -3804,16 +3804,18 @@ body {
 
 /* Add Toolbar */
 .desk-add-toolbar {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
+  display: flex;
   gap: 10px;
   margin-bottom: 14px;
 }
 
-@media (max-width: 640px) {
-  .desk-add-toolbar {
-    grid-template-columns: 1fr;
-  }
+.desk-add-toolbar .room-text-input {
+  flex: 1;
+}
+
+.desk-add-toolbar .btn-primary-action {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .desk-search-bar {

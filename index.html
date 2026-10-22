@@ -717,8 +717,8 @@
 
           <!-- Bulk Import Drawer (Hidden by default) -->
           <div id="deskBulkContainer" class="desk-bulk-drawer" style="display: none;">
-            <label class="field-label" for="deskBulkTextarea" data-i18n="tournamentDesk.roster.bulkPlaceholder">Paste names (one per line, or 'Name | Dept'):</label>
-            <textarea id="deskBulkTextarea" class="desk-textarea" rows="4" placeholder="Alice Tan | HR Operations&#10;Bob Wong | Talent Development&#10;Charlie Lee"></textarea>
+            <label class="field-label" for="deskBulkTextarea" data-i18n="tournamentDesk.roster.bulkLabel">Paste names (one per line):</label>
+            <textarea id="deskBulkTextarea" class="desk-textarea" rows="4" placeholder="Alice Tan&#10;Bob Wong&#10;Charlie Lee"></textarea>
             <div class="bulk-drawer-actions">
               <button id="deskBulkImportBtn" class="btn-primary-action" type="button" data-i18n="tournamentDesk.roster.bulkImportBtn">Import to Roster</button>
             </div>
@@ -726,14 +726,13 @@
 
           <!-- Add Single Player Toolbar -->
           <div class="desk-add-toolbar">
-            <input type="text" id="deskPlayerNameInput" class="room-text-input" placeholder="Player name (e.g., Sarah Tan)..." maxlength="40">
-            <input type="text" id="deskPlayerDeptInput" class="room-text-input" placeholder="Department (e.g., HR Operations)..." maxlength="40">
+            <input type="text" id="deskPlayerNameInput" class="room-text-input" placeholder="Enter player name (e.g., Sarah Tan)..." maxlength="40">
             <button id="deskAddPlayerBtn" class="btn-primary-action" type="button" data-i18n="tournamentDesk.roster.addBtn">+ Add Player</button>
           </div>
 
           <!-- Live Roster Search Filter -->
           <div class="desk-search-bar">
-            <input type="text" id="deskRosterSearch" class="room-text-input" placeholder="Filter roster by name or department...">
+            <input type="text" id="deskRosterSearch" class="room-text-input" placeholder="Search player by name...">
           </div>
 
           <!-- Scrollable Roster Grid -->

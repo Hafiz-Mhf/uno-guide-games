@@ -69,7 +69,8 @@ export const TRANSLATIONS = {
       colorBlue: "Blue",
       activeColorBadge: "Active Color:",
       legalColorChoice: "Color chosen: {color}! Next play must match {color}.",
-      cancelChoice: "✕ Cancel (Keep Card)"
+      cancelChoice: "✕ Cancel (Keep Card)",
+      chooseColorHint: "Selecting a color dictates what color your opponent must match on the next turn."
     },
     rulesTab: {
       title: "Tournament House Rules & Etiquette",
@@ -79,11 +80,11 @@ export const TRANSLATIONS = {
       rule2Title: "2. No Playable Card? Draw One & Pass 🃏",
       rule2Desc: "If you don't have a matching card in hand, simply draw one card from the deck. If that card can't be played right away, your turn ends there—no continuous drawing until you find a match!",
       rule3Title: "3. One Card at a Time (No Multiple Drops) ✋",
-      rule3Desc: "Got two Blue 7s or three Yellow 4s? Nice hand, but you can only play one card per turn! No dropping matching sets or multiples at the same time.",
+      rule3Desc: "Even if you hold matching numbers or colors (such as two Blue 7s), you may only play one card per turn. Playing multiple cards or paired sets at the same time is not permitted.",
       rule4Title: "4. No Stacking (+2 and +4 Stay With You) 🛑",
-      rule4Desc: "Stacking is strictly off the table—you can't slap a +2 onto another +2 (or a +4 onto a +4) to pass the pain to your neighbor. If it lands on you, take the hit, draw your cards, and skip your turn gracefully!",
+      rule4Desc: "Card stacking is strictly off the table—you cannot play a +2 onto another +2 (or a +4 onto a +4) to pass the penalty to the next player. When targeted, simply draw your required cards and pass your turn.",
       rule5Title: "5. Take Your Time, But Keep It Flowing ⏳",
-      rule5Desc: "No stressful timers here! Feel free to think through your master plan and strategize. Just keep the game moving so everyone finishes on schedule—our organizers will only give a friendly nudge if a turn takes a bit too long.",
+      rule5Desc: "No stressful turn timers! Feel free to think through your moves and strategize. Please maintain a steady rhythm of play so every table finishes comfortably on schedule.",
       rule6Title: "6. Yes, You Can Finish on an Action Card! 🎉",
       rule6Desc: "Want to end the game on a high note with a Skip, Reverse, +2, or Color Card / Wild? Go right ahead! Winning on an Action card is 100% legal here.",
       rule7Title: "7. Respect the Table Captains & Referees 🤝",
@@ -241,7 +242,8 @@ export const TRANSLATIONS = {
       colorBlue: "Biru",
       activeColorBadge: "Warna Semasa:",
       legalColorChoice: "Warna dipilih: {color}! Pergerakan seterusnya wajib memadan {color}.",
-      cancelChoice: "✕ Batal (Simpan Kad)"
+      cancelChoice: "✕ Batal (Simpan Kad)",
+      chooseColorHint: "Memilih warna menentukan warna yang mesti dipadankan oleh lawan pada giliran seterusnya."
     },
     rulesTab: {
       title: "Peraturan & Etika (House Rules)",
@@ -251,11 +253,11 @@ export const TRANSLATIONS = {
       rule2Title: "2. Tiada Kad Sesuai? Cabut Satu & Giliran Tamat 🃏",
       rule2Desc: "Jika anda tiada kad yang sepadan di tangan, hanya cabut satu kad sahaja daripada dek. Sekiranya kad tersebut masih tidak boleh dimainkan, giliran anda tamat di situ—tidak dibenarkan mencabut kad berulang kali sehingga dapat.",
       rule3Title: "3. Satu Kad Sahaja Setiap Giliran ✋",
-      rule3Desc: "Walaupun anda mempunyai sepasang nombor yang sama (contohnya dua kad Biru 7 atau tiga kad Kuning 4), anda hanya dibenarkan meletakkan satu kad sahaja bagi setiap giliran. Tindakan membuang beberapa kad serentak tidak dibenarkan sama sekali.",
+      rule3Desc: "Walaupun anda memegang kad yang sama (seperti dua keping Biru 7), setiap pemain hanya boleh memainkan satu kad sahaja bagi setiap giliran. Meletakkan pasangan atau beberapa kad serentak tidak dibenarkan.",
       rule4Title: "4. Tiada 'Stacking' (Terima Kad Denda Seadanya) 🛑",
-      rule4Desc: "Konsep menindan kad denda adalah dilarang sama sekali—anda tidak boleh meletakkan +2 di atas kad +2 lain (atau +4 di atas +4) untuk memindahkan penalti kepada rakan sebelah. Jika giliran anda dikenakan denda, ambil kad tersebut dengan tenang dan lepaskan giliran anda.",
+      rule4Desc: "Penimbunan kad denda (stacking) tidak dibenarkan—pemain tidak boleh meletakkan +2 ke atas +2 lain (atau +4 ke atas +4) untuk memindahkan penalti kepada rakan sebelah. Jika anda dikenakan kad tersebut, ambil bilangan kad yang ditetapkan dan lepaskan giliran anda.",
       rule5Title: "5. Ambil Masa Berfikir, Tapi Pastikan Permainan Berjalan ⏳",
-      rule5Desc: "Tiada had masa pusingan yang ketat; anda bebas menyusun strategi kemenangan sebaiknya. Cuma pastikan permainan kekal bergerak aktif supaya tamat mengikut jadual—urusetia hanya akan memberikan peringatan mesra sekiranya sesuatu giliran mengambil masa terlalu lama.",
+      rule5Desc: "Tiada pemasa pusingan yang ketat. Anda bebas menyusun strategi kemenangan, namun pastikan permainan kekal bergerak lancar supaya setiap meja menamatkan pusingan mengikut jadual.",
       rule6Title: "6. Boleh Tamatkan Permainan Menggunakan Kad Aksi! 🎉",
       rule6Desc: "Ingin menghabiskan kad terakhir dengan menggunakan kad Skip, Reverse, +2, atau Kad Warna / Wild? Boleh, tiada masalah! Kemenangan anda sah.",
       rule7Title: "7. Hormati Ketua Meja (Table Captain) & Pengadil 🤝",
@@ -471,8 +473,11 @@ export function createCardElementHtml(card, customClass = '') {
     pipBottomRight = `<span class="${underlineClass}">${displayVal}</span>`;
   }
 
+  const isHandCard = customClass.includes('hand-card-item');
+  const roleAttr = isHandCard ? `role="button" tabindex="0" aria-label="Play ${card.color} ${card.value}"` : '';
+
   return `
-    <div class="uno-card card-color-${card.color} ${customClass}" data-id="${card.id || ''}" data-color="${card.color}" data-value="${card.value}">
+    <div class="uno-card card-color-${card.color} ${customClass}" ${roleAttr} data-id="${card.id || ''}" data-color="${card.color}" data-value="${card.value}">
       <div class="card-face">
         <span class="card-pip pip-top-left">${pipTopLeft}</span>
         <div class="card-center-oval">
@@ -518,13 +523,21 @@ export function renderPlayground() {
   // Render Hand Cards
   handDockEl.innerHTML = currentHand.map(c => createCardElementHtml(c, 'hand-card-item')).join('');
 
-  // Attach card click handlers
+  // Attach card click & keyboard handlers
   handDockEl.querySelectorAll('.uno-card').forEach(cardEl => {
-    cardEl.addEventListener('click', () => {
+    const playCard = () => {
       const cardId = cardEl.getAttribute('data-id');
       const card = currentHand.find(c => c.id === cardId);
       if (card) {
         handleCardPlay(card, cardEl);
+      }
+    };
+
+    cardEl.addEventListener('click', playCard);
+    cardEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        playCard();
       }
     });
   });
@@ -975,6 +988,12 @@ if (typeof window !== 'undefined') {
     const drawDeckBtn = document.getElementById('drawDeckBtn');
     if (drawDeckBtn) {
       drawDeckBtn.addEventListener('click', handleDrawCard);
+      drawDeckBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleDrawCard();
+        }
+      });
     }
 
     // Color Choice Modal Buttons

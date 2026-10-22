@@ -91,7 +91,7 @@
             ⚡ Quick Room Generator & Join
           </button>
           <a href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="hero-btn-secondary" data-i18n="buttons.openGame">
-            Launch BuddyBoardGames Lobby ➔
+            Launch BuddyBoardGames Lobby ↗
           </a>
         </div>
       </div>
@@ -138,7 +138,7 @@
               <!-- Draw Deck (Face Down) -->
               <div class="pile-wrapper">
                 <div class="pile-label" data-i18n="playground.drawDeck">Draw Deck (Tap to Draw)</div>
-                <div id="drawDeckBtn" class="deck-card-back" title="Click to draw a card">
+                <div id="drawDeckBtn" class="deck-card-back" role="button" tabindex="0" aria-label="Draw a card from the deck" title="Click or press Enter/Space to draw a card">
                   <div class="card-face">
                     <span class="deck-center-logo">UNO</span>
                   </div>
@@ -281,7 +281,7 @@
               <h4 class="rule-title" data-i18n="rulesTab.rule3Title">3. One Card at a Time (No Multiple Drops) ✋</h4>
               <span class="rule-verdict-pill">Single Drop Only</span>
             </div>
-            <p class="rule-desc" data-i18n="rulesTab.rule3Desc">Got two Blue 7s or three Yellow 4s? Nice hand, but you can only play one card per turn! No dropping matching sets or multiples at the same time.</p>
+            <p class="rule-desc" data-i18n="rulesTab.rule3Desc">Even if you hold matching numbers or colors (such as two Blue 7s), you may only play one card per turn. Playing multiple cards or paired sets at the same time is not permitted.</p>
           </div>
 
           <div class="rule-feature-card">
@@ -290,7 +290,7 @@
               <h4 class="rule-title" data-i18n="rulesTab.rule4Title">4. No Stacking (+2 and +4 Stay With You) 🛑</h4>
               <span class="rule-verdict-pill">Strictly No Stacking</span>
             </div>
-            <p class="rule-desc" data-i18n="rulesTab.rule4Desc">Stacking is strictly off the table—you can't slap a +2 onto another +2 (or a +4 onto a +4) to pass the pain to your neighbor. If it lands on you, take the hit, draw your cards, and skip your turn gracefully!</p>
+            <p class="rule-desc" data-i18n="rulesTab.rule4Desc">Card stacking is strictly off the table—you cannot play a +2 onto another +2 (or a +4 onto a +4) to pass the penalty to the next player. When targeted, simply draw your required cards and pass your turn.</p>
           </div>
 
           <div class="rule-feature-card">
@@ -299,7 +299,7 @@
               <h4 class="rule-title" data-i18n="rulesTab.rule5Title">5. Take Your Time, But Keep It Flowing ⏳</h4>
               <span class="rule-verdict-pill">Friendly Pacing</span>
             </div>
-            <p class="rule-desc" data-i18n="rulesTab.rule5Desc">No stressful timers here! Feel free to think through your master plan and strategize. Just keep the game moving so everyone finishes on schedule—our organizers will only give a friendly nudge if a turn takes a bit too long.</p>
+            <p class="rule-desc" data-i18n="rulesTab.rule5Desc">No stressful turn timers! Feel free to think through your moves and strategize. Please maintain a steady rhythm of play so every table finishes comfortably on schedule.</p>
           </div>
 
           <div class="rule-feature-card">
@@ -311,11 +311,11 @@
             <p class="rule-desc" data-i18n="rulesTab.rule6Desc">Want to end the game on a high note with a Skip, Reverse, +2, or Color Card / Wild? Go right ahead! Winning on an Action card is 100% legal here.</p>
           </div>
 
-          <div class="rule-feature-card full-width">
+          <div class="rule-feature-card rule-featured-banner full-width">
             <div class="rule-card-header">
-              <span class="rule-num-pill">07</span>
+              <span class="rule-num-pill rule-num-gold">07</span>
               <h4 class="rule-title" data-i18n="rulesTab.rule7Title">7. Respect the Table Captains & Referees 🤝</h4>
-              <span class="rule-verdict-pill">Final Ruling</span>
+              <span class="rule-verdict-pill verdict-gold">Final Ruling • Tournament Standard</span>
             </div>
             <p class="rule-desc" data-i18n="rulesTab.rule7Desc">Every physical table in Round 2 will have a designated Table Captain to keep things running smooth and fair. If any playful arguments break out, their word (or the Tournament Director's) is final!</p>
           </div>
@@ -655,6 +655,7 @@
         <span class="picker-badge" data-i18n="playground.badge">Interactive Action</span>
         <h3 id="pickerTitle" class="picker-title" data-i18n="playground.chooseColorTitle">Choose Next Active Color</h3>
         <p class="picker-desc" data-i18n="playground.chooseColorDesc">Color Card played! Select which color the next card must match:</p>
+        <p class="picker-hint" data-i18n="playground.chooseColorHint">Selecting a color dictates what color your opponent must match on the next turn.</p>
         <div class="color-choices-grid">
           <button class="color-choice-btn choice-btn-red" data-color="red" aria-label="Red">
             <span class="color-dot dot-red"></span>

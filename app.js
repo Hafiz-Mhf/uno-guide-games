@@ -10,7 +10,8 @@ export const TRANSLATIONS = {
     nav: {
       guide: "🕹️ Beginner Guide & Practice Mat",
       rules: "📜 Official Rules & 7 House Rules",
-      schedule: "🎮 Digital Platform & Room Setup"
+      schedule: "🎮 Digital Platform & Room Setup",
+      tournamentDesk: "🏆 Tournament Desk"
     },
     hero: {
       tagline: "October Engagement Day: Guide & Official Rules",
@@ -211,6 +212,62 @@ export const TRANSLATIONS = {
       tipShuffleBtn: "🎲 Shuffle Tip",
       copyright: "© 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Internal Staff Engagement.",
       builtBy: "Organized by Talent Development | Human Resource"
+    },
+    tournamentDesk: {
+      badge: "Organizer Automation",
+      title: "Tournament Desk: Check-In, Randomizer & Heats",
+      subtitle: "Manage attendees, remove no-shows, randomize Round 1 1v1 matchups, and feed winners into Round 2 physical tables.",
+      stats: {
+        registered: "Registered",
+        checkedIn: "Checked In (Ready)",
+        absent: "Absent / No-Show",
+        targetMatches: "Round 1 Matches",
+        statusEven: "✅ Even Pairings Ready",
+        statusOdd: "🎁 1 Player BYE Pass (Odd Count)"
+      },
+      roster: {
+        title: "Player Roster & Check-In",
+        searchPlaceholder: "Search player by name or department...",
+        namePlaceholder: "Player name...",
+        deptPlaceholder: "Department...",
+        addBtn: "+ Add Player",
+        bulkToggle: "📝 Bulk Import / Paste",
+        bulkPlaceholder: "Paste names (one per line, or 'Name | Dept'):\nAlice Tan | HR\nBob Wong | IT",
+        bulkImportBtn: "Import to Roster",
+        checkAllBtn: "Check In All",
+        uncheckAllBtn: "Clear Check-Ins",
+        resetBtn: "🔄 Reset to Default 30",
+        resetConfirm: "Reset roster back to the original 30 participants?",
+        checkedInTag: "Checked In",
+        absentTag: "Absent",
+        deleteBtnTitle: "Remove player from roster"
+      },
+      matches: {
+        title: "Round 1 Matchups & Digital Rooms",
+        subtitle: "Launch matches on BuddyBoardGames and click winners to advance them to Round 2.",
+        randomizeBtn: "🎲 Randomize Round 1 Pairings",
+        randomizeConfirm: "Round 1 matches already exist. Re-shuffle and generate new pairings?",
+        copyBtn: "📋 Copy Matchups (WhatsApp/Teams)",
+        copiedToast: "Matchups copied to clipboard! 📋",
+        printBtn: "🖨️ Print Desk View",
+        emptyPrompt: "No matches generated yet. Check in attendees above and click 'Randomize Round 1 Pairings'.",
+        vs: "VS",
+        tableLabel: "Table",
+        launchRoomBtn: "Launch BBG Room ↗",
+        selectWinnerPrompt: "Select Winner to Advance:",
+        winnerWonSuffix: "Won 👑",
+        byeTitle: "🎁 Round 1 BYE Pass Awarded",
+        byeDesc: "advances directly to Round 2 physical tables without playing Round 1 due to odd player count."
+      },
+      round2: {
+        title: "Round 2 Physical Heats (3 Tables × 5 Pax)",
+        subtitle: "Winners from Round 1 automatically fill Table Alpha, Beta, and Gamma.",
+        qualifiersBadge: "Qualifiers Ready",
+        tableAlpha: "Table Alpha (Heat 1)",
+        tableBeta: "Table Beta (Heat 2)",
+        tableGamma: "Table Gamma (Heat 3)",
+        slotEmpty: "Awaiting Round 1 Winner..."
+      }
     }
   },
   bm: {
@@ -220,7 +277,8 @@ export const TRANSLATIONS = {
     nav: {
       guide: "🕹️ Panduan Pemain & Pentas Latihan",
       rules: "📜 Peraturan Rasmi & 7 Syarat Santai",
-      schedule: "🎮 Platform Digital & Penjana Bilik"
+      schedule: "🎮 Platform Digital & Penjana Bilik",
+      tournamentDesk: "🏆 Meja Kejohanan"
     },
     hero: {
       tagline: "Hari Penglibatan Oktober: Panduan & Peraturan Rasmi",
@@ -421,6 +479,62 @@ export const TRANSLATIONS = {
       tipShuffleBtn: "🎲 Tukar Petua",
       copyright: "© 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Penglibatan Staf Dalaman.",
       builtBy: "Dianjurkan oleh Pembangunan Bakat | Sumber Manusia"
+    },
+    tournamentDesk: {
+      badge: "Automasi Penganjur",
+      title: "Meja Kejohanan: Daftar Masuk, Rawak & Kumpulan",
+      subtitle: "Urus peserta, singkirkan mereka yang tidak hadir, rawakkan perlawanan 1v1 Pusingan 1, dan salurkan pemenang ke meja fizikal Pusingan 2.",
+      stats: {
+        registered: "Berdaftar",
+        checkedIn: "Hadir (Sedia)",
+        absent: "Tidak Hadir / Tiada",
+        targetMatches: "Perlawanan Pusingan 1",
+        statusEven: "✅ Padanan Genap Sedia",
+        statusOdd: "🎁 1 Pemain Layak Automatik (BYE)"
+      },
+      roster: {
+        title: "Senarai Pemain & Daftar Masuk",
+        searchPlaceholder: "Cari pemain mengikut nama atau jabatan...",
+        namePlaceholder: "Nama pemain...",
+        deptPlaceholder: "Jabatan...",
+        addBtn: "+ Tambah Pemain",
+        bulkToggle: "📝 Import Pukal / Tampal",
+        bulkPlaceholder: "Tampal nama (satu per baris, atau 'Nama | Jabatan'):\nAlice Tan | HR\nBob Wong | IT",
+        bulkImportBtn: "Import ke Senarai",
+        checkAllBtn: "Tanda Hadir Semua",
+        uncheckAllBtn: "Kosongkan Kehadiran",
+        resetBtn: "🔄 Tetap Semula ke 30 Asal",
+        resetConfirm: "Tetapkan semula senarai peserta kepada 30 pemain asal?",
+        checkedInTag: "Hadir",
+        absentTag: "Tidak Hadir",
+        deleteBtnTitle: "Keluarkan pemain dari senarai"
+      },
+      matches: {
+        title: "Perlawanan Pusingan 1 & Bilik Digital",
+        subtitle: "Lancarkan perlawanan di BuddyBoardGames dan klik pemenang untuk melayakkan mereka ke Pusingan 2.",
+        randomizeBtn: "🎲 Rawak Perlawanan Pusingan 1",
+        randomizeConfirm: "Perlawanan Pusingan 1 sudah wujud. Rawak semula untuk hasilkan padanan baharu?",
+        copyBtn: "📋 Salin Padanan (WhatsApp/Teams)",
+        copiedToast: "Senarai padanan disalin ke papan klip! 📋",
+        printBtn: "🖨️ Cetak Paparan Meja",
+        emptyPrompt: "Tiada perlawanan lagi. Sila sahkan kehadiran pemain di atas dan klik 'Rawak Perlawanan Pusingan 1'.",
+        vs: "LWN",
+        tableLabel: "Meja",
+        launchRoomBtn: "Buka Bilik BBG ↗",
+        selectWinnerPrompt: "Pilih Pemenang:",
+        winnerWonSuffix: "Menang 👑",
+        byeTitle: "🎁 Pas Percuma Pusingan 1 (BYE)",
+        byeDesc: "layak terus ke meja fizikal Pusingan 2 tanpa perlu bermain Pusingan 1 akibat bilangan ganjil."
+      },
+      round2: {
+        title: "Pusingan 2 Meja Fizikal (3 Meja × 5 Orang)",
+        subtitle: "Pemenang Pusingan 1 akan mengisi Meja Alpha, Beta, dan Gamma secara automatik.",
+        qualifiersBadge: "Pemain Layak",
+        tableAlpha: "Meja Alpha (Kumpulan 1)",
+        tableBeta: "Meja Beta (Kumpulan 2)",
+        tableGamma: "Meja Gamma (Kumpulan 3)",
+        slotEmpty: "Menunggu Pemenang Pusingan 1..."
+      }
     }
   }
 };

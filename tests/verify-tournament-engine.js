@@ -3,7 +3,12 @@ import {
   createDefaultTournamentState,
   loadTournamentState,
   saveTournamentState,
-  resetTournamentState
+  resetTournamentState,
+  togglePlayerCheckIn,
+  addPlayer,
+  removePlayer,
+  bulkImportRoster,
+  setAllCheckInStatus
 } from '../tournament-engine.js';
 
 console.log('Testing tournament-engine state lifecycle...');
@@ -42,3 +47,56 @@ if (resetState.roster.length !== 30) {
 }
 
 console.log('PASS: Task 1 tests passed.');
+
+console.log('Testing roster management methods...');
+
+let s = createDefaultTournamentState();
+
+// Toggle check-in
+s = togglePlayerCheckIn(s, 'p-01', false);
+if (s.roster.find(p => p.id === 'p-01').checkedIn !== false) {
+  console.error('FAIL: togglePlayerCheckIn failed');
+  process.exit(1);
+}
+
+// Add player
+s = addPlayer(s, 'Zack Taylor', 'Marketing');
+const newPlayer = s.roster.find(p => p.name === 'Zack Taylor');
+if (!newPlayer || newPlayer.dept !== 'Marketing' || !newPlayer.checkedIn) {
+  console.error('FAIL: addPlayer failed');
+  process.exit(1);
+}
+
+// Remove player
+const prevLen = s.roster.length;
+s = removePlayer(s, newPlayer.id);
+if (s.roster.length !== prevLen - 1) {
+  console.error('FAIL: removePlayer failed');
+  process.exit(1);
+}
+
+// Set all checkin
+s = setAllCheckInStatus(s, false);
+if (s.roster.some(p => p.checkedIn === true)) {
+  console.error('FAIL: setAllCheckInStatus false failed');
+  process.exit(1);
+}
+s = setAllCheckInStatus(s, true);
+if (s.roster.some(p => p.checkedIn === false)) {
+  console.error('FAIL: setAllCheckInStatus true failed');
+  process.exit(1);
+}
+
+// Bulk import
+const text = `
+Alice Tan | HR
+Bob Wong, IT
+Charlie
+`;
+s = bulkImportRoster(s, text);
+if (!s.roster.find(p => p.name === 'Alice Tan') || !s.roster.find(p => p.name === 'Bob Wong')) {
+  console.error('FAIL: bulkImportRoster failed');
+  process.exit(1);
+}
+
+console.log('PASS: Task 2 tests passed.');

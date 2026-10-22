@@ -157,7 +157,7 @@
       "quickPicksLabel": "⚡ Quick Match Switcher (1 to 15):"
     },
     "footer": {
-      "tagline": "October Engagement Day 2026: Official Tournament & Casual Play Guide. Fostering camaraderie, strategic thinking, and friendly workplace competition across MRANTI.",
+      "tagline": "October Engagement Day 2026: Official Tournament & Casual Play Guide. Win Together | Be the Change | Accelerate Impact.",
       "status": "Live Engagement Day • 28 Oct 2026",
       "eventInfoTitle": "Event Logistics",
       "dateTime": "Wednesday, 28 Oct 2026 • 3:00 PM – 4:30 PM (90 Mins)",
@@ -329,7 +329,7 @@
       "quickPicksLabel": "⚡ Pilihan Pantas Perlawanan (1 hingga 15):"
     },
     "footer": {
-      "tagline": "Hari Penglibatan Oktober 2026: Panduan Rasmi Kejohanan & Permainan Santai. Memupuk semangat berpasukan, pemikiran strategik, dan persaingan mesra warga MRANTI.",
+      "tagline": "Hari Penglibatan Oktober 2026: Panduan Rasmi Kejohanan & Permainan Santai. Win Together | Be the Change | Accelerate Impact.",
       "status": "Hari Penglibatan Langsung • 28 Okt 2026",
       "eventInfoTitle": "Logistik Acara",
       "dateTime": "Rabu, 28 Okt 2026 • 3:00 PM – 4:30 PM (90 Minit)",

@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <div id="app-container">
@@ -78,10 +78,17 @@
       <div class="hero-inner">
         <div class="hero-badge-pill" data-i18n="hero.tagline">October Engagement Day: Guide & Official Rules</div>
         <h2 class="hero-main" data-i18n="appTitle">HR & Admin UNO Engagement Day 2026</h2>
+        
+        <!-- Official Event Slogan & Prize Callout -->
+        <div class="hero-callout-strip">
+          <span class="callout-pill slogan-pill" data-i18n="hero.slogan">💬 "Let's Play, Connect & Laugh!"</span>
+          <span class="callout-pill prize-pill" data-i18n="hero.prizes">🏆 Special Prizes for Top Players!</span>
+        </div>
+
         <div class="hero-meta">
           <span class="meta-item" data-i18n="hero.eventDate">Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)</span>
           <span class="meta-dot">•</span>
-          <span class="meta-item" data-i18n="hero.venue">📍 Mranti Corporation-2-L2-E-6-Common Area Space</span>
+          <span class="meta-item" data-i18n="hero.venue">📍 Common Area, Level 2, Hive 5, MRANTI Building</span>
           <span class="meta-dot">•</span>
           <span class="meta-item" data-i18n="hero.platform">🎮 BuddyBoardGames UNO & Physical UNO Decks</span>
         </div>
@@ -93,6 +100,9 @@
           <a href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="hero-btn-secondary" data-i18n="buttons.openGame">
             Launch BuddyBoardGames Lobby ↗
           </a>
+          <button id="viewPostersBtn" class="hero-btn-ghost" data-i18n="buttons.viewPosters">
+            🖼️ View Official Posters
+          </button>
         </div>
       </div>
     </section>
@@ -110,6 +120,81 @@
     <main class="content-area">
       <!-- TAB 1: BEGINNER GUIDE & INTERACTIVE PRACTICE MAT -->
       <section id="guideView" class="tab-content active">
+        <!-- Official 4-Step Event Guidelines Card (From Official Poster) -->
+        <section class="official-guidelines-card">
+          <div class="guidelines-card-header">
+            <span class="badge-pill-cyan" data-i18n="guidelines.badge">Official Event Walkthrough</span>
+            <h3 class="guidelines-main-title" data-i18n="guidelines.title">Event Guidelines: 4 Steps to Victory</h3>
+            <p class="guidelines-subtitle" data-i18n="guidelines.subtitle">Official guidelines brought to you by Talent Development | Human Resource</p>
+          </div>
+          
+          <div class="guidelines-grid-4">
+            <!-- Step 1 -->
+            <div class="guideline-col-card">
+              <div class="col-step-indicator">
+                <span class="step-circle step-circle-1">1</span>
+                <span class="step-timing-tag" data-i18n="guidelines.step1Tag">Before Event</span>
+              </div>
+              <h4 class="col-step-title" data-i18n="guidelines.step1Title">RSVP & Practice</h4>
+              <ul class="col-step-list">
+                <li data-i18n="guidelines.step1Point1">RSVP 'Yes' on your calendar invite</li>
+                <li data-i18n="guidelines.step1Point2">Practice on buddyboardgames.com/uno</li>
+              </ul>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="guideline-col-card">
+              <div class="col-step-indicator">
+                <span class="step-circle step-circle-2">2</span>
+                <span class="step-timing-tag" data-i18n="guidelines.step2Tag">Event Day</span>
+              </div>
+              <h4 class="col-step-title" data-i18n="guidelines.step2Title">Check-In & Join Match Room</h4>
+              <ul class="col-step-list">
+                <li data-i18n="guidelines.step2Point1">Report to Common Area, Level 2, Hive 5</li>
+                <li data-i18n="guidelines.step2Point2">Open your browser to join assigned match room</li>
+              </ul>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="guideline-col-card">
+              <div class="col-step-indicator">
+                <span class="step-circle step-circle-3">3</span>
+                <span class="step-timing-tag" data-i18n="guidelines.step3Tag">Tournament Flow</span>
+              </div>
+              <h4 class="col-step-title" data-i18n="guidelines.step3Title">Digital to Physical</h4>
+              <ul class="col-step-list">
+                <li data-i18n="guidelines.step3Point1">Round 1: Play digital 1v1 rounds</li>
+                <li data-i18n="guidelines.step3Point2">Round 2: Advance to physical card tables</li>
+                <li data-i18n="guidelines.step3Point3">Round 3: The Grand Final!</li>
+              </ul>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="guideline-col-card">
+              <div class="col-step-indicator">
+                <span class="step-circle step-circle-4">4</span>
+                <span class="step-timing-tag" data-i18n="guidelines.step4Tag">Fair Play</span>
+              </div>
+              <h4 class="col-step-title" data-i18n="guidelines.step4Title">Key Rules & Etiquette</h4>
+              <ul class="col-step-list">
+                <li data-i18n="guidelines.step4Point1">Call 'UNO!' on your last card (2-card penalty if caught)</li>
+                <li data-i18n="guidelines.step4Point2">Play only one card per turn (no multiple drops)</li>
+                <li data-i18n="guidelines.step4Point3">No Stacking (no +2 on +2 or +4 on +4)</li>
+                <li data-i18n="guidelines.step4Point4">Draw 1 and Pass if you have no playable card</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Fun Custom Card Puns from Official Poster -->
+          <div class="official-card-puns-strip">
+            <span class="puns-title" data-i18n="guidelines.punsTitle">Event Spirit:</span>
+            <span class="pun-chip chip-red">🃏 +2 Team Spirit</span>
+            <span class="pun-chip chip-blue">🛑 Skip Monday Blues</span>
+            <span class="pun-chip chip-yellow">🔄 Reverse Stress</span>
+            <span class="puns-motto" data-i18n="guidelines.motto">Ready to shout 'UNO!'? See you there and bring your best game face to win!</span>
+          </div>
+        </section>
+
         <!-- Beginner Guide Hero Section -->
         <div class="guide-hero-card">
           <div class="guide-hero-content">
@@ -573,7 +658,7 @@
               </li>
               <li>
                 <span class="info-icon">📍</span>
-                <span class="info-text" data-i18n="footer.venue">Mranti Corporation-2-L2-E-6-Common Area Space</span>
+                <span class="info-text" data-i18n="footer.venue">Common Area, Level 2, Hive 5, MRANTI Building</span>
               </li>
               <li>
                 <span class="info-icon">🏆</span>
@@ -677,6 +762,38 @@
         <button id="cancelColorPickerBtn" class="picker-cancel-btn" data-i18n="playground.cancelChoice" aria-label="Cancel and keep card in hand">
           ✕ Cancel (Keep Card)
         </button>
+      </div>
+    </div>
+
+    <!-- Official Posters Lightbox Modal -->
+    <div id="posterModalOverlay" class="poster-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="posterModalTitle">
+      <div class="poster-modal">
+        <div class="poster-modal-header">
+          <div>
+            <span class="poster-badge" data-i18n="posterModal.badge">Official Event Assets</span>
+            <h3 id="posterModalTitle" class="poster-modal-title" data-i18n="posterModal.title">Official Event Posters & Guidelines</h3>
+          </div>
+          <button id="closePosterModalBtn" class="poster-close-btn" aria-label="Close modal">✕</button>
+        </div>
+
+        <!-- Poster Tabs / Switcher -->
+        <div class="poster-switch-nav">
+          <button class="poster-tab-btn active" data-poster="announcement" data-i18n="posterModal.tabAnnouncement">📢 Event Announcement Poster</button>
+          <button class="poster-tab-btn" data-poster="guidelines" data-i18n="posterModal.tabGuidelines">📋 Official Guidelines Poster</button>
+        </div>
+
+        <div class="poster-view-container">
+          <img id="activePosterImg" src="official-poster.jpg" alt="Official UNO Event Announcement Poster" class="active-poster-img">
+        </div>
+
+        <div class="poster-modal-footer">
+          <a id="downloadPosterBtn" href="official-poster.jpg" download="UNO-Engagement-Day-Poster.jpg" class="poster-download-btn" data-i18n="posterModal.download">
+            ⬇️ Download Full Resolution Poster
+          </a>
+          <button id="dismissPosterBtn" class="poster-dismiss-btn" data-i18n="posterModal.dismiss">
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>

@@ -15,13 +15,50 @@ export const TRANSLATIONS = {
     hero: {
       tagline: "October Engagement Day: Guide & Official Rules",
       eventDate: "Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)",
-      venue: "📍 Mranti Corporation-2-L2-E-6-Common Area Space",
+      venue: "📍 Common Area, Level 2, Hive 5, MRANTI Building",
       platform: "🎮 BuddyBoardGames UNO & Physical UNO Decks",
-      subtext: "Casual UNO Championship — From Digital 1v1s to the 3-Player Grand Final!"
+      subtext: "Casual UNO Championship — From Digital 1v1s to the 3-Player Grand Final!",
+      slogan: "💬 \"Let's Play, Connect & Laugh!\"",
+      prizes: "🏆 Special Prizes for Top Players!"
     },
     buttons: {
       openGame: "Launch BuddyBoardGames Lobby ➔",
-      practiceWithBuddy: "Practice With AI Bots ➔"
+      practiceWithBuddy: "Practice With AI Bots ➔",
+      viewPosters: "🖼️ View Official Posters"
+    },
+    guidelines: {
+      badge: "Official Event Walkthrough",
+      title: "Event Guidelines: 4 Steps to Victory",
+      subtitle: "Official guidelines brought to you by Talent Development | Human Resource",
+      step1Tag: "Before Event",
+      step1Title: "RSVP & Practice",
+      step1Point1: "RSVP 'Yes' on your calendar invite",
+      step1Point2: "Practice on buddyboardgames.com/uno",
+      step2Tag: "Event Day",
+      step2Title: "Check-In & Join Match Room",
+      step2Point1: "Report to Common Area, Level 2, Hive 5",
+      step2Point2: "Open your browser to join assigned match room",
+      step3Tag: "Tournament Flow",
+      step3Title: "Digital to Physical",
+      step3Point1: "Round 1: Play digital 1v1 rounds",
+      step3Point2: "Round 2: Advance to physical card tables",
+      step3Point3: "Round 3: The Grand Final!",
+      step4Tag: "Fair Play",
+      step4Title: "Key Rules & Etiquette",
+      step4Point1: "Call 'UNO!' on your last card (2-card penalty if caught)",
+      step4Point2: "Play only one card per turn (no multiple drops)",
+      step4Point3: "No Stacking (no +2 on +2 or +4 on +4)",
+      step4Point4: "Draw 1 and Pass if you have no playable card",
+      punsTitle: "Event Spirit:",
+      motto: "Ready to shout 'UNO!'? See you there and bring your best game face to win!"
+    },
+    posterModal: {
+      badge: "Official Event Assets",
+      title: "Official Event Posters & Guidelines",
+      tabAnnouncement: "📢 Event Announcement Poster",
+      tabGuidelines: "📋 Official Guidelines Poster",
+      download: "⬇️ Download Full Resolution Poster",
+      dismiss: "Close"
     },
     beginnerGuide: {
       title: "First Time Playing UNO? Start Here!",
@@ -111,7 +148,7 @@ export const TRANSLATIONS = {
       subtitle: "90 minutes of casual, high-energy gaming from digital matches to physical finals.",
       r1Time: "3:00 PM – 3:15 PM (15 mins)",
       r1Stage: "Check-In & Onboarding",
-      r1Desc: "Arrival at Mranti Corporation-2-L2-E-6-Common Area Space, device Wi-Fi check, scanning the event guide, and room/match allocations.",
+      r1Desc: "Arrival at Common Area, Level 2, Hive 5, device Wi-Fi check, scanning the event guide, and room/match allocations.",
       r2Time: "3:15 PM – 3:35 PM (20 mins)",
       r2Stage: "Round 1 — Digital 1v1",
       r2Desc: "30 players compete in 15 simultaneous 1v1 head-to-head browser matches (Best of 3 / 150-point series). The 15 winners advance.",
@@ -163,7 +200,7 @@ export const TRANSLATIONS = {
       status: "Live Engagement Day • 28 Oct 2026",
       eventInfoTitle: "Event Logistics",
       dateTime: "Wednesday, 28 Oct 2026 • 3:00 PM – 4:30 PM (90 Mins)",
-      venue: "Mranti Corporation-2-L2-E-6-Common Area Space",
+      venue: "Common Area, Level 2, Hive 5, MRANTI Building",
       format: "Digital 1v1 Prelims → 5-Player Heats → Grand Final",
       gameCentralTitle: "Game Central",
       linkGuide: "🕹️ Beginner Guide & Practice Mat",
@@ -188,13 +225,50 @@ export const TRANSLATIONS = {
     hero: {
       tagline: "Hari Penglibatan Oktober: Panduan & Peraturan Rasmi",
       eventDate: "Rabu, 28 Oktober 2026 • 3:00 PM – 4:30 PM (90 Minit)",
-      venue: "📍 Mranti Corporation-2-L2-E-6-Common Area Space",
+      venue: "📍 Common Area, Aras 2, Hive 5, Bangunan MRANTI",
       platform: "🎮 BuddyBoardGames UNO & Kad UNO Fizikal",
-      subtext: "Kejohanan UNO Santai — Dari 1v1 Digital ke Pentas Akhir 3 Penjuru!"
+      subtext: "Kejohanan UNO Santai — Dari 1v1 Digital ke Pentas Akhir 3 Penjuru!",
+      slogan: "💬 \"Jom Bermain, Beramah Mesra & Bergelak Tawa!\"",
+      prizes: "🏆 Hadiah Khas Untuk Pemain Terbaik!"
     },
     buttons: {
       openGame: "Buka Bilik BuddyBoardGames ➔",
-      practiceWithBuddy: "Latihan Menentang Bot AI ➔"
+      practiceWithBuddy: "Latihan Menentang Bot AI ➔",
+      viewPosters: "🖼️ Lihat Poster Rasmi"
+    },
+    guidelines: {
+      badge: "Panduan Acara Rasmi",
+      title: "Garis Panduan Acara: 4 Langkah Menuju Kemenangan",
+      subtitle: "Garis panduan rasmi dibawakan oleh Pembangunan Bakat | Sumber Manusia",
+      step1Tag: "Sebelum Acara",
+      step1Title: "RSVP & Latihan Awal",
+      step1Point1: "Sahkan RSVP 'Yes' pada jemputan kalendar anda",
+      step1Point2: "Buat latihan di buddyboardgames.com/uno",
+      step2Tag: "Hari Acara",
+      step2Title: "Daftar Masuk & Masuk Bilik Perlawanan",
+      step2Point1: "Hadir ke Common Area, Aras 2, Hive 5",
+      step2Point2: "Buka pelayar web untuk menyertai bilik perlawanan",
+      step3Tag: "Aliran Kejohanan",
+      step3Title: "Dari Digital ke Meja Fizikal",
+      step3Point1: "Pusingan 1: Perlawanan 1v1 digital",
+      step3Point2: "Pusingan 2: Mara ke meja kad fizikal",
+      step3Point3: "Pusingan 3: Pentas Akhir Grand Final!",
+      step4Tag: "Semangat Kesukanan",
+      step4Title: "Syarat Utama & Etika",
+      step4Point1: "Laung 'UNO!' bila tinggal 1 kad (denda 2 kad jika ditangkap)",
+      step4Point2: "Satu kad sahaja setiap giliran (tiada buangan serentak)",
+      step4Point3: "Tiada 'Stacking' (dilarang tindan +2 atau +4)",
+      step4Point4: "Cabut 1 & Lepas Giliran jika tiada kad yang sepadan",
+      punsTitle: "Semangat Acara:",
+      motto: "Bersedia laung 'UNO!'? Tunjukkan prestasi terbaik anda untuk menang!"
+    },
+    posterModal: {
+      badge: "Bahan Rasmi Acara",
+      title: "Poster Rasmi & Garis Panduan Acara",
+      tabAnnouncement: "📢 Poster Pengumuman Acara",
+      tabGuidelines: "📋 Poster Garis Panduan Rasmi",
+      download: "⬇️ Muat Turun Poster Resolusi Penuh",
+      dismiss: "Tutup"
     },
     beginnerGuide: {
       title: "Pertama Kali Main UNO? Mula Di Sini!",
@@ -284,7 +358,7 @@ export const TRANSLATIONS = {
       subtitle: "90 minit permainan santai dan penuh semangat dari perlawanan digital ke pentas akhir.",
       r1Time: "3:00 PM – 3:15 PM (15 minit)",
       r1Stage: "Pendaftaran & Taklimat",
-      r1Desc: "Berkumpul di Common Area Space, semakan sambungan Wi-Fi peranti, imbas panduan acara, dan pengagihan bilik perlawanan.",
+      r1Desc: "Berkumpul di Common Area, Aras 2, Hive 5, semakan sambungan Wi-Fi peranti, imbas panduan acara, dan pengagihan bilik perlawanan.",
       r2Time: "3:15 PM – 3:35 PM (20 minit)",
       r2Stage: "Pusingan 1 — 1v1 Digital",
       r2Desc: "30 pemain bertanding serentak dalam 15 perlawanan 1v1 di pelayar web (Siri 150 mata). 15 pemenang mara ke pusingan seterusnya.",
@@ -336,7 +410,7 @@ export const TRANSLATIONS = {
       status: "Hari Penglibatan Langsung • 28 Okt 2026",
       eventInfoTitle: "Logistik Acara",
       dateTime: "Rabu, 28 Okt 2026 • 3:00 PM – 4:30 PM (90 Minit)",
-      venue: "Mranti Corporation-2-L2-E-6-Ruang Legar Gunasama",
+      venue: "Common Area, Aras 2, Hive 5, Bangunan MRANTI",
       format: "1v1 Digital → Pusingan Fizikal 5 Orang → Pentas Akhir",
       gameCentralTitle: "Pusat Permainan",
       linkGuide: "🕹️ Panduan Pemain & Pentas Latihan",
@@ -1028,8 +1102,64 @@ if (typeof window !== 'undefined') {
         if (overlay && overlay.style.display === 'flex') {
           cancelColorSelection();
         }
+        const pOverlay = document.getElementById('posterModalOverlay');
+        if (pOverlay && pOverlay.style.display === 'flex') {
+          pOverlay.style.display = 'none';
+        }
       }
     });
+
+    // Setup Official Poster Modal Events
+    const viewPostersBtn = document.getElementById('viewPostersBtn');
+    const posterModalOverlay = document.getElementById('posterModalOverlay');
+    const closePosterModalBtn = document.getElementById('closePosterModalBtn');
+    const dismissPosterBtn = document.getElementById('dismissPosterBtn');
+    const activePosterImg = document.getElementById('activePosterImg');
+    const downloadPosterBtn = document.getElementById('downloadPosterBtn');
+    const posterTabs = document.querySelectorAll('.poster-tab-btn');
+
+    if (viewPostersBtn && posterModalOverlay) {
+      const openPosterModal = () => {
+        posterModalOverlay.style.display = 'flex';
+      };
+      const closePosterModal = () => {
+        posterModalOverlay.style.display = 'none';
+      };
+
+      viewPostersBtn.addEventListener('click', openPosterModal);
+      if (closePosterModalBtn) closePosterModalBtn.addEventListener('click', closePosterModal);
+      if (dismissPosterBtn) dismissPosterBtn.addEventListener('click', closePosterModal);
+      posterModalOverlay.addEventListener('click', (e) => {
+        if (e.target === posterModalOverlay) closePosterModal();
+      });
+
+      posterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          posterTabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const posterType = tab.getAttribute('data-poster');
+          if (posterType === 'guidelines') {
+            if (activePosterImg) {
+              activePosterImg.src = 'official-guidelines.jpg';
+              activePosterImg.alt = 'Official UNO Event Guidelines Poster';
+            }
+            if (downloadPosterBtn) {
+              downloadPosterBtn.href = 'official-guidelines.jpg';
+              downloadPosterBtn.download = 'UNO-Guidelines-Poster.jpg';
+            }
+          } else {
+            if (activePosterImg) {
+              activePosterImg.src = 'official-poster.jpg';
+              activePosterImg.alt = 'Official UNO Event Announcement Poster';
+            }
+            if (downloadPosterBtn) {
+              downloadPosterBtn.href = 'official-poster.jpg';
+              downloadPosterBtn.download = 'UNO-Engagement-Day-Poster.jpg';
+            }
+          }
+        });
+      });
+    }
 
     // Setup Room Generator Widget
     setupRoomGeneratorEvents();

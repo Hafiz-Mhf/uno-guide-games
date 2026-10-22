@@ -3074,5 +3074,488 @@ body {
   }
 }
 
+/* ==========================================================================
+   10. Hero Callouts & Ghost Button
+   ========================================================================== */
+.hero-callout-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 14px;
+}
+
+.callout-pill {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.callout-pill:hover {
+  transform: translateY(-1px);
+}
+
+.slogan-pill {
+  background: rgba(254, 240, 138, 0.15);
+  color: #FEF08A;
+  border: 1px solid rgba(254, 240, 138, 0.4);
+  backdrop-filter: blur(4px);
+}
+
+.prize-pill {
+  background: rgba(245, 158, 11, 0.2);
+  color: #FCD34D;
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.hero-btn-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  color: #F1F5F9;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.hero-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================================================
+   11. Official 4-Step Guidelines Section (Poster Fidelity)
+   ========================================================================== */
+.official-guidelines-card {
+  background: #FFFFFF;
+  border: 1px solid var(--corp-border);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.official-guidelines-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #DC2626 0%, #D97706 33%, #059669 66%, #0020D8 100%);
+}
+
+.guidelines-card-header {
+  margin-bottom: 20px;
+}
+
+.badge-pill-cyan {
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.guidelines-main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--corp-text-main);
+  margin-bottom: 4px;
+  letter-spacing: -0.3px;
+}
+
+.guidelines-subtitle {
+  font-size: 13.5px;
+  color: var(--corp-text-muted);
+}
+
+.guidelines-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+  .guidelines-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .guidelines-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.guideline-col-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.guideline-col-card:hover {
+  background: #FFFFFF;
+  border-color: #CBD5E1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+}
+
+.col-step-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.step-circle-1 { background: #0284C7; }
+.step-circle-2 { background: #EAB308; color: #78350F; }
+.step-circle-3 { background: #16A34A; }
+.step-circle-4 { background: #DC2626; }
+
+.step-timing-tag {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--corp-text-muted);
+}
+
+.col-step-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 15.5px;
+  font-weight: 750;
+  color: var(--corp-text-main);
+  margin-bottom: 10px;
+  line-height: 1.35;
+}
+
+.col-step-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12.5px;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.col-step-list li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.col-step-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--mranti-blue);
+  font-weight: bold;
+}
+
+.official-card-puns-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding-top: 16px;
+  border-top: 1px dashed #E2E8F0;
+  background: #F8FAFC;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-top: 4px;
+}
+
+.puns-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--corp-text-muted);
+}
+
+.pun-chip {
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px;
+  font-weight: 750;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+}
+
+.chip-red {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+}
+
+.chip-blue {
+  background: #DBEAFE;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
+}
+
+.chip-yellow {
+  background: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.puns-motto {
+  font-size: 12px;
+  font-style: italic;
+  color: #64748B;
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .puns-motto {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 4px;
+  }
+}
+
+/* ==========================================================================
+   12. Official Posters Lightbox Modal
+   ========================================================================== */
+.poster-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 21, 46, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: modalFadeIn 0.22s ease-out forwards;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.poster-modal {
+  background: #FFFFFF;
+  border-radius: 18px;
+  padding: 22px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.poster-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.poster-badge {
+  display: inline-block;
+  background: #EEF2FF;
+  color: #0020D8;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid #C7D2FE;
+  margin-bottom: 4px;
+}
+
+.poster-modal-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--corp-text-main);
+  margin: 0;
+}
+
+.poster-close-btn {
+  background: #F1F5F9;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #64748B;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.poster-close-btn:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+  transform: rotate(90deg);
+}
+
+.poster-switch-nav {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  background: #F1F5F9;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.poster-tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748B;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.poster-tab-btn.active {
+  background: #FFFFFF;
+  color: var(--mranti-blue);
+  font-weight: 750;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.poster-view-container {
+  flex: 1;
+  min-height: 250px;
+  max-height: 56vh;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #07152E;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.active-poster-img {
+  max-width: 100%;
+  max-height: 52vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.poster-modal-footer {
+  display: flex;
+  gap: 10px;
+}
+
+.poster-download-btn {
+  flex: 1;
+  background: var(--mranti-blue);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.poster-download-btn:hover {
+  background: var(--mranti-blue-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 32, 216, 0.35);
+}
+
+.poster-dismiss-btn {
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: #475569;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.poster-dismiss-btn:hover {
+  background: #E2E8F0;
+  color: #0F172A;
+}
+
+
 
 

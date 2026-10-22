@@ -155,6 +155,23 @@
       "copyLinkBtn": "🔗 Copy Direct Link",
       "copiedToast": "Copied to clipboard! ✅",
       "quickPicksLabel": "⚡ Quick Match Switcher (1 to 15):"
+    },
+    "footer": {
+      "tagline": "October Engagement Day 2026: Official Tournament & Casual Play Guide. Fostering camaraderie, strategic thinking, and friendly workplace competition across MRANTI.",
+      "status": "Live Engagement Day • 28 Oct 2026",
+      "eventInfoTitle": "Event Logistics",
+      "dateTime": "Wednesday, 28 Oct 2026 • 3:00 PM – 4:30 PM (90 Mins)",
+      "venue": "Mranti Corporation-2-L2-E-6-Common Area Space",
+      "format": "Digital 1v1 Prelims → 5-Player Heats → Grand Final",
+      "gameCentralTitle": "Game Central",
+      "linkGuide": "🕹️ Beginner Guide & Practice Mat",
+      "linkRules": "📜 7 House Rules & Etiquette",
+      "linkRoomGen": "⚡ Automated Room Generator",
+      "linkBuddy": "BuddyBoardGames UNO ↗",
+      "proTipTitle": "Strategy Pro-Tip",
+      "tipShuffleBtn": "🎲 Shuffle Tip",
+      "copyright": "© 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Internal Staff Engagement.",
+      "builtBy": "Organized by Talent Development | Human Resource"
     }
   },
   "bm": {
@@ -310,6 +327,23 @@
       "copyLinkBtn": "🔗 Salin Pautan Terus",
       "copiedToast": "Disalin ke papan keratan! ✅",
       "quickPicksLabel": "⚡ Pilihan Pantas Perlawanan (1 hingga 15):"
+    },
+    "footer": {
+      "tagline": "Hari Penglibatan Oktober 2026: Panduan Rasmi Kejohanan & Permainan Santai. Memupuk semangat berpasukan, pemikiran strategik, dan persaingan mesra warga MRANTI.",
+      "status": "Hari Penglibatan Langsung • 28 Okt 2026",
+      "eventInfoTitle": "Logistik Acara",
+      "dateTime": "Rabu, 28 Okt 2026 • 3:00 PM – 4:30 PM (90 Minit)",
+      "venue": "Mranti Corporation-2-L2-E-6-Ruang Legar Gunasama",
+      "format": "1v1 Digital → Pusingan Fizikal 5 Orang → Pentas Akhir",
+      "gameCentralTitle": "Pusat Permainan",
+      "linkGuide": "🕹️ Panduan Pemain & Pentas Latihan",
+      "linkRules": "📜 7 Syarat Santai & Etika",
+      "linkRoomGen": "⚡ Penjana Bilik Automatik",
+      "linkBuddy": "BuddyBoardGames UNO ↗",
+      "proTipTitle": "Petua Strategi UNO",
+      "tipShuffleBtn": "🎲 Tukar Petua",
+      "copyright": "© 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Penglibatan Staf Dalaman.",
+      "builtBy": "Dianjurkan oleh Pembangunan Bakat | Sumber Manusia"
     }
   }
 }

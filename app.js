@@ -156,6 +156,23 @@ export const TRANSLATIONS = {
       copyLinkBtn: "🔗 Copy Direct Link",
       copiedToast: "Copied to clipboard! ✅",
       quickPicksLabel: "⚡ Quick Match Switcher (1 to 15):"
+    },
+    footer: {
+      tagline: "October Engagement Day 2026: Official Tournament & Casual Play Guide. Fostering camaraderie, strategic thinking, and friendly workplace competition across MRANTI.",
+      status: "Live Engagement Day • 28 Oct 2026",
+      eventInfoTitle: "Event Logistics",
+      dateTime: "Wednesday, 28 Oct 2026 • 3:00 PM – 4:30 PM (90 Mins)",
+      venue: "Mranti Corporation-2-L2-E-6-Common Area Space",
+      format: "Digital 1v1 Prelims → 5-Player Heats → Grand Final",
+      gameCentralTitle: "Game Central",
+      linkGuide: "🕹️ Beginner Guide & Practice Mat",
+      linkRules: "📜 7 House Rules & Etiquette",
+      linkRoomGen: "⚡ Automated Room Generator",
+      linkBuddy: "BuddyBoardGames UNO ↗",
+      proTipTitle: "Strategy Pro-Tip",
+      tipShuffleBtn: "🎲 Shuffle Tip",
+      copyright: "© 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Internal Staff Engagement.",
+      builtBy: "Organized by Talent Development | Human Resource"
     }
   },
   bm: {
@@ -311,6 +328,23 @@ export const TRANSLATIONS = {
       copyLinkBtn: "🔗 Salin Pautan Terus",
       copiedToast: "Disalin ke papan keratan! ✅",
       quickPicksLabel: "⚡ Pilihan Pantas Perlawanan (1 hingga 15):"
+    },
+    footer: {
+      tagline: "Hari Penglibatan Oktober 2026: Panduan Rasmi Kejohanan & Permainan Santai. Memupuk semangat berpasukan, pemikiran strategik, dan persaingan mesra warga MRANTI.",
+      status: "Hari Penglibatan Langsung • 28 Okt 2026",
+      eventInfoTitle: "Logistik Acara",
+      dateTime: "Rabu, 28 Okt 2026 • 3:00 PM – 4:30 PM (90 Minit)",
+      venue: "Mranti Corporation-2-L2-E-6-Ruang Legar Gunasama",
+      format: "1v1 Digital → Pusingan Fizikal 5 Orang → Pentas Akhir",
+      gameCentralTitle: "Pusat Permainan",
+      linkGuide: "🕹️ Panduan Pemain & Pentas Latihan",
+      linkRules: "📜 7 Syarat Santai & Etika",
+      linkRoomGen: "⚡ Penjana Bilik Automatik",
+      linkBuddy: "BuddyBoardGames UNO ↗",
+      proTipTitle: "Petua Strategi UNO",
+      tipShuffleBtn: "🎲 Tukar Petua",
+      copyright: "© 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Penglibatan Staf Dalaman.",
+      builtBy: "Dianjurkan oleh Pembangunan Bakat | Sumber Manusia"
     }
   }
 };
@@ -357,6 +391,9 @@ export function updateI18n() {
   renderPlayground();
   if (typeof refreshRoomGeneratorDisplays === 'function') {
     refreshRoomGeneratorDisplays();
+  }
+  if (typeof renderFooterTip === 'function') {
+    renderFooterTip();
   }
 }
 
@@ -806,6 +843,84 @@ export function setupRoomGeneratorEvents() {
   }
 }
 
+// Strategy Pro-Tips for Footer
+export const PRO_TIPS = {
+  en: [
+    {
+      badge: "🎉 Legal Finishes",
+      tip: "Ending on an Action Card: Finishing your hand on a Skip, Reverse, Draw 2, or Color Card is 100% legal! Save a power card for your final blow."
+    },
+    {
+      badge: "🗣️ Call 'UNO!'",
+      tip: "Shout 'UNO!' the moment you hold 1 card! If an opponent catches you before the next person plays, you must draw 2 penalty cards."
+    },
+    {
+      badge: "⚡ 1v1 Digital Twist",
+      tip: "In Round 1 (1v1), Reverse cards act as Skip cards, allowing you to play another card immediately!"
+    },
+    {
+      badge: "🛑 Strictly No Stacking",
+      tip: "Stacking is banned! If someone hits you with a +2 or +4, you must take the cards and forfeit your turn."
+    },
+    {
+      badge: "🃏 Draw 1 & Pass",
+      tip: "No playable card? Draw just 1 card from the deck. If it doesn't match, your turn ends immediately without digging further."
+    }
+  ],
+  bm: [
+    {
+      badge: "🎉 Kemenangan Sah",
+      tip: "Menamatkan Kad Aksi: Menghabiskan kad terakhir dengan Skip, Reverse, Draw 2, atau Kad Warna adalah 100% sah! Simpan kad kuasa untuk langkah akhir."
+    },
+    {
+      badge: "🗣️ Laung 'UNO!'",
+      tip: "Jerit 'UNO!' sebaik tinggal 1 kad! Jika dikesan lawan sebelum giliran seterusnya, anda dikenakan penalti cabut 2 kad."
+    },
+    {
+      badge: "⚡ Kelainan 1v1 Digital",
+      tip: "Dalam Pusingan 1 (1v1), kad Reverse bertindak sebagai Skip, membolehkan anda bermain sekali lagi secara terus!"
+    },
+    {
+      badge: "🛑 Tiada 'Stacking'",
+      tip: "'Stacking' dilarang sama sekali! Jika dikenakan +2 atau +4, anda mesti ambil kad dan giliran anda dibatalkan."
+    },
+    {
+      badge: "🃏 Cabut 1 Kad Sahaja",
+      tip: "Tiada kad sesuai? Cabut 1 kad sahaja. Jika masih tidak sepadan, giliran tamat tanpa perlu cabut berulang kali."
+    }
+  ]
+};
+
+let currentTipIndex = 0;
+
+export function renderFooterTip() {
+  const badgeEl = document.getElementById('footerTipBadge');
+  const textEl = document.getElementById('footerTipText');
+  if (!badgeEl || !textEl) return;
+
+  const tips = PRO_TIPS[currentLang] || PRO_TIPS.en;
+  const item = tips[currentTipIndex % tips.length];
+  badgeEl.textContent = item.badge;
+  textEl.textContent = item.tip;
+}
+
+export function shuffleFooterTip() {
+  const tips = PRO_TIPS[currentLang] || PRO_TIPS.en;
+  currentTipIndex = (currentTipIndex + 1) % tips.length;
+  const card = document.getElementById('footerTipCard');
+  if (card) {
+    card.style.opacity = '0.3';
+    card.style.transform = 'translateY(2px)';
+    setTimeout(() => {
+      renderFooterTip();
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, 120);
+  } else {
+    renderFooterTip();
+  }
+}
+
 // Initialize DOM events
 if (typeof window !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
@@ -893,6 +1008,21 @@ if (typeof window !== 'undefined') {
 
     // Setup Room Generator Widget
     setupRoomGeneratorEvents();
+
+    // Setup Footer Interactive Events
+    const shuffleTipBtn = document.getElementById('shuffleFooterTipBtn');
+    if (shuffleTipBtn) {
+      shuffleTipBtn.addEventListener('click', shuffleFooterTip);
+    }
+
+    document.querySelectorAll('[data-switch-tab]').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const tab = el.getAttribute('data-switch-tab');
+        const tabBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+        if (tabBtn) tabBtn.click();
+      });
+    });
 
     // Initial render
     updateI18n();

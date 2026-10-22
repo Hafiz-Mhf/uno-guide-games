@@ -505,17 +505,102 @@
       </section>
     </main>
 
-    <!-- Corporate Footer -->
+    <!-- Corporate Multi-Column Executive Footer -->
     <footer class="corp-footer">
-      <div class="corp-footer-inner">
-        <div class="footer-left">
-          <img src="mranti-logo.png" alt="MRANTI 30 Years" class="footer-logo" width="130" height="30">
-          <p class="footer-tagline">Talent Development | Human Resource • October Engagement Day 2026</p>
+      <div class="footer-rainbow-strip" aria-hidden="true"></div>
+      
+      <div class="corp-footer-main">
+        <div class="corp-footer-grid">
+          
+          <!-- Column 1: Organization & Brand Identity -->
+          <div class="footer-col col-identity">
+            <div class="footer-brand-badge">
+              <img src="mranti-logo.png" alt="MRANTI 30 Years" class="footer-logo" width="140" height="34">
+            </div>
+            <div class="footer-dept-tag" data-i18n="department">Talent Development | Human Resource</div>
+            <p class="footer-tagline" data-i18n="footer.tagline">
+              October Engagement Day 2026: Official Tournament & Casual Play Guide. Fostering camaraderie, strategic thinking, and friendly workplace competition across MRANTI.
+            </p>
+            <div class="footer-live-badge">
+              <span class="status-pulse-dot" aria-hidden="true"></span>
+              <span class="status-text" data-i18n="footer.status">Live Engagement Day • 28 Oct 2026</span>
+            </div>
+          </div>
+
+          <!-- Column 2: Event Logistics -->
+          <div class="footer-col col-logistics">
+            <h4 class="footer-col-title" data-i18n="footer.eventInfoTitle">Event Logistics</h4>
+            <ul class="footer-info-list">
+              <li>
+                <span class="info-icon">🗓️</span>
+                <span class="info-text" data-i18n="footer.dateTime">Wednesday, 28 Oct 2026 • 3:00 PM – 4:30 PM (90 Mins)</span>
+              </li>
+              <li>
+                <span class="info-icon">📍</span>
+                <span class="info-text" data-i18n="footer.venue">Mranti Corporation-2-L2-E-6-Common Area Space</span>
+              </li>
+              <li>
+                <span class="info-icon">🏆</span>
+                <span class="info-text" data-i18n="footer.format">Digital 1v1 Prelims → 5-Player Heats → Grand Final</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Game Central Quick Nav -->
+          <div class="footer-col col-nav">
+            <h4 class="footer-col-title" data-i18n="footer.gameCentralTitle">Game Central</h4>
+            <ul class="footer-nav-list">
+              <li>
+                <button type="button" class="footer-nav-btn" data-switch-tab="guide" data-i18n="footer.linkGuide">
+                  🕹️ Beginner Guide & Practice Mat
+                </button>
+              </li>
+              <li>
+                <button type="button" class="footer-nav-btn" data-switch-tab="rules" data-i18n="footer.linkRules">
+                  📜 7 House Rules & Etiquette
+                </button>
+              </li>
+              <li>
+                <button type="button" class="footer-nav-btn" data-switch-tab="schedule" data-i18n="footer.linkRoomGen">
+                  ⚡ Automated Room Generator
+                </button>
+              </li>
+              <li>
+                <a href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="footer-external-link">
+                  <span data-i18n="footer.linkBuddy">BuddyBoardGames UNO ↗</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 4: Interactive Strategy Pro-Tip Widget -->
+          <div class="footer-col col-protip">
+            <div class="protip-header">
+              <h4 class="footer-col-title" data-i18n="footer.proTipTitle">Strategy Pro-Tip</h4>
+              <button id="shuffleFooterTipBtn" type="button" class="shuffle-tip-btn" aria-label="Shuffle Strategy Tip">
+                <span data-i18n="footer.tipShuffleBtn">🎲 Shuffle Tip</span>
+              </button>
+            </div>
+            <div class="footer-tip-card" id="footerTipCard">
+              <span id="footerTipBadge" class="tip-badge">🎉 Legal Finishes</span>
+              <p id="footerTipText" class="tip-body">
+                Ending on an Action Card: Finishing your hand on a Skip, Reverse, Draw 2, or Color Card is 100% legal! Save a power card for your final blow.
+              </p>
+            </div>
+          </div>
+
         </div>
-        <div class="footer-right">
-          <a href="https://buddyboardgames.com/uno" target="_blank" rel="noopener noreferrer" class="footer-link">BuddyBoardGames UNO ↗</a>
-          <span class="footer-sep">•</span>
-          <span class="footer-venue">Mranti Corporation-2-L2-E-6-Common Area Space</span>
+      </div>
+
+      <!-- Sub-Footer / Copyright & Rights Bar -->
+      <div class="corp-footer-bottom">
+        <div class="footer-bottom-inner">
+          <p class="copyright-text" data-i18n="footer.copyright">
+            © 2026 Malaysian Research Accelerator for Technology and Innovation (MRANTI). Internal Staff Engagement.
+          </p>
+          <p class="built-by-text" data-i18n="footer.builtBy">
+            Organized by Talent Development | Human Resource
+          </p>
         </div>
       </div>
     </footer>

@@ -3,6 +3,14 @@ import fs from 'fs';
 import { PLAYERS, searchPlayers } from '../tournament-data.js';
 import { TRANSLATIONS, getNestedValue } from '../app.js';
 import { isPlayable, SCENARIOS } from '../card-engine.js';
+import {
+  createDefaultTournamentState,
+  togglePlayerCheckIn,
+  addPlayer,
+  generateRound1Pairings,
+  recordMatchWinner,
+  computeRound2Heats
+} from '../tournament-engine.js';
 
 console.log('Running End-to-End Simulation Check...');
 
@@ -75,6 +83,48 @@ for (const id of requiredIds) {
 // 5. Verify Card Engine scenarios
 if (!SCENARIOS || SCENARIOS.length < 3) {
   console.error('FAIL: Expected at least 3 scenarios in card engine');
+  process.exit(1);
+}
+
+// 6. Simulate Full Tournament Desk Workflow
+console.log('Simulating Tournament Desk Workflow...');
+let state = createDefaultTournamentState();
+if (state.roster.length !== 30) {
+  console.error('FAIL: Initial roster size must be 30');
+  process.exit(1);
+}
+
+// Simulate 2 no-shows
+state = togglePlayerCheckIn(state, state.roster[0].id, false);
+state = togglePlayerCheckIn(state, state.roster[1].id, false);
+
+// Simulate 1 replacement added
+state = addPlayer(state, 'Nur Aisyah', 'HR Operations');
+
+// Checked in count should be 29 (30 - 2 + 1)
+const checkedIn = state.roster.filter(p => p.checkedIn);
+if (checkedIn.length !== 29) {
+  console.error(`FAIL: Expected 29 checked-in players, got ${checkedIn.length}`);
+  process.exit(1);
+}
+
+// Generate pairings
+const pairings = generateRound1Pairings(checkedIn);
+if (pairings.matches.length !== 14 || !pairings.byePlayer) {
+  console.error('FAIL: Expected 14 matches and 1 BYE player for 29 attendees');
+  process.exit(1);
+}
+
+state.round1 = pairings;
+// Record all winners
+pairings.matches.forEach(m => {
+  state = recordMatchWinner(state, m.matchId, m.player1.id);
+});
+
+// Compute Round 2
+const round2 = computeRound2Heats(state.round1.byePlayer, state.round1.matches);
+if (round2.totalQualifiers !== 15 || round2.tableAlpha.length !== 5 || round2.tableBeta.length !== 5 || round2.tableGamma.length !== 5) {
+  console.error(`FAIL: Round 2 qualification failed: ${JSON.stringify(round2)}`);
   process.exit(1);
 }
 

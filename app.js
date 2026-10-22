@@ -1,6 +1,20 @@
 // app.js
 import { PLAYERS, searchPlayers } from './tournament-data.js';
 import { isPlayable, getPlayReason, SCENARIOS, DRAW_POOL } from './card-engine.js';
+import {
+  loadTournamentState,
+  saveTournamentState,
+  resetTournamentState,
+  togglePlayerCheckIn,
+  addPlayer,
+  removePlayer,
+  bulkImportRoster,
+  setAllCheckInStatus,
+  generateRound1Pairings,
+  recordMatchWinner,
+  computeRound2Heats,
+  formatMatchupsClipboard
+} from './tournament-engine.js';
 
 export const TRANSLATIONS = {
   en: {
@@ -541,6 +555,9 @@ export const TRANSLATIONS = {
 
 let currentLang = 'en';
 
+// Tournament Desk Reactive State
+export let tournamentState = typeof window !== 'undefined' ? loadTournamentState() : loadTournamentState(null);
+
 // Playground State
 let currentScenarioIdx = 0;
 let activeTableCard = { ...SCENARIOS[0].target };
@@ -575,6 +592,22 @@ export function updateI18n() {
     genNameInput.placeholder = dict.roomGenerator.namePlaceholder;
   }
 
+  // Update Tournament Desk Placeholders
+  const deskDict = dict.tournamentDesk;
+  if (deskDict) {
+    const pNameInput = document.getElementById('deskPlayerNameInput');
+    if (pNameInput) pNameInput.placeholder = deskDict.roster.namePlaceholder;
+
+    const pDeptInput = document.getElementById('deskPlayerDeptInput');
+    if (pDeptInput) pDeptInput.placeholder = deskDict.roster.deptPlaceholder;
+
+    const rosterSearchInput = document.getElementById('deskRosterSearch');
+    if (rosterSearchInput) rosterSearchInput.placeholder = deskDict.roster.searchPlaceholder;
+
+    const bulkTextarea = document.getElementById('deskBulkTextarea');
+    if (bulkTextarea) bulkTextarea.placeholder = deskDict.roster.bulkPlaceholder;
+  }
+
   if (document.getElementById('searchResults')) {
     renderSearchResults();
   }
@@ -584,6 +617,9 @@ export function updateI18n() {
   }
   if (typeof renderFooterTip === 'function') {
     renderFooterTip();
+  }
+  if (typeof renderTournamentDesk === 'function') {
+    renderTournamentDesk();
   }
 }
 
@@ -1172,10 +1208,398 @@ export function switchPosterTab(posterType) {
   }
 }
 
-if (typeof window !== 'undefined') {
-  window.openPosterModal = openPosterModal;
-  window.closePosterModal = closePosterModal;
-  window.switchPosterTab = switchPosterTab;
+// ==========================================================================
+// Tournament Desk Controller & Round 1 Automation
+// ==========================================================================
+export function renderTournamentDesk() {
+  if (!tournamentState || typeof document === 'undefined') return;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  const deskDict = dict.tournamentDesk;
+  if (!deskDict) return;
+
+  // 1. Attendance Metrics
+  const rosterCountEl = document.getElementById('deskRosterCount');
+  const checkedInCountEl = document.getElementById('deskCheckedInCount');
+  const absentCountEl = document.getElementById('deskAbsentCount');
+  const targetMatchesEl = document.getElementById('deskMatchesTargetCount');
+  const statusPillEl = document.getElementById('deskStatusPill');
+
+  const total = tournamentState.roster.length;
+  const checkedIn = tournamentState.roster.filter(p => p.checkedIn).length;
+  const absent = total - checkedIn;
+  const targetMatches = Math.floor(checkedIn / 2);
+  const isOdd = checkedIn % 2 !== 0;
+
+  if (rosterCountEl) rosterCountEl.textContent = total;
+  if (checkedInCountEl) checkedInCountEl.textContent = checkedIn;
+  if (absentCountEl) absentCountEl.textContent = absent;
+  if (targetMatchesEl) targetMatchesEl.textContent = targetMatches;
+
+  if (statusPillEl) {
+    if (checkedIn < 2) {
+      statusPillEl.className = 'desk-status-pill status-warning';
+      statusPillEl.textContent = '⚠️ Min 2 Players Needed';
+    } else if (isOdd) {
+      statusPillEl.className = 'desk-status-pill status-odd';
+      statusPillEl.textContent = deskDict.stats.statusOdd;
+    } else {
+      statusPillEl.className = 'desk-status-pill status-even';
+      statusPillEl.textContent = deskDict.stats.statusEven;
+    }
+  }
+
+  // 2. Roster List
+  const rosterListEl = document.getElementById('deskRosterList');
+  const searchInput = document.getElementById('deskRosterSearch');
+  const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+
+  if (rosterListEl) {
+    const filtered = tournamentState.roster.filter(p => {
+      if (!query) return true;
+      return (p.name || '').toLowerCase().includes(query) || (p.dept || '').toLowerCase().includes(query);
+    });
+
+    if (filtered.length === 0) {
+      rosterListEl.innerHTML = `<div class="desk-empty-state">No players found matching "${query}".</div>`;
+    } else {
+      rosterListEl.innerHTML = filtered.map(p => `
+        <div class="player-roster-card ${p.checkedIn ? 'checked-in' : 'absent'}" data-id="${p.id}">
+          <button type="button" class="check-toggle-btn ${p.checkedIn ? 'active' : ''}" data-action="toggle-check" data-id="${p.id}" aria-label="Toggle presence for ${p.name}">
+            <span class="check-icon">${p.checkedIn ? '✓' : '—'}</span>
+            <span class="check-text">${p.checkedIn ? deskDict.roster.checkedInTag : deskDict.roster.absentTag}</span>
+          </button>
+          <div class="roster-player-info">
+            <span class="roster-player-name">${p.name}</span>
+            <span class="roster-player-dept">${p.dept || 'General'}</span>
+          </div>
+          <button type="button" class="btn-roster-delete" data-action="delete-player" data-id="${p.id}" title="${deskDict.roster.deleteBtnTitle}" aria-label="Delete ${p.name}">
+            🗑️
+          </button>
+        </div>
+      `).join('');
+    }
+  }
+
+  // 3. BYE Notice Banner
+  const byeNoticeEl = document.getElementById('deskByeNotice');
+  if (byeNoticeEl) {
+    if (tournamentState.round1?.byePlayer) {
+      const bp = tournamentState.round1.byePlayer;
+      byeNoticeEl.style.display = 'block';
+      byeNoticeEl.innerHTML = `
+        <div class="bye-badge">${deskDict.matches.byeTitle}</div>
+        <div class="bye-content">
+          <strong>${bp.name}</strong> (${bp.dept || 'General'}) ${deskDict.matches.byeDesc}
+        </div>
+      `;
+    } else {
+      byeNoticeEl.style.display = 'none';
+      byeNoticeEl.innerHTML = '';
+    }
+  }
+
+  // 4. Matches Grid
+  const matchesGridEl = document.getElementById('deskMatchesGrid');
+  if (matchesGridEl) {
+    const matches = tournamentState.round1?.matches || [];
+    if (matches.length === 0) {
+      matchesGridEl.innerHTML = `
+        <div class="desk-empty-state">${deskDict.matches.emptyPrompt}</div>
+      `;
+    } else {
+      matchesGridEl.innerHTML = matches.map(m => {
+        const p1Won = m.winnerId === m.player1.id;
+        const p2Won = m.winnerId === m.player2.id;
+        const roomUrl = buildBuddyBoardGamesUrl(m.matchId);
+
+        return `
+          <div class="round1-match-card ${m.winnerId ? 'has-winner' : ''}" data-match-id="${m.matchId}">
+            <div class="match-card-header">
+              <div class="match-room-tag">
+                <span class="table-tag">${deskDict.matches.tableLabel} #${m.tableNum}</span>
+                <span class="room-id">${m.matchId}</span>
+              </div>
+              <a href="${roomUrl}" target="_blank" rel="noopener noreferrer" class="match-launch-btn">
+                ${deskDict.matches.launchRoomBtn}
+              </a>
+            </div>
+
+            <div class="match-vs-row">
+              <div class="match-combatant ${p1Won ? 'is-winner' : ''}">
+                <span class="combatant-name">${m.player1.name}</span>
+                <span class="combatant-dept">${m.player1.dept}</span>
+                ${p1Won ? '<span class="crown-badge">👑 Winner</span>' : ''}
+              </div>
+
+              <div class="match-vs-badge">${deskDict.matches.vs}</div>
+
+              <div class="match-combatant ${p2Won ? 'is-winner' : ''}">
+                <span class="combatant-name">${m.player2.name}</span>
+                <span class="combatant-dept">${m.player2.dept}</span>
+                ${p2Won ? '<span class="crown-badge">👑 Winner</span>' : ''}
+              </div>
+            </div>
+
+            <div class="match-winner-actions">
+              <span class="winner-prompt-label">${deskDict.matches.selectWinnerPrompt}</span>
+              <div class="winner-buttons-row">
+                <button type="button" class="btn-winner-pick ${p1Won ? 'active' : ''}" data-action="pick-winner" data-match="${m.matchId}" data-winner="${m.player1.id}">
+                  👑 ${m.player1.name.split(' ')[0]} ${deskDict.matches.winnerWonSuffix}
+                </button>
+                <button type="button" class="btn-winner-pick ${p2Won ? 'active' : ''}" data-action="pick-winner" data-match="${m.matchId}" data-winner="${m.player2.id}">
+                  👑 ${m.player2.name.split(' ')[0]} ${deskDict.matches.winnerWonSuffix}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // 5. Round 2 Heats
+  const round2GridEl = document.getElementById('deskRound2HeatsGrid');
+  const qualifiersCountEl = document.getElementById('deskQualifiersCount');
+  const heats = computeRound2Heats(tournamentState.round1?.byePlayer, tournamentState.round1?.matches || []);
+
+  if (qualifiersCountEl) {
+    qualifiersCountEl.textContent = `${heats.totalQualifiers} / 15`;
+  }
+
+  if (round2GridEl) {
+    const tables = [
+      { id: 'alpha', title: deskDict.round2.tableAlpha, list: heats.tableAlpha, color: 'blue' },
+      { id: 'beta', title: deskDict.round2.tableBeta, list: heats.tableBeta, color: 'green' },
+      { id: 'gamma', title: deskDict.round2.tableGamma, list: heats.tableGamma, color: 'purple' }
+    ];
+
+    round2GridEl.innerHTML = tables.map(t => `
+      <div class="round2-table-card border-${t.color}">
+        <div class="table-card-head bg-${t.color}">
+          <span class="table-title">${t.title}</span>
+          <span class="table-occupancy">${t.list.length} / 5 Pax</span>
+        </div>
+        <ol class="table-seats-list">
+          ${Array.from({ length: 5 }, (_, idx) => {
+            const player = t.list[idx];
+            if (player) {
+              return `
+                <li class="table-seat filled">
+                  <span class="seat-num">${idx + 1}</span>
+                  <div class="seat-player">
+                    <strong>${player.name}</strong>
+                    <small>${player.dept || 'General'}</small>
+                  </div>
+                </li>
+              `;
+            }
+            return `
+              <li class="table-seat empty">
+                <span class="seat-num">${idx + 1}</span>
+                <span class="seat-empty-text">${deskDict.round2.slotEmpty}</span>
+              </li>
+            `;
+          }).join('')}
+        </ol>
+      </div>
+    `).join('');
+  }
+}
+
+export function setupTournamentDeskEvents() {
+  if (typeof document === 'undefined') return;
+
+  // Search input filter
+  const searchInput = document.getElementById('deskRosterSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => {
+      renderTournamentDesk();
+    });
+  }
+
+  // Add single player
+  const addBtn = document.getElementById('deskAddPlayerBtn');
+  const nameInput = document.getElementById('deskPlayerNameInput');
+  const deptInput = document.getElementById('deskPlayerDeptInput');
+
+  function handleAddPlayer() {
+    if (!nameInput) return;
+    const name = nameInput.value.trim();
+    const dept = deptInput ? deptInput.value.trim() : 'General';
+    if (!name) return;
+
+    tournamentState = addPlayer(tournamentState, name, dept);
+    saveTournamentState(localStorage, tournamentState);
+    nameInput.value = '';
+    if (deptInput) deptInput.value = '';
+    renderTournamentDesk();
+  }
+
+  if (addBtn) addBtn.addEventListener('click', handleAddPlayer);
+  if (nameInput) {
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAddPlayer();
+      }
+    });
+  }
+  if (deptInput) {
+    deptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAddPlayer();
+      }
+    });
+  }
+
+  // Bulk import drawer toggle
+  const bulkToggleBtn = document.getElementById('deskBulkToggleBtn');
+  const bulkContainer = document.getElementById('deskBulkContainer');
+  const bulkImportBtn = document.getElementById('deskBulkImportBtn');
+  const bulkTextarea = document.getElementById('deskBulkTextarea');
+
+  if (bulkToggleBtn && bulkContainer) {
+    bulkToggleBtn.addEventListener('click', () => {
+      const isHidden = bulkContainer.style.display === 'none';
+      bulkContainer.style.display = isHidden ? 'block' : 'none';
+      if (isHidden && bulkTextarea) bulkTextarea.focus();
+    });
+  }
+
+  if (bulkImportBtn && bulkTextarea) {
+    bulkImportBtn.addEventListener('click', () => {
+      const text = bulkTextarea.value.trim();
+      if (text) {
+        tournamentState = bulkImportRoster(tournamentState, text);
+        saveTournamentState(localStorage, tournamentState);
+        bulkTextarea.value = '';
+        if (bulkContainer) bulkContainer.style.display = 'none';
+        renderTournamentDesk();
+      }
+    });
+  }
+
+  // Check all / Clear all
+  const checkAllBtn = document.getElementById('deskCheckAllBtn');
+  if (checkAllBtn) {
+    checkAllBtn.addEventListener('click', () => {
+      tournamentState = setAllCheckInStatus(tournamentState, true);
+      saveTournamentState(localStorage, tournamentState);
+      renderTournamentDesk();
+    });
+  }
+
+  const uncheckAllBtn = document.getElementById('deskUncheckAllBtn');
+  if (uncheckAllBtn) {
+    uncheckAllBtn.addEventListener('click', () => {
+      tournamentState = setAllCheckInStatus(tournamentState, false);
+      saveTournamentState(localStorage, tournamentState);
+      renderTournamentDesk();
+    });
+  }
+
+  // Reset to default roster
+  const resetBtn = document.getElementById('deskResetBtn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+      const confirmMsg = dict.tournamentDesk?.roster?.resetConfirm || 'Reset to 30 default participants?';
+      if (window.confirm(confirmMsg)) {
+        tournamentState = resetTournamentState(localStorage);
+        renderTournamentDesk();
+      }
+    });
+  }
+
+  // Roster event delegation (check toggle and delete)
+  const rosterList = document.getElementById('deskRosterList');
+  if (rosterList) {
+    rosterList.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const action = btn.getAttribute('data-action');
+      const id = btn.getAttribute('data-id');
+
+      if (action === 'toggle-check') {
+        tournamentState = togglePlayerCheckIn(tournamentState, id);
+        saveTournamentState(localStorage, tournamentState);
+        renderTournamentDesk();
+      } else if (action === 'delete-player') {
+        tournamentState = removePlayer(tournamentState, id);
+        saveTournamentState(localStorage, tournamentState);
+        renderTournamentDesk();
+      }
+    });
+  }
+
+  // Randomize Round 1 Pairings
+  const randomizeBtn = document.getElementById('deskRandomizeBtn');
+  if (randomizeBtn) {
+    randomizeBtn.addEventListener('click', () => {
+      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+      if (tournamentState.round1?.matches?.length > 0) {
+        const confirmMsg = dict.tournamentDesk?.matches?.randomizeConfirm || 'Re-shuffle and generate new pairings?';
+        if (!window.confirm(confirmMsg)) return;
+      }
+
+      const checkedIn = tournamentState.roster.filter(p => p.checkedIn);
+      if (checkedIn.length < 2) {
+        alert('At least 2 checked-in players are required to generate pairings.');
+        return;
+      }
+
+      const pairings = generateRound1Pairings(checkedIn);
+      tournamentState.round1 = pairings;
+      saveTournamentState(localStorage, tournamentState);
+      renderTournamentDesk();
+    });
+  }
+
+  // Matches grid event delegation (winner selection)
+  const matchesGrid = document.getElementById('deskMatchesGrid');
+  if (matchesGrid) {
+    matchesGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-action="pick-winner"]');
+      if (!btn) return;
+      const matchId = btn.getAttribute('data-match');
+      const winnerId = btn.getAttribute('data-winner');
+
+      tournamentState = recordMatchWinner(tournamentState, matchId, winnerId);
+      saveTournamentState(localStorage, tournamentState);
+      renderTournamentDesk();
+    });
+  }
+
+  // Copy matchups to clipboard
+  const copyMatchupsBtn = document.getElementById('deskCopyMatchupsBtn');
+  if (copyMatchupsBtn) {
+    copyMatchupsBtn.addEventListener('click', () => {
+      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+      const text = formatMatchupsClipboard(tournamentState.round1);
+      if (!text) {
+        alert('No matchups to copy yet. Click Randomize first.');
+        return;
+      }
+
+      copyTextToClipboard(text, copyMatchupsBtn, null);
+      const originalText = copyMatchupsBtn.innerHTML;
+      copyMatchupsBtn.textContent = dict.tournamentDesk?.matches?.copiedToast || 'Copied! 📋';
+      copyMatchupsBtn.classList.add('copied-success');
+      setTimeout(() => {
+        copyMatchupsBtn.innerHTML = `📋 <span>${dict.tournamentDesk?.matches?.copyBtn || 'Copy Matchups'}</span>`;
+        copyMatchupsBtn.classList.remove('copied-success');
+      }, 2000);
+    });
+  }
+
+  // Print button
+  const printBtn = document.getElementById('deskPrintBtn');
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
 }
 
 // Initialize Application
@@ -1319,6 +1743,9 @@ export function initApp() {
 
   // Setup Room Generator Widget
   setupRoomGeneratorEvents();
+
+  // Setup Tournament Desk Widget
+  setupTournamentDeskEvents();
 
   // Setup Footer Interactive Events
   const shuffleTipBtn = document.getElementById('shuffleFooterTipBtn');

@@ -934,6 +934,12 @@ if (typeof window !== 'undefined') {
         btn.classList.add('active');
         const view = document.getElementById(`${tab}View`);
         if (view) view.classList.add('active');
+
+        // Sync header quick nav pills
+        document.querySelectorAll('.quick-nav-pill').forEach(p => {
+          p.classList.toggle('active', p.getAttribute('data-switch-tab') === tab);
+        });
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
@@ -1026,6 +1032,12 @@ if (typeof window !== 'undefined') {
 
     // Initial render
     updateI18n();
+
+    // Sync header quick nav pills on initial load
+    const activeTab = document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'guide';
+    document.querySelectorAll('.quick-nav-pill').forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-switch-tab') === activeTab);
+    });
   });
 }
 

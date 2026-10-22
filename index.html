@@ -11,27 +11,63 @@
 </head>
 <body>
   <div id="app-container">
-    <!-- Top Bar -->
+    <!-- Top Executive Header -->
     <header class="sticky-header">
+      <!-- 3px Signature UNO Energy Spectrum Accent -->
+      <div class="header-spectrum-strip" aria-hidden="true"></div>
+
       <div class="header-inner">
+        <!-- Left: Brand Identity & Title -->
         <div class="header-brand-wrap">
-          <a href="#" class="brand-logo-link" aria-label="MRANTI 30 Years">
-            <img src="mranti-logo.png" alt="MRANTI 30 Years" class="mranti-brand-logo" width="162" height="38">
+          <a href="#" class="brand-logo-link" aria-label="MRANTI 30 Years — Official Guide">
+            <div class="header-logo-container">
+              <img src="mranti-logo.png" alt="MRANTI 30 Years" class="mranti-brand-logo" width="144" height="34">
+            </div>
           </a>
-          <div class="header-divider" aria-hidden="true"></div>
+
+          <div class="header-brand-divider" aria-hidden="true"></div>
+
           <div class="header-text-group">
-            <span class="brand-badge" data-i18n="department">Talent Development | Human Resource</span>
-            <h1 class="header-title" data-i18n="appTitle">HR & Admin UNO Engagement Day 2026</h1>
+            <div class="header-dept-chip">
+              <span class="dept-dot" aria-hidden="true"></span>
+              <span class="brand-badge" data-i18n="department">Talent Development | Human Resource</span>
+            </div>
+            <div class="header-title-row">
+              <h1 class="header-title" data-i18n="appTitle">HR & Admin UNO Engagement Day 2026</h1>
+              <span class="header-edition-badge">Championship Edition</span>
+            </div>
           </div>
         </div>
+
+        <!-- Center: Quick Tab Navigation (Desktop) -->
+        <nav class="header-quick-nav" aria-label="Quick Section Navigation">
+          <button type="button" class="quick-nav-pill" data-switch-tab="guide">
+            <span class="pill-icon">🕹️</span>
+            <span class="pill-label">Guide</span>
+          </button>
+          <button type="button" class="quick-nav-pill" data-switch-tab="rules">
+            <span class="pill-icon">📜</span>
+            <span class="pill-label">Rules</span>
+          </button>
+          <button type="button" class="quick-nav-pill" data-switch-tab="schedule">
+            <span class="pill-icon">🎮</span>
+            <span class="pill-label">Platform</span>
+          </button>
+        </nav>
+
+        <!-- Right: Actions & Live State -->
         <div class="header-actions">
-          <div class="header-event-chip" title="Event Date">
+          <div class="header-event-capsule" title="Event Date: Wednesday, 28 October 2026">
             <span class="chip-pulse-dot" aria-hidden="true"></span>
-            <span class="chip-date-text">28 Oct 2026</span>
+            <span class="capsule-date">28 Oct 2026</span>
+            <span class="capsule-time">3:00 PM</span>
           </div>
+
           <button id="langToggle" class="lang-toggle-btn" aria-label="Switch Language / Tukar Bahasa">
             <span class="lang-globe">🌐</span>
-            <span id="langLabel" class="lang-label">BM</span>
+            <span class="lang-text-wrap">
+              <span id="langLabel" class="lang-label">BM</span>
+            </span>
           </button>
         </div>
       </div>

@@ -86,31 +86,41 @@ body {
 }
 
 /* ==========================================================================
-   1. Corporate Sticky Header with MRANTI 30 Years Logo
+   1. Corporate Sticky Header with MRANTI 30 Years Logo & Executive Polish
    ========================================================================== */
 .sticky-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--corp-border);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
   width: 100%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.03);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 3px Signature UNO Energy Spectrum Accent Strip */
+.header-spectrum-strip {
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #DC2626 0%, #D97706 22%, #059669 45%, #0020D8 75%, #7C3AED 100%);
+  box-shadow: 0 1px 4px rgba(0, 32, 216, 0.2);
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: 1240px;
   width: 100%;
   margin: 0 auto;
-  padding: 10px clamp(1rem, 3vw, 2rem);
+  padding: 8px clamp(1rem, 2.5vw, 1.75rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
 
+/* Left: Brand Identity & Title */
 .header-brand-wrap {
   display: flex;
   align-items: center;
@@ -125,67 +135,192 @@ body {
   flex-shrink: 0;
 }
 
+/* Elevated White Micro-Card Container for MRANTI 30 Years Logo */
+.header-logo-container {
+  background: #FFFFFF;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 9px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.brand-logo-link:hover .header-logo-container {
+  border-color: rgba(0, 32, 216, 0.28);
+  box-shadow: 0 3px 10px rgba(0, 32, 216, 0.08), inset 0 1px 0 #FFFFFF;
+  transform: translateY(-1px);
+}
+
 .mranti-brand-logo {
-  height: 36px;
+  height: 34px;
   width: auto;
-  max-width: 160px;
+  max-width: 150px;
   object-fit: contain;
   display: block;
 }
 
-.header-divider {
+/* Vertical Gradient Divider */
+.header-brand-divider {
   width: 1px;
-  height: 28px;
-  background: #CBD5E1;
+  height: 30px;
+  background: linear-gradient(180deg, rgba(203, 213, 225, 0.2) 0%, rgba(203, 213, 225, 0.9) 25%, rgba(203, 213, 225, 0.9) 75%, rgba(203, 213, 225, 0.2) 100%);
   flex-shrink: 0;
 }
 
+/* Text Group: Department & Title */
 .header-text-group {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  gap: 2px;
   min-width: 0;
+}
+
+.header-dept-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dept-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0020D8;
+  box-shadow: 0 0 0 2px rgba(0, 32, 216, 0.18);
+  flex-shrink: 0;
 }
 
 .brand-badge {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 10.5px;
+  font-weight: 750;
   text-transform: uppercase;
-  color: var(--mranti-blue);
-  letter-spacing: 0.6px;
+  color: #0020D8;
+  letter-spacing: 0.75px;
   line-height: 1.2;
+}
+
+.header-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
 }
 
 .header-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--corp-text-main);
-  line-height: 1.3;
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.25;
+  letter-spacing: -0.2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 0;
 }
 
-.header-actions {
+/* Championship Edition Gold Badge */
+.header-edition-badge {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(217, 119, 6, 0.05));
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #B45309;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px rgba(245, 158, 11, 0.08);
+}
+
+/* Center: Quick Tab Navigation (Desktop) */
+.header-quick-nav {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+  background: rgba(241, 245, 249, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.03);
 }
 
-.header-event-chip {
-  background: var(--corp-surface-alt);
-  border: 1px solid var(--corp-border);
-  border-radius: var(--radius-xl);
+.quick-nav-pill {
+  background: transparent;
+  border: none;
+  border-radius: 999px;
   padding: 5px 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 12px;
   font-weight: 600;
-  color: var(--corp-text-muted);
+  color: #475569;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quick-nav-pill:hover {
+  background: rgba(255, 255, 255, 0.8);
+  color: #0F172A;
+  transform: translateY(-0.5px);
+}
+
+.quick-nav-pill.active {
+  background: #FFFFFF;
+  color: #0020D8;
+  font-weight: 750;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 1px rgba(15, 23, 42, 0.04);
+}
+
+.quick-nav-pill:active {
+  transform: scale(0.97);
+}
+
+.pill-icon {
+  font-size: 13px;
+}
+
+.pill-label {
+  line-height: 1;
+}
+
+/* Right: Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+
+/* Dual-Tone Live Event Capsule */
+.header-event-capsule {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 999px;
+  padding: 4px 6px 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.header-event-capsule:hover {
+  border-color: #CBD5E1;
+  background: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
 }
 
 .chip-pulse-dot {
@@ -193,46 +328,84 @@ body {
   height: 7px;
   border-radius: 50%;
   background: #10B981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: pulseGreen 2.2s infinite;
+  flex-shrink: 0;
 }
 
-.chip-date-text {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+@keyframes pulseGreen {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.capsule-date {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  color: #1E293B;
+  letter-spacing: -0.1px;
 }
 
+.capsule-time {
+  background: rgba(0, 32, 216, 0.08);
+  color: #0020D8;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.1px;
+}
+
+/* Luxury Language Switcher Pill */
 .lang-toggle-btn {
-  background: #FFFFFF;
-  border: 1px solid var(--corp-border-hover);
-  border-radius: var(--radius-xl);
-  padding: 6px 14px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  border: 1px solid #CBD5E1;
+  border-radius: 999px;
+  padding: 5px 12px;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--corp-text-main);
+  font-size: 12.5px;
+  font-weight: 750;
+  color: #0F172A;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--shadow-sm);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .lang-toggle-btn:hover {
-  background: var(--corp-surface-alt);
-  border-color: var(--mranti-blue);
-  color: var(--mranti-blue);
+  background: #FFFFFF;
+  border-color: #0020D8;
+  color: #0020D8;
   transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 32, 216, 0.12);
+}
+
+.lang-toggle-btn:hover .lang-globe {
+  transform: rotate(20deg) scale(1.1);
+}
+
+.lang-toggle-btn:active {
+  transform: scale(0.97);
 }
 
 .lang-globe {
-  font-size: 14px;
+  font-size: 13.5px;
+  display: inline-block;
+  transition: transform 0.25s ease;
 }
 
 .lang-label {
-  color: var(--mranti-blue);
+  color: #0020D8;
   font-weight: 800;
+  letter-spacing: 0.3px;
 }
 
 /* ==========================================================================
@@ -2682,27 +2855,63 @@ body {
   transform: scale(0.99);
 }
 
+@media (max-width: 1024px) {
+  .header-quick-nav {
+    display: none;
+  }
+}
+
 /* Responsive Overrides & Mobile Polishing */
 @media (max-width: 768px) {
-  .header-event-chip {
+  .header-quick-nav {
     display: none;
   }
 
-  .mranti-brand-logo {
-    height: 30px;
-    max-width: 130px;
+  .header-event-capsule {
+    display: none;
   }
 
-  .header-divider {
-    height: 22px;
+  .header-edition-badge {
+    display: none;
+  }
+
+  .header-inner {
+    padding: 6px 12px;
+    gap: 10px;
+  }
+
+  .header-brand-wrap {
+    gap: 10px;
+  }
+
+  .header-logo-container {
+    padding: 3px 6px;
+    border-radius: 7px;
+  }
+
+  .mranti-brand-logo {
+    height: 26px;
+    max-width: 115px;
+  }
+
+  .header-brand-divider {
+    height: 20px;
   }
 
   .brand-badge {
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
   }
 
   .header-title {
-    font-size: 13px;
+    font-size: 12.5px;
+    max-width: 200px;
+  }
+
+  .lang-toggle-btn {
+    padding: 4px 10px;
+    font-size: 11.5px;
+    gap: 4px;
   }
 
   .tab-nav {

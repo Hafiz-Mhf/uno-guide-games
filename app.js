@@ -26,6 +26,7 @@ export const TRANSLATIONS = {
       guide: "🕹️ Beginner Guide & Practice Mat",
       rules: "📜 Official Rules & 7 House Rules",
       schedule: "🎮 Digital Platform & Room Setup",
+      matchups: "⚔️ Live Matchups",
       tournamentDesk: "🏆 Tournament Desk"
     },
     hero: {
@@ -284,7 +285,34 @@ export const TRANSLATIONS = {
         tableGamma: "Table Gamma (Heat 3)",
         tableDelta: "Table Delta (Heat 4)",
         slotEmpty: "Awaiting Round 1 Winner..."
+      },
+      lockBar: {
+        lockedTitle: "Organizer Controls: Protected",
+        lockedDesc: "Editing pairings, winners, and roster is locked to prevent accidental clicks. Share 'Live Matchups' with attendees.",
+        unlockBtn: "🔓 Unlock Organizer Mode",
+        unlockedTitle: "Organizer Controls: Active",
+        unlockedDesc: "You can now edit pairings, record winners, and manage participants.",
+        lockBtn: "🔒 Lock Controls"
       }
+    },
+    publicMatchups: {
+      badge: "Live Tournament Bracket",
+      title: "Round 1 Matchups & Digital Rooms",
+      subtitle: "Find your table number and paired opponent. Click 'Launch BBG Room' to enter your game room immediately.",
+      safeNotice: "🛡️ Participant Read-Only View — Click any table room button to play!",
+      searchPlaceholder: "🔍 Search your name to find your table (e.g. Noorfaizal)...",
+      shareBtn: "🔗 Copy Matchups Link",
+      emptyPrompt: "Round 1 pairings have not been generated yet. Please wait for the tournament organizer to start the round.",
+      statusInProgress: "⏳ In Progress • Playing to 150 pts",
+      statusWinner: "🏆 Winner:",
+      advancesTag: "Advances to Round 2 ➔",
+      tableLabel: "Table",
+      launchRoomBtn: "Launch BBG Room ↗",
+      vs: "VS",
+      round2Title: "Round 2 Physical Card Heats",
+      round2Subtitle: "Winners from Round 1 automatically fill Table Alpha, Beta, Gamma (and Delta).",
+      grandFinalTitle: "🏆 Grand Final Stage",
+      grandFinalDesc: "The 1st place finisher from each Round 2 physical heat advances to the ultimate Grand Final championship match!"
     }
   },
   bm: {
@@ -295,6 +323,7 @@ export const TRANSLATIONS = {
       guide: "🕹️ Panduan Pemain & Pentas Latihan",
       rules: "📜 Peraturan Rasmi & 7 Syarat Santai",
       schedule: "🎮 Platform Digital & Penjana Bilik",
+      matchups: "⚔️ Jadual Perlawanan",
       tournamentDesk: "🏆 Meja Kejohanan"
     },
     hero: {
@@ -553,7 +582,34 @@ export const TRANSLATIONS = {
         tableGamma: "Meja Gamma (Kumpulan 3)",
         tableDelta: "Meja Delta (Kumpulan 4)",
         slotEmpty: "Menunggu Pemenang Pusingan 1..."
+      },
+      lockBar: {
+        lockedTitle: "Kawalan Penganjur: Dilindungi",
+        lockedDesc: "Pengubahsuaian perlawanan, pemenang, dan roster dikunci untuk elak salah tekan. Kongsi tab 'Jadual Perlawanan' dengan peserta.",
+        unlockBtn: "🔓 Buka Kunci Penganjur",
+        unlockedTitle: "Kawalan Penganjur: Aktif",
+        unlockedDesc: "Anda kini boleh menyusun perlawanan, mencatat pemenang, dan mengurus peserta.",
+        lockBtn: "🔒 Kunci Kawalan"
       }
+    },
+    publicMatchups: {
+      badge: "Jadual Perlawanan Langsung",
+      title: "Jadual Perlawanan Pusingan 1 & Bilik Digital",
+      subtitle: "Cari nombor meja dan lawan anda. Klik 'Buka Bilik BBG' untuk terus masuk ke bilik perlawanan anda.",
+      safeNotice: "🛡️ Paparan Peserta Sahaja — Klik butang meja untuk mula bermain!",
+      searchPlaceholder: "🔍 Cari nama anda untuk lihat meja (cth: Noorfaizal)...",
+      shareBtn: "🔗 Salin Pautan Jadual",
+      emptyPrompt: "Jadual perlawanan Pusingan 1 belum dijana lagi. Sila tunggu penganjur memulakan pusingan.",
+      statusInProgress: "⏳ Sedang Berlangsung • Menang 150 mata",
+      statusWinner: "🏆 Pemenang:",
+      advancesTag: "Mara ke Pusingan 2 ➔",
+      tableLabel: "Meja",
+      launchRoomBtn: "Buka Bilik BBG ↗",
+      vs: "LWN",
+      round2Title: "Pusingan 2: Meja Kad Fizikal",
+      round2Subtitle: "Pemenang Pusingan 1 akan mengisi Meja Alpha, Beta, Gamma (dan Delta) secara automatik.",
+      grandFinalTitle: "🏆 Pentas Akhir Kejuaraan",
+      grandFinalDesc: "Juara tempat pertama dari setiap meja Pusingan 2 akan mara berentap merebut piala kejuaraan!"
     }
   }
 };
@@ -608,6 +664,11 @@ export function updateI18n() {
 
     const bulkTextarea = document.getElementById('deskBulkTextarea');
     if (bulkTextarea) bulkTextarea.placeholder = deskDict.roster.bulkPlaceholder;
+  }
+
+  const publicSearchInput = document.getElementById('publicMatchupsSearch');
+  if (publicSearchInput && dict.publicMatchups) {
+    publicSearchInput.placeholder = dict.publicMatchups.searchPlaceholder;
   }
 
   if (document.getElementById('searchResults')) {
@@ -1423,6 +1484,209 @@ export function showToast(message, icon = '✅', durationMs = 2800) {
   }, durationMs);
 }
 
+// State flag for Organizer Controls Protection
+export let isDeskOrganizerUnlocked = false;
+
+export async function ensureOrganizerUnlocked() {
+  if (isDeskOrganizerUnlocked) return true;
+  const isBM = currentLang === 'bm';
+  const confirmed = await showCustomConfirm({
+    icon: '🔒',
+    kicker: isBM ? 'Kawalan Penganjur Dikunci' : 'Organizer Mode Locked',
+    title: isBM ? 'Buka Kunci Mod Penganjur?' : 'Unlock Organizer Controls?',
+    message: isBM
+      ? 'Meja Kejohanan dilindungi daripada salah tekan. Sila buka kunci untuk menyusun perlawanan, memilih pemenang atau mengurus peserta.'
+      : 'Tournament Desk is locked to protect tournament arrangement from accidental clicks. Unlock organizer editing controls now?',
+    confirmText: isBM ? 'Buka Kunci Sekarang 🔓' : 'Unlock Controls 🔓',
+    cancelText: isBM ? 'Kekalkan Berkunci' : 'Keep Locked',
+    confirmVariant: 'primary'
+  });
+  if (confirmed) {
+    isDeskOrganizerUnlocked = true;
+    renderTournamentDesk();
+    showToast(isBM ? 'Kawalan penganjur dibuka! 🔓' : 'Organizer controls unlocked! 🔓', '🔓');
+    return true;
+  }
+  return false;
+}
+
+// ==========================================================================
+// Participant-Facing Live Matchups Controller (Read-Only & Interactive)
+// ==========================================================================
+export function renderPublicMatchups() {
+  if (!tournamentState || typeof document === 'undefined') return;
+  const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+  const pmDict = dict.publicMatchups || TRANSLATIONS.en.publicMatchups;
+  const deskDict = dict.tournamentDesk || TRANSLATIONS.en.tournamentDesk;
+
+  // 1. BYE Notice
+  const byeNoticeEl = document.getElementById('publicByeNotice');
+  if (byeNoticeEl) {
+    if (tournamentState.round1?.byePlayer) {
+      const bp = tournamentState.round1.byePlayer;
+      byeNoticeEl.style.display = 'block';
+      byeNoticeEl.innerHTML = `
+        <div class="bye-badge">${deskDict.matches.byeTitle}</div>
+        <div class="bye-content">
+          <strong>${bp.name}</strong> ${deskDict.matches.byeDesc}
+        </div>
+      `;
+    } else {
+      byeNoticeEl.style.display = 'none';
+      byeNoticeEl.innerHTML = '';
+    }
+  }
+
+  // 2. Public Matches Grid
+  const publicMatchesGrid = document.getElementById('publicMatchesGrid');
+  const searchInput = document.getElementById('publicMatchupsSearch');
+  const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+  const matches = tournamentState.round1?.matches || [];
+
+  if (publicMatchesGrid) {
+    if (matches.length === 0) {
+      publicMatchesGrid.innerHTML = `
+        <div class="desk-empty-state">${pmDict.emptyPrompt}</div>
+      `;
+    } else {
+      publicMatchesGrid.innerHTML = matches.map(m => {
+        const p1Won = m.winnerId === m.player1.id;
+        const p2Won = m.winnerId === m.player2.id;
+        const winner = p1Won ? m.player1 : (p2Won ? m.player2 : null);
+        const isMatchSearch = query && (
+          (m.player1.name || '').toLowerCase().includes(query) ||
+          (m.player2.name || '').toLowerCase().includes(query) ||
+          (m.matchId || '').toLowerCase().includes(query) ||
+          String(m.tableNum) === query
+        );
+        const roomUrl = buildBuddyBoardGamesUrl(m.matchId);
+
+        return `
+          <div class="round1-match-card public-match-card ${m.winnerId ? 'has-winner' : ''} ${isMatchSearch ? 'search-match-highlight' : ''}" data-match-id="${m.matchId}">
+            <div class="match-card-header">
+              <div class="match-room-tag">
+                <span class="table-tag">${pmDict.tableLabel} #${m.tableNum}</span>
+                <span class="room-id">${m.matchId}</span>
+              </div>
+              <a href="${roomUrl}" target="_blank" rel="noopener noreferrer" class="match-launch-btn">
+                ${pmDict.launchRoomBtn}
+              </a>
+            </div>
+
+            <div class="match-vs-row">
+              <div class="match-combatant ${p1Won ? 'is-winner' : ''}">
+                <span class="combatant-name">${m.player1.name}</span>
+                ${p1Won ? '<span class="crown-badge">👑 Winner</span>' : ''}
+              </div>
+
+              <div class="match-vs-badge">${pmDict.vs}</div>
+
+              <div class="match-combatant ${p2Won ? 'is-winner' : ''}">
+                <span class="combatant-name">${m.player2.name}</span>
+                ${p2Won ? '<span class="crown-badge">👑 Winner</span>' : ''}
+              </div>
+            </div>
+
+            <div class="public-match-status-wrap ${m.winnerId ? 'finished' : 'in-progress'}">
+              ${m.winnerId ? `
+                <div class="public-winner-badge">
+                  <span>🏆 ${pmDict.statusWinner} <strong>${winner ? winner.name : 'Qualified'}</strong></span>
+                  <span class="advancing-tag">${pmDict.advancesTag}</span>
+                </div>
+              ` : `
+                <div class="public-live-indicator">
+                  <span class="pulse-indicator-dot"></span>
+                  <span class="in-progress-text">${pmDict.statusInProgress}</span>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // 3. Quick Stats
+  const statsEl = document.getElementById('publicMatchupsStats');
+  if (statsEl) {
+    const finishedCount = matches.filter(m => m.winnerId).length;
+    const isBM = currentLang === 'bm';
+    statsEl.textContent = isBM
+      ? `${matches.length} Perlawanan • ${finishedCount}/${matches.length} Selesai`
+      : `${matches.length} Matches • ${finishedCount}/${matches.length} Concluded`;
+  }
+
+  // 4. Public Round 2 Heats Grid (Read-Only)
+  const publicRound2Grid = document.getElementById('publicRound2Grid');
+  const publicQualifiersCount = document.getElementById('publicQualifiersCount');
+  const numTables = tournamentState.round2?.numTables === 4 ? 4 : 3;
+  const heats = computeRound2Heats(
+    tournamentState.round1?.byePlayer,
+    tournamentState.round1?.matches || [],
+    numTables
+  );
+  const totalExpected = tournamentState.round1?.matches?.length
+    ? tournamentState.round1.matches.length + (tournamentState.round1.byePlayer ? 1 : 0)
+    : Math.ceil(tournamentState.roster.filter(p => p.checkedIn).length / 2) || 15;
+
+  if (publicQualifiersCount) {
+    publicQualifiersCount.textContent = `${heats.totalQualifiers} / ${totalExpected} Qualifiers`;
+  }
+
+  if (publicRound2Grid) {
+    const tables = [
+      { id: 'alpha', title: deskDict.round2.tableAlpha, list: heats.tableAlpha, color: 'blue' },
+      { id: 'beta', title: deskDict.round2.tableBeta, list: heats.tableBeta, color: 'green' },
+      { id: 'gamma', title: deskDict.round2.tableGamma, list: heats.tableGamma, color: 'purple' }
+    ];
+
+    if (numTables === 4) {
+      tables.push({
+        id: 'delta',
+        title: deskDict.round2.tableDelta || 'Table Delta (Heat 4)',
+        list: heats.tableDelta,
+        color: 'amber'
+      });
+    }
+
+    const baseCap = Math.floor(totalExpected / numTables);
+    const rem = totalExpected % numTables;
+
+    publicRound2Grid.innerHTML = tables.map((t, tableIdx) => {
+      const targetTableCap = Math.max(t.list.length, baseCap + (tableIdx < rem ? 1 : 0), 5);
+      return `
+        <div class="round2-table-card border-${t.color}">
+          <div class="table-card-head bg-${t.color}">
+            <span class="table-title">${t.title}</span>
+            <span class="table-occupancy">${t.list.length} / ${targetTableCap} Pax</span>
+          </div>
+          <ol class="table-seats-list">
+            ${Array.from({ length: targetTableCap }, (_, idx) => {
+              const player = t.list[idx];
+              if (player) {
+                return `
+                  <li class="table-seat filled">
+                    <span class="seat-num">${idx + 1}</span>
+                    <div class="seat-player">
+                      <strong>${player.name}</strong>
+                    </div>
+                  </li>
+                `;
+              }
+              return `
+                <li class="table-seat empty">
+                  <span class="seat-num">${idx + 1}</span>
+                  <span class="seat-empty-text">${deskDict.round2.slotEmpty}</span>
+                </li>
+              `;
+            }).join('')}
+          </ol>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
 // ==========================================================================
 // Tournament Desk Controller & Round 1 Automation
 // ==========================================================================
@@ -1431,6 +1695,38 @@ export function renderTournamentDesk() {
   const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
   const deskDict = dict.tournamentDesk;
   if (!deskDict) return;
+
+  // Sync Organizer Protection Bar
+  const lockBarEl = document.getElementById('deskLockBar');
+  const lockTitleEl = document.getElementById('deskLockTitle');
+  const lockDescEl = document.getElementById('deskLockDesc');
+  const lockToggleBtn = document.getElementById('deskLockToggleBtn');
+  const deskViewEl = document.getElementById('deskView');
+
+  if (lockBarEl && deskDict.lockBar) {
+    if (isDeskOrganizerUnlocked) {
+      lockBarEl.className = 'desk-lock-bar is-unlocked';
+      if (lockTitleEl) lockTitleEl.textContent = deskDict.lockBar.unlockedTitle;
+      if (lockDescEl) lockDescEl.textContent = deskDict.lockBar.unlockedDesc;
+      if (lockToggleBtn) {
+        lockToggleBtn.className = 'btn-lock-toggle active';
+        lockToggleBtn.textContent = deskDict.lockBar.lockBtn;
+      }
+      if (deskViewEl) deskViewEl.classList.remove('desk-controls-protected');
+    } else {
+      lockBarEl.className = 'desk-lock-bar is-locked';
+      if (lockTitleEl) lockTitleEl.textContent = deskDict.lockBar.lockedTitle;
+      if (lockDescEl) lockDescEl.textContent = deskDict.lockBar.lockedDesc;
+      if (lockToggleBtn) {
+        lockToggleBtn.className = 'btn-lock-toggle';
+        lockToggleBtn.textContent = deskDict.lockBar.unlockBtn;
+      }
+      if (deskViewEl) deskViewEl.classList.add('desk-controls-protected');
+    }
+  }
+
+  // Also update participant-facing Live Matchups
+  renderPublicMatchups();
 
   // 1. Attendance Metrics
   const rosterCountEl = document.getElementById('deskRosterCount');
@@ -1667,8 +1963,10 @@ export function setupTournamentDeskEvents() {
   const addBtn = document.getElementById('deskAddPlayerBtn');
   const nameInput = document.getElementById('deskPlayerNameInput');
 
-  function handleAddPlayer() {
+  async function handleAddPlayer() {
     if (!nameInput) return;
+    const allowed = await ensureOrganizerUnlocked();
+    if (!allowed) return;
     const name = nameInput.value.trim();
     if (!name) return;
 
@@ -1705,7 +2003,9 @@ export function setupTournamentDeskEvents() {
   }
 
   if (bulkImportBtn && bulkTextarea) {
-    bulkImportBtn.addEventListener('click', () => {
+    bulkImportBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       const text = bulkTextarea.value.trim();
       if (text) {
         const prevCount = tournamentState.roster.length;
@@ -1724,7 +2024,9 @@ export function setupTournamentDeskEvents() {
   // Check all / Clear all
   const checkAllBtn = document.getElementById('deskCheckAllBtn');
   if (checkAllBtn) {
-    checkAllBtn.addEventListener('click', () => {
+    checkAllBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       tournamentState = setAllCheckInStatus(tournamentState, true);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
@@ -1735,7 +2037,9 @@ export function setupTournamentDeskEvents() {
 
   const uncheckAllBtn = document.getElementById('deskUncheckAllBtn');
   if (uncheckAllBtn) {
-    uncheckAllBtn.addEventListener('click', () => {
+    uncheckAllBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       tournamentState = setAllCheckInStatus(tournamentState, false);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
@@ -1748,6 +2052,8 @@ export function setupTournamentDeskEvents() {
   const resetBtn = document.getElementById('deskResetBtn');
   if (resetBtn) {
     resetBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       const isBM = currentLang === 'bm';
       const confirmed = await showCustomConfirm({
         icon: '🔄',
@@ -1776,6 +2082,8 @@ export function setupTournamentDeskEvents() {
     rosterList.addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       const action = btn.getAttribute('data-action');
       const id = btn.getAttribute('data-id');
 
@@ -1814,6 +2122,8 @@ export function setupTournamentDeskEvents() {
   const randomizeBtn = document.getElementById('deskRandomizeBtn');
   if (randomizeBtn) {
     randomizeBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       const isBM = currentLang === 'bm';
       if (tournamentState.round1?.matches?.length > 0) {
         const confirmed = await showCustomConfirm({
@@ -1857,9 +2167,11 @@ export function setupTournamentDeskEvents() {
   // Matches grid event delegation (winner selection)
   const matchesGrid = document.getElementById('deskMatchesGrid');
   if (matchesGrid) {
-    matchesGrid.addEventListener('click', (e) => {
+    matchesGrid.addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-action="pick-winner"]');
       if (!btn) return;
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       const matchId = btn.getAttribute('data-match');
       const winnerId = btn.getAttribute('data-winner');
 
@@ -1907,7 +2219,9 @@ export function setupTournamentDeskEvents() {
 
   // Round 2 Heat Format toggle (3 Tables vs 4 Tables)
   document.querySelectorAll('.btn-heat-format').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
       const count = parseInt(btn.getAttribute('data-tables'), 10) || 3;
       tournamentState = setRound2TableCount(tournamentState, count);
       saveTournamentState(localStorage, tournamentState);
@@ -1922,6 +2236,41 @@ export function setupTournamentDeskEvents() {
     });
   });
 
+  // Organizer Mode Lock Switch
+  const lockToggleBtn = document.getElementById('deskLockToggleBtn');
+  if (lockToggleBtn) {
+    lockToggleBtn.addEventListener('click', () => {
+      isDeskOrganizerUnlocked = !isDeskOrganizerUnlocked;
+      renderTournamentDesk();
+      const isBM = currentLang === 'bm';
+      if (isDeskOrganizerUnlocked) {
+        showToast(isBM ? 'Mod Penganjur Dibuka! 🔓' : 'Organizer Mode Unlocked! 🔓', '🔓');
+      } else {
+        showToast(isBM ? 'Kawalan Meja Dikunci 🔒' : 'Organizer Controls Locked 🔒', '🔒');
+      }
+    });
+  }
+
+  // Public Matchups Filter & Share
+  const publicSearch = document.getElementById('publicMatchupsSearch');
+  if (publicSearch) {
+    publicSearch.addEventListener('input', () => {
+      renderPublicMatchups();
+    });
+  }
+
+  const shareBtn = document.getElementById('copyMatchupsShareBtn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      const isBM = currentLang === 'bm';
+      const url = (typeof window !== 'undefined' && window.location)
+        ? (window.location.origin + window.location.pathname + '#matchups')
+        : '#matchups';
+      copyTextToClipboard(url, shareBtn, null);
+      showToast(isBM ? '🔗 Pautan jadual disalin untuk peserta!' : '🔗 Matchups link copied for participants!', '🔗');
+    });
+  }
+
   // Print button
   const printBtn = document.getElementById('deskPrintBtn');
   if (printBtn) {
@@ -1934,7 +2283,7 @@ export function setupTournamentDeskEvents() {
 // Tab Switching Controller with Hash & localStorage persistence
 export function switchTab(tab, shouldScroll = true, updateHistory = true) {
   if (!tab || typeof document === 'undefined') return;
-  const validTabs = ['guide', 'rules', 'schedule', 'desk'];
+  const validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
   if (!validTabs.includes(tab)) return;
 
   const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
@@ -1974,9 +2323,10 @@ export function switchTab(tab, shouldScroll = true, updateHistory = true) {
 export function initApp() {
   if (typeof window !== 'undefined') {
     window.switchTab = switchTab;
+    window.renderPublicMatchups = renderPublicMatchups;
   }
 
-  const validTabs = ['guide', 'rules', 'schedule', 'desk'];
+  const validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
 
   // Tab switching click handlers
   document.querySelectorAll('.tab-btn').forEach(btn => {

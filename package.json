@@ -5,6 +5,6 @@
   "scripts": {
     "dev": "npx -y serve -p 3000 .",
     "start": "npx -y serve -p 3000 .",
-    "test": "node tests/verify-data.js && node tests/verify-tournament-engine.js && node tests/verify-tournament-desk-dom.js && node tests/verify-app.js && node tests/verify-card-engine.js && node tests/verify-tab-persistence.js && node tests/verify-custom-popouts.js && node tests/e2e-simulation.js"
+    "test": "node tests/verify-data.js && node tests/verify-tournament-engine.js && node tests/verify-tournament-desk-dom.js && node tests/verify-app.js && node tests/verify-card-engine.js && node tests/verify-tab-persistence.js && node tests/verify-custom-popouts.js && node tests/verify-public-matchups-view.js && node tests/e2e-simulation.js"
   }
 }

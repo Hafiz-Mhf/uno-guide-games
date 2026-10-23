@@ -5,7 +5,7 @@ console.log('Testing Tab Persistence and Refresh Navigation...');
 
 // 1. Verify index.html contains tab elements and fast restore script
 const html = fs.readFileSync('index.html', 'utf-8');
-const tabs = ['guide', 'rules', 'schedule', 'desk'];
+const tabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
 
 for (const tab of tabs) {
   if (!html.includes(`data-tab="${tab}"`)) {

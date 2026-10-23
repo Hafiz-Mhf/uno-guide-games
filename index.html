@@ -984,6 +984,30 @@
         </div>
       </div>
     </div>
+
+    <!-- Premium Interactive Custom Dialog Popout (Replaces native browser confirm/alert) -->
+    <div id="customDialogOverlay" class="custom-dialog-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="customDialogTitle" aria-describedby="customDialogMessage">
+      <div class="custom-dialog-card" id="customDialogCard">
+        <button id="customDialogCloseX" class="dialog-close-x" type="button" aria-label="Close dialog">✕</button>
+        <div class="dialog-icon-bubble" id="customDialogIconBubble">
+          <span id="customDialogIcon">🎲</span>
+        </div>
+        <div class="dialog-content-body">
+          <span class="dialog-kicker" id="customDialogKicker">Tournament Desk Action</span>
+          <h3 class="dialog-title" id="customDialogTitle">Re-shuffle Pairings?</h3>
+          <p class="dialog-message" id="customDialogMessage">Round 1 matches already exist. Re-shuffle and generate new pairings?</p>
+          <div class="dialog-note" id="customDialogNote" style="display: none;"></div>
+        </div>
+        <div class="dialog-actions-row" id="customDialogActionsRow">
+          <button type="button" class="dialog-btn dialog-btn-cancel" id="customDialogCancelBtn">Cancel</button>
+          <button type="button" class="dialog-btn dialog-btn-confirm" id="customDialogConfirmBtn">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Toast Notification Container -->
+    <div id="appToastContainer" class="app-toast-container" aria-live="polite"></div>
+
   </div>
 
   <script type="module" src="app.js?v=6"></script>

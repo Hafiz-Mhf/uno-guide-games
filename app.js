@@ -953,6 +953,10 @@ export function copyTextToClipboard(text, btnEl, originalKey) {
     fallbackCopyText(text);
   }
 
+  if (typeof showToast === 'function') {
+    showToast(successMsg, '📋', 2000);
+  }
+
   if (btnEl) {
     const origText = btnEl.textContent;
     btnEl.textContent = successMsg;
@@ -1208,6 +1212,215 @@ export function switchPosterTab(posterType) {
 }
 
 // ==========================================================================
+// Interactive Custom Dialogs & Toast Notifications System
+// ==========================================================================
+let activeDialogResolve = null;
+
+export function showCustomConfirm({
+  icon = '⚠️',
+  kicker = 'Confirmation',
+  title = 'Are you sure?',
+  message = '',
+  note = '',
+  confirmText = 'Confirm',
+  cancelText = 'Cancel',
+  confirmVariant = 'primary'
+} = {}) {
+  return new Promise((resolve) => {
+    if (typeof document === 'undefined') {
+      return resolve(true);
+    }
+    const overlay = document.getElementById('customDialogOverlay');
+    if (!overlay) {
+      const fallback = typeof window !== 'undefined' && window.confirm ? window.confirm(message || title) : true;
+      return resolve(fallback);
+    }
+
+    activeDialogResolve = resolve;
+
+    const iconEl = document.getElementById('customDialogIcon');
+    const bubbleEl = document.getElementById('customDialogIconBubble');
+    const kickerEl = document.getElementById('customDialogKicker');
+    const titleEl = document.getElementById('customDialogTitle');
+    const msgEl = document.getElementById('customDialogMessage');
+    const noteEl = document.getElementById('customDialogNote');
+    const cancelBtn = document.getElementById('customDialogCancelBtn');
+    const confirmBtn = document.getElementById('customDialogConfirmBtn');
+    const closeX = document.getElementById('customDialogCloseX');
+
+    if (iconEl) iconEl.textContent = icon;
+    if (bubbleEl) bubbleEl.className = `dialog-icon-bubble variant-${confirmVariant}`;
+    if (kickerEl) kickerEl.textContent = kicker;
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+
+    if (noteEl) {
+      if (note) {
+        noteEl.innerHTML = note;
+        noteEl.style.display = 'block';
+      } else {
+        noteEl.style.display = 'none';
+      }
+    }
+
+    if (cancelBtn) {
+      cancelBtn.style.display = 'inline-flex';
+      cancelBtn.textContent = cancelText;
+    }
+    if (confirmBtn) {
+      confirmBtn.textContent = confirmText;
+      confirmBtn.className = `dialog-btn dialog-btn-confirm btn-variant-${confirmVariant}`;
+    }
+
+    overlay.style.display = 'flex';
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      if (confirmBtn) confirmBtn.focus();
+    }, 40);
+
+    function cleanup(res) {
+      overlay.classList.remove('active');
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKey);
+      if (activeDialogResolve) {
+        const cb = activeDialogResolve;
+        activeDialogResolve = null;
+        cb(res);
+      }
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Escape') {
+        cleanup(false);
+      }
+    }
+
+    document.addEventListener('keydown', handleKey);
+
+    if (cancelBtn) cancelBtn.onclick = () => cleanup(false);
+    if (closeX) closeX.onclick = () => cleanup(false);
+    if (confirmBtn) confirmBtn.onclick = () => cleanup(true);
+    overlay.onclick = (e) => {
+      if (e.target === overlay) cleanup(false);
+    };
+  });
+}
+
+export function showCustomAlert({
+  icon = 'ℹ️',
+  kicker = 'Notice',
+  title = 'Attention',
+  message = '',
+  note = '',
+  buttonText = 'Got it',
+  variant = 'primary'
+} = {}) {
+  return new Promise((resolve) => {
+    if (typeof document === 'undefined') {
+      return resolve();
+    }
+    const overlay = document.getElementById('customDialogOverlay');
+    if (!overlay) {
+      if (typeof window !== 'undefined' && window.alert) window.alert(message || title);
+      return resolve();
+    }
+
+    activeDialogResolve = resolve;
+
+    const iconEl = document.getElementById('customDialogIcon');
+    const bubbleEl = document.getElementById('customDialogIconBubble');
+    const kickerEl = document.getElementById('customDialogKicker');
+    const titleEl = document.getElementById('customDialogTitle');
+    const msgEl = document.getElementById('customDialogMessage');
+    const noteEl = document.getElementById('customDialogNote');
+    const cancelBtn = document.getElementById('customDialogCancelBtn');
+    const confirmBtn = document.getElementById('customDialogConfirmBtn');
+    const closeX = document.getElementById('customDialogCloseX');
+
+    if (iconEl) iconEl.textContent = icon;
+    if (bubbleEl) bubbleEl.className = `dialog-icon-bubble variant-${variant}`;
+    if (kickerEl) kickerEl.textContent = kicker;
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+
+    if (noteEl) {
+      if (note) {
+        noteEl.innerHTML = note;
+        noteEl.style.display = 'block';
+      } else {
+        noteEl.style.display = 'none';
+      }
+    }
+
+    if (cancelBtn) cancelBtn.style.display = 'none';
+    if (confirmBtn) {
+      confirmBtn.textContent = buttonText;
+      confirmBtn.className = `dialog-btn dialog-btn-confirm btn-variant-${variant}`;
+    }
+
+    overlay.style.display = 'flex';
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      if (confirmBtn) confirmBtn.focus();
+    }, 40);
+
+    function cleanup() {
+      overlay.classList.remove('active');
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleKey);
+      if (activeDialogResolve) {
+        const cb = activeDialogResolve;
+        activeDialogResolve = null;
+        cb();
+      }
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Escape' || e.key === 'Enter') {
+        cleanup();
+      }
+    }
+
+    document.addEventListener('keydown', handleKey);
+
+    if (closeX) closeX.onclick = () => cleanup();
+    if (confirmBtn) confirmBtn.onclick = () => cleanup();
+    overlay.onclick = (e) => {
+      if (e.target === overlay) cleanup();
+    };
+  });
+}
+
+export function showToast(message, icon = '✅', durationMs = 2800) {
+  if (typeof document === 'undefined') return;
+  let container = document.getElementById('appToastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'appToastContainer';
+    container.className = 'app-toast-container';
+    document.body.appendChild(container);
+  }
+
+  const toast = document.createElement('div');
+  toast.className = 'app-toast';
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span class="toast-message">${message}</span>`;
+  container.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add('toast-hiding');
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 220);
+  }, durationMs);
+}
+
+// ==========================================================================
 // Tournament Desk Controller & Round 1 Automation
 // ==========================================================================
 export function renderTournamentDesk() {
@@ -1429,6 +1642,8 @@ export function setupTournamentDeskEvents() {
     saveTournamentState(localStorage, tournamentState);
     nameInput.value = '';
     renderTournamentDesk();
+    const isBM = currentLang === 'bm';
+    showToast(isBM ? `Peserta "${name}" ditambah ke senarai` : `Added "${name}" to roster`, '➕');
   }
 
   if (addBtn) addBtn.addEventListener('click', handleAddPlayer);
@@ -1459,11 +1674,15 @@ export function setupTournamentDeskEvents() {
     bulkImportBtn.addEventListener('click', () => {
       const text = bulkTextarea.value.trim();
       if (text) {
+        const prevCount = tournamentState.roster.length;
         tournamentState = bulkImportRoster(tournamentState, text);
+        const addedCount = tournamentState.roster.length - prevCount;
         saveTournamentState(localStorage, tournamentState);
         bulkTextarea.value = '';
         if (bulkContainer) bulkContainer.style.display = 'none';
         renderTournamentDesk();
+        const isBM = currentLang === 'bm';
+        showToast(isBM ? `${addedCount} peserta berjaya diimport!` : `Imported ${addedCount} participants!`, '📝');
       }
     });
   }
@@ -1475,6 +1694,8 @@ export function setupTournamentDeskEvents() {
       tournamentState = setAllCheckInStatus(tournamentState, true);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      const isBM = currentLang === 'bm';
+      showToast(isBM ? 'Semua peserta ditandakan hadir' : 'All participants marked checked-in', '✅');
     });
   }
 
@@ -1484,18 +1705,33 @@ export function setupTournamentDeskEvents() {
       tournamentState = setAllCheckInStatus(tournamentState, false);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      const isBM = currentLang === 'bm';
+      showToast(isBM ? 'Semua tanda kehadiran dikosongkan' : 'All check-in marks cleared', '🔄');
     });
   }
 
-  // Reset to default roster
+  // Reset to default roster with custom popout
   const resetBtn = document.getElementById('deskResetBtn');
   if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
-      const confirmMsg = dict.tournamentDesk?.roster?.resetConfirm || 'Reset to 30 default participants?';
-      if (window.confirm(confirmMsg)) {
+    resetBtn.addEventListener('click', async () => {
+      const isBM = currentLang === 'bm';
+      const confirmed = await showCustomConfirm({
+        icon: '🔄',
+        kicker: isBM ? 'Set Semula Roster' : 'Reset Tournament Roster',
+        title: isBM ? 'Set Semula ke 30 Peserta Asal?' : 'Reset to Default 30 Roster?',
+        message: isBM
+          ? 'Tindakan ini akan mengembalikan senarai asal 30 peserta dan mengosongkan semua perlawanan Pusingan 1.'
+          : 'This will restore the original 30 registered participants and clear any current match pairings.',
+        note: isBM ? '⚠️ Perubahan nama atau peserta tambahan akan dipadam.' : '⚠️ Any custom added players or match results will be cleared.',
+        confirmText: isBM ? 'Set Semula Roster' : 'Reset Roster',
+        cancelText: isBM ? 'Kekalkan Sekarang' : 'Keep Current',
+        confirmVariant: 'danger'
+      });
+
+      if (confirmed) {
         tournamentState = resetTournamentState(localStorage);
         renderTournamentDesk();
+        showToast(isBM ? 'Roster telah diset semula ke 30 peserta asal' : 'Roster reset to default 30 participants', '🔄');
       }
     });
   }
@@ -1503,7 +1739,7 @@ export function setupTournamentDeskEvents() {
   // Roster event delegation (check toggle and delete)
   const rosterList = document.getElementById('deskRosterList');
   if (rosterList) {
-    rosterList.addEventListener('click', (e) => {
+    rosterList.addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-action]');
       if (!btn) return;
       const action = btn.getAttribute('data-action');
@@ -1514,26 +1750,65 @@ export function setupTournamentDeskEvents() {
         saveTournamentState(localStorage, tournamentState);
         renderTournamentDesk();
       } else if (action === 'delete-player') {
-        tournamentState = removePlayer(tournamentState, id);
-        saveTournamentState(localStorage, tournamentState);
-        renderTournamentDesk();
+        const isBM = currentLang === 'bm';
+        const player = tournamentState.roster.find(p => p.id === id);
+        const pName = player ? player.name : 'this participant';
+
+        const confirmed = await showCustomConfirm({
+          icon: '🗑️',
+          kicker: isBM ? 'Keluarkan Peserta' : 'Remove Participant',
+          title: isBM ? `Keluarkan ${pName}?` : `Remove ${pName}?`,
+          message: isBM
+            ? `Adakah anda pasti mahu memadamkan ${pName} daripada senarai kejohanan?`
+            : `Are you sure you want to remove ${pName} from the tournament roster?`,
+          confirmText: isBM ? 'Keluarkan Peserta' : 'Remove Player',
+          cancelText: isBM ? 'Batal' : 'Cancel',
+          confirmVariant: 'danger'
+        });
+
+        if (confirmed) {
+          tournamentState = removePlayer(tournamentState, id);
+          saveTournamentState(localStorage, tournamentState);
+          renderTournamentDesk();
+          showToast(isBM ? `Peserta "${pName}" dikeluarkan` : `Removed "${pName}" from roster`, '🗑️');
+        }
       }
     });
   }
 
-  // Randomize Round 1 Pairings
+  // Randomize Round 1 Pairings with custom popout
   const randomizeBtn = document.getElementById('deskRandomizeBtn');
   if (randomizeBtn) {
-    randomizeBtn.addEventListener('click', () => {
-      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+    randomizeBtn.addEventListener('click', async () => {
+      const isBM = currentLang === 'bm';
       if (tournamentState.round1?.matches?.length > 0) {
-        const confirmMsg = dict.tournamentDesk?.matches?.randomizeConfirm || 'Re-shuffle and generate new pairings?';
-        if (!window.confirm(confirmMsg)) return;
+        const confirmed = await showCustomConfirm({
+          icon: '🎲',
+          kicker: isBM ? 'Pengesahan Pusingan 1' : 'Round 1 Re-Shuffle',
+          title: isBM ? 'Rawak Semula Perlawanan?' : 'Re-shuffle Pairings?',
+          message: isBM
+            ? 'Perlawanan Pusingan 1 telah pun dijana. Adakah anda ingin mengocok semula dan menjana susunan perlawanan 1v1 yang baru?'
+            : 'Round 1 matches already exist. Re-shuffle and generate new pairings? Existing table assignments will be recalculated.',
+          note: isBM ? '💡 Petua: Pemenang perlawanan semasa akan disetkan semula untuk susunan baru.' : '💡 Note: Any recorded winners will be reset for the new pairings.',
+          confirmText: isBM ? 'Ya, Rawak Semula 🎲' : 'Yes, Re-shuffle 🎲',
+          cancelText: isBM ? 'Kekalkan Sedia Ada' : 'Keep Existing',
+          confirmVariant: 'primary'
+        });
+        if (!confirmed) return;
       }
 
       const checkedIn = tournamentState.roster.filter(p => p.checkedIn);
       if (checkedIn.length < 2) {
-        alert('At least 2 checked-in players are required to generate pairings.');
+        await showCustomAlert({
+          icon: '👥',
+          kicker: isBM ? 'Perlu Peserta Hadir' : 'Check-In Required',
+          title: isBM ? 'Peserta Tidak Mencukupi' : 'Not Enough Checked-In Players',
+          message: isBM
+            ? 'Sekurang-kurangnya 2 pemain yang bertanda hadir diperlukan untuk menjana perlawanan.'
+            : 'At least 2 checked-in players are required to generate pairings. Please mark participants as Checked-In first.',
+          buttonText: isBM ? 'Faham' : 'Got it',
+          variant: 'warning'
+        });
         return;
       }
 
@@ -1541,6 +1816,7 @@ export function setupTournamentDeskEvents() {
       tournamentState.round1 = pairings;
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      showToast(isBM ? '🎲 Perlawanan Pusingan 1 berjaya dijana!' : '🎲 Round 1 pairings generated successfully!', '🎲');
     });
   }
 
@@ -1556,26 +1832,40 @@ export function setupTournamentDeskEvents() {
       tournamentState = recordMatchWinner(tournamentState, matchId, winnerId);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      const winner = tournamentState.roster.find(p => p.id === winnerId);
+      if (winner) {
+        const isBM = currentLang === 'bm';
+        showToast(isBM ? `Pemenang dicatat: ${winner.name} 🏆` : `Winner recorded: ${winner.name} 🏆`, '🏆', 2200);
+      }
     });
   }
 
-  // Copy matchups to clipboard
+  // Copy matchups to clipboard with custom alert & toast
   const copyMatchupsBtn = document.getElementById('deskCopyMatchupsBtn');
   if (copyMatchupsBtn) {
-    copyMatchupsBtn.addEventListener('click', () => {
-      const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+    copyMatchupsBtn.addEventListener('click', async () => {
+      const isBM = currentLang === 'bm';
       const text = formatMatchupsClipboard(tournamentState.round1);
       if (!text) {
-        alert('No matchups to copy yet. Click Randomize first.');
+        await showCustomAlert({
+          icon: '📋',
+          kicker: isBM ? 'Tiada Jadual Perlawanan' : 'No Matchups Found',
+          title: isBM ? 'Jana Perlawanan Dahulu' : 'Generate Pairings First',
+          message: isBM
+            ? 'Tiada jadual perlawanan untuk disalin lagi. Sila klik butang "🎲 Rawak Perlawanan Pusingan 1" terlebih dahulu.'
+            : 'There are no active matchups to copy yet. Click "🎲 Randomize Round 1 Pairings" to generate match tables first.',
+          buttonText: isBM ? 'Faham' : 'Got it',
+          variant: 'info'
+        });
         return;
       }
 
       copyTextToClipboard(text, copyMatchupsBtn, null);
-      const originalText = copyMatchupsBtn.innerHTML;
-      copyMatchupsBtn.textContent = dict.tournamentDesk?.matches?.copiedToast || 'Copied! 📋';
+      showToast(isBM ? '📋 Jadual perlawanan telah disalin ke papan keratan!' : '📋 Matchups copied to clipboard for WhatsApp/Teams!', '📋');
+      copyMatchupsBtn.textContent = isBM ? 'Telah Disalin! 📋' : 'Copied! 📋';
       copyMatchupsBtn.classList.add('copied-success');
       setTimeout(() => {
-        copyMatchupsBtn.innerHTML = `📋 <span>${dict.tournamentDesk?.matches?.copyBtn || 'Copy Matchups'}</span>`;
+        copyMatchupsBtn.innerHTML = `📋 <span>${isBM ? 'Salin Perlawanan' : 'Copy Matchups'}</span>`;
         copyMatchupsBtn.classList.remove('copied-success');
       }, 2000);
     });

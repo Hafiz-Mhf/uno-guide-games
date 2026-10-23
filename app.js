@@ -67,7 +67,7 @@ export const TRANSLATIONS = {
       step4Point3: "No Stacking (no double power cards, no double number cards)",
       step4Point4: "No card? Draw 1 and pass to the next player",
       punsTitle: "Event Spirit:",
-      motto: "Brought to you by Talent Development • Ready to shout 'UNO!'? See you there and bring your best game face to win those prizes!"
+      motto: "Ready to shout 'UNO'?! Bring your best moves, play your cards, and may the best player win!"
     },
     posterModal: {
       badge: "Official Event Assets",
@@ -364,7 +364,7 @@ export const TRANSLATIONS = {
       step4Point3: "Tiada 'Stacking' (tiada kad kuasa berganda, tiada kad nombor berganda)",
       step4Point4: "Tiada kad? Cabut 1 dan serah kepada pemain seterusnya",
       punsTitle: "Semangat Acara:",
-      motto: "Dibawakan khas oleh Pembangunan Bakat (Talent Development) • Bersedia laung 'UNO!'? Tunjukkan prestasi terbaik anda untuk memenangi hadiah-hadiah tersebut!"
+      motto: "Bersedia laung 'UNO'?! Tunjukkan skil terbaik anda, susun strategi kad, dan semoga pemain terbaik bergelar juara!"
     },
     posterModal: {
       badge: "Bahan Rasmi Acara",

@@ -12,7 +12,8 @@ import {
   generateRound1Pairings,
   recordMatchWinner,
   computeRound2Heats,
-  formatMatchupsClipboard
+  formatMatchupsClipboard,
+  setRound2TableCount
 } from '../tournament-engine.js';
 
 console.log('Testing tournament-engine state lifecycle...');
@@ -159,4 +160,80 @@ if (!clipText.includes('HR-Match-01') || !clipText.includes('[BYE Pass]')) {
   process.exit(1);
 }
 
-console.log('PASS: Task 3 tests passed.');
+// Test 6: Flexible Round 2 Heats with 33 players (16 matches + 1 BYE = 17 qualifiers)
+const mock33 = Array.from({ length: 33 }, (_, i) => ({ id: `p${i+1}`, name: `Player ${i+1}`, dept: 'HQ', checkedIn: true }));
+const pairings33 = generateRound1Pairings(mock33);
+if (pairings33.matches.length !== 16 || !pairings33.byePlayer) {
+  console.error('FAIL: Expected 16 matches and 1 BYE for 33 players');
+  process.exit(1);
+}
+pairings33.matches.forEach(m => { m.winnerId = m.player1.id; });
+
+// 3-Table distribution: 17 qualifiers -> 6, 6, 5 (Total 17, none dropped)
+const heats33_3Tables = computeRound2Heats(pairings33.byePlayer, pairings33.matches, 3);
+if (
+  heats33_3Tables.totalQualifiers !== 17 ||
+  heats33_3Tables.tableAlpha.length !== 6 ||
+  heats33_3Tables.tableBeta.length !== 6 ||
+  heats33_3Tables.tableGamma.length !== 5 ||
+  heats33_3Tables.tableDelta.length !== 0
+) {
+  console.error(`FAIL: 33 players 3-table heat distribution failed: Alpha=${heats33_3Tables.tableAlpha.length}, Beta=${heats33_3Tables.tableBeta.length}, Gamma=${heats33_3Tables.tableGamma.length}, Total=${heats33_3Tables.totalQualifiers}`);
+  process.exit(1);
+}
+
+// 4-Table distribution: 17 qualifiers -> 5, 4, 4, 4 (Total 17, none dropped)
+const heats33_4Tables = computeRound2Heats(pairings33.byePlayer, pairings33.matches, 4);
+if (
+  heats33_4Tables.totalQualifiers !== 17 ||
+  heats33_4Tables.tableAlpha.length !== 5 ||
+  heats33_4Tables.tableBeta.length !== 4 ||
+  heats33_4Tables.tableGamma.length !== 4 ||
+  heats33_4Tables.tableDelta.length !== 4
+) {
+  console.error(`FAIL: 33 players 4-table heat distribution failed: Alpha=${heats33_4Tables.tableAlpha.length}, Beta=${heats33_4Tables.tableBeta.length}, Gamma=${heats33_4Tables.tableGamma.length}, Delta=${heats33_4Tables.tableDelta.length}`);
+  process.exit(1);
+}
+
+// Test 7: 32 players (16 matches, 0 BYE = 16 qualifiers)
+const mock32 = Array.from({ length: 32 }, (_, i) => ({ id: `p${i+1}`, name: `Player ${i+1}`, dept: 'HQ', checkedIn: true }));
+const pairings32 = generateRound1Pairings(mock32);
+pairings32.matches.forEach(m => { m.winnerId = m.player1.id; });
+
+const heats32_3Tables = computeRound2Heats(pairings32.byePlayer, pairings32.matches, 3);
+if (
+  heats32_3Tables.totalQualifiers !== 16 ||
+  heats32_3Tables.tableAlpha.length !== 6 ||
+  heats32_3Tables.tableBeta.length !== 5 ||
+  heats32_3Tables.tableGamma.length !== 5
+) {
+  console.error(`FAIL: 32 players 3-table heat distribution failed`);
+  process.exit(1);
+}
+
+const heats32_4Tables = computeRound2Heats(pairings32.byePlayer, pairings32.matches, 4);
+if (
+  heats32_4Tables.totalQualifiers !== 16 ||
+  heats32_4Tables.tableAlpha.length !== 4 ||
+  heats32_4Tables.tableBeta.length !== 4 ||
+  heats32_4Tables.tableGamma.length !== 4 ||
+  heats32_4Tables.tableDelta.length !== 4
+) {
+  console.error(`FAIL: 32 players 4-table heat distribution failed`);
+  process.exit(1);
+}
+
+// Test 8: setRound2TableCount state helper
+let stateR2 = createDefaultTournamentState();
+stateR2 = setRound2TableCount(stateR2, 4);
+if (stateR2.round2.numTables !== 4) {
+  console.error('FAIL: setRound2TableCount 4 failed');
+  process.exit(1);
+}
+stateR2 = setRound2TableCount(stateR2, 3);
+if (stateR2.round2.numTables !== 3) {
+  console.error('FAIL: setRound2TableCount 3 failed');
+  process.exit(1);
+}
+
+console.log('PASS: Task 3 tests & flexible heats tests passed.');

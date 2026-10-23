@@ -13,6 +13,7 @@ import {
   generateRound1Pairings,
   recordMatchWinner,
   computeRound2Heats,
+  setRound2TableCount,
   formatMatchupsClipboard
 } from './tournament-engine.js';
 
@@ -275,12 +276,13 @@ export const TRANSLATIONS = {
         byeDesc: "advances directly to Round 2 physical tables without playing Round 1 due to odd player count."
       },
       round2: {
-        title: "Round 2 Physical Heats (3 Tables × 5 Pax)",
-        subtitle: "Winners from Round 1 automatically fill Table Alpha, Beta, and Gamma.",
+        title: "Round 2 Physical Card Heats",
+        subtitle: "Winners from Round 1 automatically fill physical heat tables for casual championship showdowns.",
         qualifiersBadge: "Qualifiers Ready",
         tableAlpha: "Table Alpha (Heat 1)",
         tableBeta: "Table Beta (Heat 2)",
         tableGamma: "Table Gamma (Heat 3)",
+        tableDelta: "Table Delta (Heat 4)",
         slotEmpty: "Awaiting Round 1 Winner..."
       }
     }
@@ -543,12 +545,13 @@ export const TRANSLATIONS = {
         byeDesc: "layak terus ke meja fizikal Pusingan 2 tanpa perlu bermain Pusingan 1 akibat bilangan ganjil."
       },
       round2: {
-        title: "Pusingan 2 Meja Fizikal (3 Meja × 5 Orang)",
-        subtitle: "Pemenang Pusingan 1 akan mengisi Meja Alpha, Beta, dan Gamma secara automatik.",
+        title: "Pusingan 2 Meja Kad Fizikal",
+        subtitle: "Pemenang Pusingan 1 akan mengisi meja perlawanan fizikal secara automatik.",
         qualifiersBadge: "Pemain Layak",
         tableAlpha: "Meja Alpha (Kumpulan 1)",
         tableBeta: "Meja Beta (Kumpulan 2)",
         tableGamma: "Meja Gamma (Kumpulan 3)",
+        tableDelta: "Meja Delta (Kumpulan 4)",
         slotEmpty: "Menunggu Pemenang Pusingan 1..."
       }
     }
@@ -1572,11 +1575,27 @@ export function renderTournamentDesk() {
   // 5. Round 2 Heats
   const round2GridEl = document.getElementById('deskRound2HeatsGrid');
   const qualifiersCountEl = document.getElementById('deskQualifiersCount');
-  const heats = computeRound2Heats(tournamentState.round1?.byePlayer, tournamentState.round1?.matches || []);
+  const numTables = tournamentState.round2?.numTables === 4 ? 4 : 3;
+
+  const heats = computeRound2Heats(
+    tournamentState.round1?.byePlayer,
+    tournamentState.round1?.matches || [],
+    numTables
+  );
+
+  const totalExpected = tournamentState.round1?.matches?.length
+    ? tournamentState.round1.matches.length + (tournamentState.round1.byePlayer ? 1 : 0)
+    : Math.ceil(tournamentState.roster.filter(p => p.checkedIn).length / 2) || 15;
 
   if (qualifiersCountEl) {
-    qualifiersCountEl.textContent = `${heats.totalQualifiers} / 15`;
+    qualifiersCountEl.textContent = `${heats.totalQualifiers} / ${totalExpected}`;
   }
+
+  // Sync format buttons active state
+  document.querySelectorAll('.btn-heat-format').forEach(btn => {
+    const t = parseInt(btn.getAttribute('data-tables'), 10);
+    btn.classList.toggle('active', t === numTables);
+  });
 
   if (round2GridEl) {
     const tables = [
@@ -1585,36 +1604,51 @@ export function renderTournamentDesk() {
       { id: 'gamma', title: deskDict.round2.tableGamma, list: heats.tableGamma, color: 'purple' }
     ];
 
-    round2GridEl.innerHTML = tables.map(t => `
-      <div class="round2-table-card border-${t.color}">
-        <div class="table-card-head bg-${t.color}">
-          <span class="table-title">${t.title}</span>
-          <span class="table-occupancy">${t.list.length} / 5 Pax</span>
-        </div>
-        <ol class="table-seats-list">
-          ${Array.from({ length: 5 }, (_, idx) => {
-            const player = t.list[idx];
-            if (player) {
+    if (numTables === 4) {
+      tables.push({
+        id: 'delta',
+        title: deskDict.round2.tableDelta || 'Table Delta (Heat 4)',
+        list: heats.tableDelta,
+        color: 'amber'
+      });
+    }
+
+    const baseCap = Math.floor(totalExpected / numTables);
+    const rem = totalExpected % numTables;
+
+    round2GridEl.innerHTML = tables.map((t, tableIdx) => {
+      const targetTableCap = Math.max(t.list.length, baseCap + (tableIdx < rem ? 1 : 0), 5);
+
+      return `
+        <div class="round2-table-card border-${t.color}">
+          <div class="table-card-head bg-${t.color}">
+            <span class="table-title">${t.title}</span>
+            <span class="table-occupancy">${t.list.length} / ${targetTableCap} Pax</span>
+          </div>
+          <ol class="table-seats-list">
+            ${Array.from({ length: targetTableCap }, (_, idx) => {
+              const player = t.list[idx];
+              if (player) {
+                return `
+                  <li class="table-seat filled">
+                    <span class="seat-num">${idx + 1}</span>
+                    <div class="seat-player">
+                      <strong>${player.name}</strong>
+                    </div>
+                  </li>
+                `;
+              }
               return `
-                <li class="table-seat filled">
+                <li class="table-seat empty">
                   <span class="seat-num">${idx + 1}</span>
-                  <div class="seat-player">
-                    <strong>${player.name}</strong>
-                    <small>${player.dept || 'General'}</small>
-                  </div>
+                  <span class="seat-empty-text">${deskDict.round2.slotEmpty}</span>
                 </li>
               `;
-            }
-            return `
-              <li class="table-seat empty">
-                <span class="seat-num">${idx + 1}</span>
-                <span class="seat-empty-text">${deskDict.round2.slotEmpty}</span>
-              </li>
-            `;
-          }).join('')}
-        </ol>
-      </div>
-    `).join('');
+            }).join('')}
+          </ol>
+        </div>
+      `;
+    }).join('');
   }
 }
 
@@ -1870,6 +1904,23 @@ export function setupTournamentDeskEvents() {
       }, 2000);
     });
   }
+
+  // Round 2 Heat Format toggle (3 Tables vs 4 Tables)
+  document.querySelectorAll('.btn-heat-format').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const count = parseInt(btn.getAttribute('data-tables'), 10) || 3;
+      tournamentState = setRound2TableCount(tournamentState, count);
+      saveTournamentState(localStorage, tournamentState);
+      renderTournamentDesk();
+      const isBM = currentLang === 'bm';
+      showToast(
+        count === 4
+          ? (isBM ? 'Format 4 Meja diaktifkan (Meja Delta ditambah)' : '4 Tables format active (Table Delta added)')
+          : (isBM ? 'Format 3 Meja diaktifkan' : '3 Tables format active'),
+        '🎛️'
+      );
+    });
+  });
 
   // Print button
   const printBtn = document.getElementById('deskPrintBtn');

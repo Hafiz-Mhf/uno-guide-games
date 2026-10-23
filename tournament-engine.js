@@ -22,7 +22,9 @@ export function createDefaultTournamentState() {
     round2: {
       tableAlpha: [],
       tableBeta: [],
-      tableGamma: []
+      tableGamma: [],
+      tableDelta: [],
+      numTables: 3
     }
   };
 }
@@ -165,7 +167,18 @@ export function recordMatchWinner(state, matchId, winnerId) {
   };
 }
 
-export function computeRound2Heats(byePlayer, matches) {
+export function setRound2TableCount(state, numTables) {
+  const count = numTables === 4 ? 4 : 3;
+  return {
+    ...state,
+    round2: {
+      ...(state.round2 || {}),
+      numTables: count
+    }
+  };
+}
+
+export function computeRound2Heats(byePlayer, matches, numTables = 3) {
   const qualifiers = [];
   if (byePlayer) {
     qualifiers.push(byePlayer);
@@ -177,12 +190,36 @@ export function computeRound2Heats(byePlayer, matches) {
     });
   }
 
+  const k = numTables === 4 ? 4 : 3;
+  const n = qualifiers.length;
+  const base = Math.floor(n / k);
+  const remainder = n % k;
+
+  const tableBuckets = Array.from({ length: k }, () => []);
+  let currentIdx = 0;
+  for (let i = 0; i < k; i++) {
+    const tableSize = base + (i < remainder ? 1 : 0);
+    tableBuckets[i] = qualifiers.slice(currentIdx, currentIdx + tableSize);
+    currentIdx += tableSize;
+  }
+
+  const tableAlpha = tableBuckets[0] || [];
+  const tableBeta = tableBuckets[1] || [];
+  const tableGamma = tableBuckets[2] || [];
+  const tableDelta = tableBuckets[3] || [];
+
+  const expectedTotal = (Array.isArray(matches) ? matches.length : 0) + (byePlayer ? 1 : 0);
+
   return {
-    tableAlpha: qualifiers.slice(0, 5),
-    tableBeta: qualifiers.slice(5, 10),
-    tableGamma: qualifiers.slice(10, 15),
+    tableAlpha,
+    tableBeta,
+    tableGamma,
+    tableDelta,
+    tableBuckets,
+    numTables: k,
     totalQualifiers: qualifiers.length,
-    remainingToAdvance: Math.max(0, 15 - qualifiers.length)
+    expectedQualifiers: expectedTotal,
+    remainingToAdvance: Math.max(0, expectedTotal - qualifiers.length)
   };
 }
 

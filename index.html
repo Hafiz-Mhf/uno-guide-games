@@ -794,11 +794,21 @@
           <div class="desk-panel-header">
             <div>
               <span class="tech-pill bg-blue" data-i18n="tournamentDesk.round2.qualifiersBadge">Qualifiers Ready</span>
-              <h4 class="desk-panel-title" data-i18n="tournamentDesk.round2.title">Round 2 Physical Heats (3 Tables × 5 Pax)</h4>
-              <p class="desk-panel-sub" data-i18n="tournamentDesk.round2.subtitle">Winners from Round 1 automatically fill Table Alpha, Beta, and Gamma.</p>
+              <h4 class="desk-panel-title" data-i18n="tournamentDesk.round2.title">Round 2 Physical Card Heats</h4>
+              <p class="desk-panel-sub" data-i18n="tournamentDesk.round2.subtitle">Winners from Round 1 automatically fill physical heat tables for casual championship showdowns.</p>
             </div>
-            <div class="qualifiers-counter-badge">
-              <span>Qualifiers: </span><strong id="deskQualifiersCount">0 / 15</strong>
+            <div class="desk-heats-header-actions">
+              <div class="heats-format-pill-group" role="group" aria-label="Heat Table Format">
+                <button type="button" class="btn-heat-format active" data-tables="3" id="heatFormat3Btn" title="3 Tables (5–6 Pax) -> 3-Player Grand Final">
+                  🎛️ 3 Tables (5–6 Pax)
+                </button>
+                <button type="button" class="btn-heat-format" data-tables="4" id="heatFormat4Btn" title="4 Tables (4–5 Pax) -> 4-Player Grand Final">
+                  🎛️ 4 Tables (4–5 Pax)
+                </button>
+              </div>
+              <div class="qualifiers-counter-badge">
+                <span>Qualifiers: </span><strong id="deskQualifiersCount">0 / 15</strong>
+              </div>
             </div>
           </div>
 

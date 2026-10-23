@@ -575,7 +575,7 @@ body {
   border: 1px solid #E2E8F0;
   border-radius: 12px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px;
   box-sizing: border-box;
 }
@@ -583,10 +583,10 @@ body {
 .tab-btn {
   border: 1px solid transparent;
   background: transparent;
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 8px;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 600;
   color: #64748B;
   cursor: pointer;
@@ -2981,6 +2981,16 @@ body {
 @media (max-width: 1024px) {
   .header-quick-nav {
     display: none;
+  }
+
+  .tab-nav {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 12.5px;
   }
 }
 

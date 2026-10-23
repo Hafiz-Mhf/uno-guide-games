@@ -58,7 +58,7 @@ export const TRANSLATIONS = {
       step3Title: "Game Flow: Digital to Physical Card Game",
       step3Point1: "Round 1: Play digital matches on your phone/laptop",
       step3Point2: "Round 2: Winners advance to play with physical card tables",
-      step3Point3: "Round 3: The grand physical card final for the champions!",
+      step3Point3: "Round 3: The grand physical card final!",
       step4Tag: "Fair Play",
       step4Title: "Key Rules: Fair Play",
       step4Point1: "Call 'UNO!' on your last card",

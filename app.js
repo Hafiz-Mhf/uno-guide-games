@@ -221,6 +221,7 @@ export const TRANSLATIONS = {
       linkGuide: "🕹️ Beginner Guide & Practice Mat",
       linkRules: "📜 7 House Rules & Etiquette",
       linkRoomGen: "⚡ Automated Room Generator",
+      linkDesk: "🏆 Tournament Desk",
       linkBuddy: "BuddyBoardGames UNO ↗",
       proTipTitle: "Strategy Pro-Tip",
       tipShuffleBtn: "🎲 Shuffle Tip",
@@ -488,6 +489,7 @@ export const TRANSLATIONS = {
       linkGuide: "🕹️ Panduan Pemain & Pentas Latihan",
       linkRules: "📜 7 Syarat Santai & Etika",
       linkRoomGen: "⚡ Penjana Bilik Automatik",
+      linkDesk: "🏆 Meja Kejohanan",
       linkBuddy: "BuddyBoardGames UNO ↗",
       proTipTitle: "Petua Strategi UNO",
       tipShuffleBtn: "🎲 Tukar Petua",
@@ -1588,36 +1590,103 @@ export function setupTournamentDeskEvents() {
   }
 }
 
+// Tab Switching Controller with Hash & localStorage persistence
+export function switchTab(tab, shouldScroll = true, updateHistory = true) {
+  if (!tab || typeof document === 'undefined') return;
+  const validTabs = ['guide', 'rules', 'schedule', 'desk'];
+  if (!validTabs.includes(tab)) return;
+
+  const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
+  const view = document.getElementById(`${tab}View`);
+  if (!view) return;
+
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+  if (btn) btn.classList.add('active');
+  view.classList.add('active');
+
+  // Sync header quick nav pills
+  document.querySelectorAll('.quick-nav-pill').forEach(p => {
+    p.classList.toggle('active', p.getAttribute('data-switch-tab') === tab);
+  });
+
+  // Persist to localStorage so page refresh preserves tab even without hash
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('uno_active_tab', tab);
+    }
+  } catch (e) {}
+
+  // Sync URL hash for refresh and bookmarking
+  const winHistory = typeof window !== 'undefined' ? window.history : (typeof history !== 'undefined' ? history : null);
+  if (updateHistory && winHistory && winHistory.replaceState) {
+    winHistory.replaceState(null, '', `#${tab}`);
+  }
+
+  if (shouldScroll && typeof window !== 'undefined' && window.scrollTo) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
 // Initialize Application
 export function initApp() {
-    // Tab switching
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const tab = btn.getAttribute('data-tab');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  if (typeof window !== 'undefined') {
+    window.switchTab = switchTab;
+  }
 
-        btn.classList.add('active');
-        const view = document.getElementById(`${tab}View`);
-        if (view) view.classList.add('active');
+  const validTabs = ['guide', 'rules', 'schedule', 'desk'];
 
-        // Sync header quick nav pills
-        document.querySelectorAll('.quick-nav-pill').forEach(p => {
-          p.classList.toggle('active', p.getAttribute('data-switch-tab') === tab);
-        });
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
+  // Tab switching click handlers
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      switchTab(tab, true, true);
     });
+  });
 
-    // Language toggle
-    const langToggle = document.getElementById('langToggle');
-    if (langToggle) {
-      langToggle.addEventListener('click', () => {
-        currentLang = currentLang === 'en' ? 'bm' : 'en';
-        updateI18n();
-      });
+  // Quick switch tab handlers
+  document.querySelectorAll('[data-switch-tab]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tab = el.getAttribute('data-switch-tab');
+      switchTab(tab, true, true);
+    });
+  });
+
+  // Browser hash change listener (back/forward)
+  if (typeof window !== 'undefined') {
+    window.addEventListener('hashchange', () => {
+      const hash = (window.location.hash || '').replace(/^#/, '').trim();
+      if (validTabs.includes(hash)) {
+        switchTab(hash, false, false);
+      }
+    });
+  }
+
+  // Restore language preference
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const savedLang = localStorage.getItem('uno_lang');
+      if (savedLang === 'en' || savedLang === 'bm') {
+        currentLang = savedLang;
+      }
     }
+  } catch (e) {}
+
+  // Language toggle
+  const langToggle = document.getElementById('langToggle');
+  if (langToggle) {
+    langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'bm' : 'en';
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('uno_lang', currentLang);
+        }
+      } catch (e) {}
+      updateI18n();
+    });
+  }
 
     // Search input
     const searchInput = document.getElementById('playerSearch');
@@ -1739,23 +1808,26 @@ export function initApp() {
     shuffleTipBtn.addEventListener('click', shuffleFooterTip);
   }
 
-  document.querySelectorAll('[data-switch-tab]').forEach(el => {
-    el.addEventListener('click', (e) => {
-      e.preventDefault();
-      const tab = el.getAttribute('data-switch-tab');
-      const tabBtn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
-      if (tabBtn) tabBtn.click();
-    });
-  });
-
-  // Initial render
+  // Initial render of translations and UI
   updateI18n();
 
-  // Sync header quick nav pills on initial load
-  const activeTab = document.querySelector('.tab-btn.active')?.getAttribute('data-tab') || 'guide';
-  document.querySelectorAll('.quick-nav-pill').forEach(p => {
-    p.classList.toggle('active', p.getAttribute('data-switch-tab') === activeTab);
-  });
+  // Restore persisted active tab (URL Hash > localStorage > default 'guide')
+  let initialTab = 'guide';
+  try {
+    const hash = (typeof window !== 'undefined' && window.location && window.location.hash)
+      ? window.location.hash.replace(/^#/, '').trim()
+      : '';
+    if (validTabs.includes(hash)) {
+      initialTab = hash;
+    } else if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem('uno_active_tab');
+      if (stored && validTabs.includes(stored)) {
+        initialTab = stored;
+      }
+    }
+  } catch (e) {}
+
+  switchTab(initialTab, false, true);
 }
 
 // Fail-safe self-initialization

@@ -39,6 +39,29 @@
         window.switchPosterTab(type);
       }
     }
+    // Fast tab restore to prevent flash of wrong tab on refresh
+    (function() {
+      try {
+        var validTabs = ['guide', 'rules', 'schedule', 'desk'];
+        var hash = (window.location.hash || '').replace(/^#/, '').trim();
+        var targetTab = validTabs.indexOf(hash) !== -1 ? hash : localStorage.getItem('uno_active_tab');
+        if (targetTab && validTabs.indexOf(targetTab) !== -1 && targetTab !== 'guide') {
+          document.addEventListener('DOMContentLoaded', function() {
+            var btn = document.querySelector('.tab-btn[data-tab="' + targetTab + '"]');
+            var view = document.getElementById(targetTab + 'View');
+            if (btn && view) {
+              document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+              document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+              btn.classList.add('active');
+              view.classList.add('active');
+              document.querySelectorAll('.quick-nav-pill').forEach(function(p) {
+                p.classList.toggle('active', p.getAttribute('data-switch-tab') === targetTab);
+              });
+            }
+          });
+        }
+      } catch (e) {}
+    })();
   </script>
 </head>
 <body>
@@ -84,6 +107,10 @@
           <button type="button" class="quick-nav-pill" data-switch-tab="schedule">
             <span class="pill-icon">🎮</span>
             <span class="pill-label">Platform</span>
+          </button>
+          <button type="button" class="quick-nav-pill" data-switch-tab="desk">
+            <span class="pill-icon">🏆</span>
+            <span class="pill-label">Desk</span>
           </button>
         </nav>
 
@@ -840,6 +867,11 @@
               <li>
                 <button type="button" class="footer-nav-btn" data-switch-tab="schedule" data-i18n="footer.linkRoomGen">
                   ⚡ Automated Room Generator
+                </button>
+              </li>
+              <li>
+                <button type="button" class="footer-nav-btn" data-switch-tab="desk" data-i18n="footer.linkDesk">
+                  🏆 Tournament Desk
                 </button>
               </li>
               <li>

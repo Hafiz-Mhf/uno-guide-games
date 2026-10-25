@@ -313,6 +313,22 @@ export const TRANSLATIONS = {
       round2Subtitle: "Winners from Round 1 automatically fill Table Alpha, Beta, Gamma (and Delta).",
       grandFinalTitle: "🏆 Grand Final Stage",
       grandFinalDesc: "The 1st place finisher from each Round 2 physical heat advances to the ultimate Grand Final championship match!"
+    },
+    auth: {
+      adminLogin: "Organizer Login",
+      organizerActive: "👑 Admin Mode",
+      logout: "Exit / Guest",
+      adminBadge: "Admin Desk",
+      modalTitle: "Tournament Organizer Login",
+      modalSubtitle: "Enter organizer credentials to access tournament desk, randomize brackets, and record winners. Saved locally in your browser.",
+      usernameLabel: "Username",
+      passwordLabel: "Password",
+      loginBtn: "Log In to Desk 🚀",
+      cancelBtn: "Continue as Guest",
+      localNote: "🔒 No database required. Credentials authenticate locally on your device. Default: admin / uno2026",
+      deskBannerTitle: "Authenticated Organizer Session",
+      deskBannerSub: "Local browser session active. Only you can view this desk.",
+      switchToGuest: "👁️ Switch to Guest View"
     }
   },
   bm: {
@@ -610,6 +626,22 @@ export const TRANSLATIONS = {
       round2Subtitle: "Pemenang Pusingan 1 akan mengisi Meja Alpha, Beta, Gamma (dan Delta) secara automatik.",
       grandFinalTitle: "🏆 Pentas Akhir Kejuaraan",
       grandFinalDesc: "Juara tempat pertama dari setiap meja Pusingan 2 akan mara berentap merebut piala kejuaraan!"
+    },
+    auth: {
+      adminLogin: "Log Masuk Penganjur",
+      organizerActive: "👑 Mod Penganjur",
+      logout: "Keluar / Tetamu",
+      adminBadge: "Meja Admin",
+      modalTitle: "Log Masuk Meja Penganjur",
+      modalSubtitle: "Masukkan maklumat penganjur untuk mengakses meja kejohanan, rawakkan perlawanan dan rekod pemenang. Disimpan secara setempat dalam pelayar anda.",
+      usernameLabel: "Nama Pengguna",
+      passwordLabel: "Kata Laluan",
+      loginBtn: "Log Masuk ke Meja 🚀",
+      cancelBtn: "Teruskan sebagai Tetamu",
+      localNote: "🔒 Tiada pangkalan data diperlukan. Pengesahan setempat pada peranti anda. Lalai: admin / uno2026",
+      deskBannerTitle: "Sesi Penganjur Disahkan",
+      deskBannerSub: "Sesi pelayar setempat aktif. Hanya anda yang boleh melihat meja ini.",
+      switchToGuest: "👁️ Beralih ke Paparan Tetamu"
     }
   }
 };
@@ -2280,11 +2312,281 @@ export function setupTournamentDeskEvents() {
   }
 }
 
+// ==========================================================================
+// Guest vs Admin (Organizer) Authentication & View Protection (Local Only)
+// ==========================================================================
+
+export const DEFAULT_ADMIN_USER = 'admin';
+export const DEFAULT_ADMIN_PASS = 'uno2026';
+
+export function isAdminAuthenticated() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('uno_admin_logged_in') === 'true';
+    }
+  } catch (e) {}
+  return false;
+}
+
+export function getStoredAdminCredentials() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = localStorage.getItem('uno_admin_creds');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && parsed.username && parsed.password) {
+          return parsed;
+        }
+      }
+    }
+  } catch (e) {}
+  return { username: DEFAULT_ADMIN_USER, password: DEFAULT_ADMIN_PASS };
+}
+
+export function loginAdmin(username, password) {
+  const creds = getStoredAdminCredentials();
+  const inputUser = String(username || '').trim().toLowerCase();
+  const inputPass = String(password || '').trim();
+
+  if (inputUser === creds.username.toLowerCase() && inputPass === creds.password) {
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('uno_admin_logged_in', 'true');
+      }
+    } catch (e) {}
+    // Automatically unlock organizer desk protection on successful admin login
+    isDeskOrganizerUnlocked = true;
+    renderAuthUI();
+    return { success: true };
+  }
+
+  const isBM = currentLang === 'bm';
+  return {
+    success: false,
+    error: isBM
+      ? 'Nama pengguna atau kata laluan tidak sah. (Lalai: admin / uno2026)'
+      : 'Invalid username or password. (Default: admin / uno2026)'
+  };
+}
+
+export function logoutAdmin() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('uno_admin_logged_in');
+    }
+  } catch (e) {}
+  isDeskOrganizerUnlocked = false;
+  renderAuthUI();
+
+  // If currently on desk tab, revert to matchups
+  const currentActiveBtn = typeof document !== 'undefined' ? document.querySelector('.tab-btn.active') : null;
+  if (currentActiveBtn && currentActiveBtn.getAttribute('data-tab') === 'desk') {
+    switchTab('matchups', true, true);
+  }
+
+  const isBM = currentLang === 'bm';
+  showToast(isBM
+    ? 'Log keluar berjaya. Beralih ke Paparan Tetamu.'
+    : 'Logged out. Switched to Guest View.', '👋');
+}
+
+export function renderAuthUI() {
+  if (typeof document === 'undefined') return;
+  const isAdmin = isAdminAuthenticated();
+
+  // Update body role classes
+  if (document.body) {
+    document.body.classList.toggle('role-admin', isAdmin);
+    document.body.classList.toggle('role-guest', !isAdmin);
+  }
+
+  // Update tab-nav grid mode
+  const tabNav = document.querySelector('.tab-nav');
+  if (tabNav) {
+    tabNav.classList.toggle('admin-mode', isAdmin);
+    tabNav.classList.toggle('guest-mode', !isAdmin);
+  }
+
+  // Toggle header login trigger vs status group
+  const openLoginBtn = document.getElementById('openAdminLoginBtn');
+  if (openLoginBtn) {
+    openLoginBtn.style.display = isAdmin ? 'none' : 'inline-flex';
+  }
+
+  const adminStatusGroup = document.getElementById('adminStatusGroup');
+  if (adminStatusGroup) {
+    adminStatusGroup.style.display = isAdmin ? 'inline-flex' : 'none';
+  }
+
+  // Toggle admin-only items (desk tab button, desk quick nav pill, hero desk button)
+  document.querySelectorAll('.admin-only-item').forEach(el => {
+    el.style.display = isAdmin ? '' : 'none';
+  });
+
+  // Toggle desk view admin session banner
+  const deskAdminBanner = document.getElementById('deskAdminSessionBar');
+  if (deskAdminBanner) {
+    deskAdminBanner.style.display = isAdmin ? 'flex' : 'none';
+  }
+}
+
+export function openAdminLoginModal() {
+  if (typeof document === 'undefined') return;
+  const overlay = document.getElementById('adminLoginModalOverlay');
+  if (!overlay) return;
+
+  const errorBox = document.getElementById('adminLoginError');
+  if (errorBox) errorBox.style.display = 'none';
+
+  const usernameInput = document.getElementById('adminUsernameInput');
+  const passwordInput = document.getElementById('adminPasswordInput');
+  if (usernameInput) usernameInput.value = '';
+  if (passwordInput) passwordInput.value = '';
+
+  overlay.style.display = 'flex';
+  overlay.classList.add('active');
+  if (document.body) document.body.style.overflow = 'hidden';
+
+  setTimeout(() => {
+    if (usernameInput) usernameInput.focus();
+  }, 100);
+}
+
+export function closeAdminLoginModal() {
+  if (typeof document === 'undefined') return;
+  const overlay = document.getElementById('adminLoginModalOverlay');
+  if (!overlay) return;
+
+  overlay.style.display = 'none';
+  overlay.classList.remove('active');
+  if (document.body) document.body.style.overflow = '';
+}
+
+export function setupAuthEventListeners() {
+  if (typeof document === 'undefined') return;
+
+  // Header open login modal button
+  const openLoginBtn = document.getElementById('openAdminLoginBtn');
+  if (openLoginBtn) {
+    openLoginBtn.addEventListener('click', () => {
+      openAdminLoginModal();
+    });
+  }
+
+  // Header logout button
+  const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+  if (adminLogoutBtn) {
+    adminLogoutBtn.addEventListener('click', () => {
+      logoutAdmin();
+    });
+  }
+
+  // Desk view switch to guest button
+  const deskSwitchGuestBtn = document.getElementById('deskSwitchGuestBtn');
+  if (deskSwitchGuestBtn) {
+    deskSwitchGuestBtn.addEventListener('click', () => {
+      logoutAdmin();
+    });
+  }
+
+  // Close modal X button & Cancel button
+  const closeX = document.getElementById('adminLoginCloseX');
+  if (closeX) {
+    closeX.addEventListener('click', closeAdminLoginModal);
+  }
+
+  const cancelBtn = document.getElementById('adminLoginCancelBtn');
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeAdminLoginModal);
+  }
+
+  // Modal backdrop click outside to close
+  const overlay = document.getElementById('adminLoginModalOverlay');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closeAdminLoginModal();
+      }
+    });
+  }
+
+  // Password toggle show/hide
+  const togglePassBtn = document.getElementById('adminTogglePasswordBtn');
+  const passwordInput = document.getElementById('adminPasswordInput');
+  if (togglePassBtn && passwordInput) {
+    togglePassBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+      passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+      togglePassBtn.textContent = isPassword ? '🙈' : '👁️';
+    });
+  }
+
+  // Login form submission
+  const loginForm = document.getElementById('adminLoginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const usernameInput = document.getElementById('adminUsernameInput');
+      const passwordInput = document.getElementById('adminPasswordInput');
+      const errorBox = document.getElementById('adminLoginError');
+      const errorText = document.getElementById('adminLoginErrorText');
+
+      const user = usernameInput ? usernameInput.value : '';
+      const pass = passwordInput ? passwordInput.value : '';
+
+      const result = loginAdmin(user, pass);
+      if (result.success) {
+        closeAdminLoginModal();
+        switchTab('desk', true, true);
+        const isBM = currentLang === 'bm';
+        showToast(isBM
+          ? '👑 Selamat datang Admin! Meja Kejohanan kini dibuka sepenuhnya.'
+          : '👑 Welcome Admin! Tournament Desk is now unlocked.', '👑');
+      } else {
+        if (errorBox && errorText) {
+          errorText.textContent = result.error;
+          errorBox.style.display = 'flex';
+          const card = document.querySelector('.admin-login-card');
+          if (card) {
+            card.classList.remove('shake');
+            void card.offsetWidth; // trigger reflow
+            card.classList.add('shake');
+          }
+        }
+      }
+    });
+  }
+
+  // Keyboard Escape listener for modal
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const overlay = document.getElementById('adminLoginModalOverlay');
+        if (overlay && (overlay.style.display === 'flex' || overlay.classList.contains('active'))) {
+          closeAdminLoginModal();
+        }
+      }
+    });
+  }
+}
+
 // Tab Switching Controller with Hash & localStorage persistence
 export function switchTab(tab, shouldScroll = true, updateHistory = true) {
   if (!tab || typeof document === 'undefined') return;
   const validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
   if (!validTabs.includes(tab)) return;
+
+  // Gate desk tab for guests when login modal is available in browser DOM
+  if (tab === 'desk' && !isAdminAuthenticated()) {
+    if (typeof document !== 'undefined' && document.getElementById('adminLoginModalOverlay')) {
+      openAdminLoginModal();
+      const isBM = currentLang === 'bm';
+      showToast(isBM
+        ? '🔐 Akses Meja Kejohanan memerlukan log masuk Penganjur.'
+        : '🔐 Tournament Desk requires Organizer login.', '🔐');
+      return;
+    }
+  }
 
   const btn = document.querySelector(`.tab-btn[data-tab="${tab}"]`);
   const view = document.getElementById(`${tab}View`);
@@ -2324,6 +2626,11 @@ export function initApp() {
   if (typeof window !== 'undefined') {
     window.switchTab = switchTab;
     window.renderPublicMatchups = renderPublicMatchups;
+    window.loginAdmin = loginAdmin;
+    window.logoutAdmin = logoutAdmin;
+    window.isAdminAuthenticated = isAdminAuthenticated;
+    window.openAdminLoginModal = openAdminLoginModal;
+    window.closeAdminLoginModal = closeAdminLoginModal;
   }
 
   const validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
@@ -2493,14 +2800,18 @@ export function initApp() {
   // Setup Tournament Desk Widget
   setupTournamentDeskEvents();
 
+  // Setup Authentication Controls
+  setupAuthEventListeners();
+
   // Setup Footer Interactive Events
   const shuffleTipBtn = document.getElementById('shuffleFooterTipBtn');
   if (shuffleTipBtn) {
     shuffleTipBtn.addEventListener('click', shuffleFooterTip);
   }
 
-  // Initial render of translations and UI
+  // Initial render of translations, UI & Auth state
   updateI18n();
+  renderAuthUI();
 
   // Restore persisted active tab (URL Hash > localStorage > default 'guide')
   let initialTab = 'guide';
@@ -2508,12 +2819,13 @@ export function initApp() {
     const hash = (typeof window !== 'undefined' && window.location && window.location.hash)
       ? window.location.hash.replace(/^#/, '').trim()
       : '';
+    const isAdmin = isAdminAuthenticated();
     if (validTabs.includes(hash)) {
-      initialTab = hash;
+      initialTab = (hash === 'desk' && !isAdmin) ? 'matchups' : hash;
     } else if (typeof localStorage !== 'undefined') {
       const stored = localStorage.getItem('uno_active_tab');
       if (stored && validTabs.includes(stored)) {
-        initialTab = stored;
+        initialTab = (stored === 'desk' && !isAdmin) ? 'matchups' : stored;
       }
     }
   } catch (e) {}

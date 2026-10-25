@@ -45,6 +45,13 @@
         var validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
         var hash = (window.location.hash || '').replace(/^#/, '').trim();
         var targetTab = validTabs.indexOf(hash) !== -1 ? hash : localStorage.getItem('uno_active_tab');
+        var isAdmin = false;
+        try {
+          isAdmin = localStorage.getItem('uno_admin_logged_in') === 'true';
+        } catch (e) {}
+        if (targetTab === 'desk' && !isAdmin) {
+          targetTab = 'matchups';
+        }
         if (targetTab && validTabs.indexOf(targetTab) !== -1 && targetTab !== 'guide') {
           document.addEventListener('DOMContentLoaded', function() {
             var btn = document.querySelector('.tab-btn[data-tab="' + targetTab + '"]');
@@ -112,7 +119,7 @@
             <span class="pill-icon">⚔️</span>
             <span class="pill-label">Matchups</span>
           </button>
-          <button type="button" class="quick-nav-pill" data-switch-tab="desk">
+          <button type="button" class="quick-nav-pill desk-nav-pill admin-only-item" data-switch-tab="desk">
             <span class="pill-icon">🏆</span>
             <span class="pill-label">Desk</span>
           </button>
@@ -124,6 +131,23 @@
             <span class="chip-pulse-dot" aria-hidden="true"></span>
             <span class="capsule-date">28 Oct 2026</span>
             <span class="capsule-time">3:00 PM</span>
+          </div>
+
+          <!-- Organizer Auth Trigger & Status -->
+          <button id="openAdminLoginBtn" class="admin-auth-header-btn" type="button" aria-label="Organizer Login">
+            <span class="auth-icon">🔐</span>
+            <span class="auth-label" data-i18n="auth.adminLogin">Organizer Login</span>
+          </button>
+
+          <div id="adminStatusGroup" class="admin-status-group" style="display: none;">
+            <div class="admin-active-pill" title="Logged in as Organizer">
+              <span class="admin-pulse-dot" aria-hidden="true"></span>
+              <span class="admin-badge-text" data-i18n="auth.organizerActive">👑 Admin Mode</span>
+            </div>
+            <button id="adminLogoutBtn" class="admin-logout-btn" type="button" aria-label="Log Out to Guest View" title="Exit Admin and switch back to Guest view">
+              <span class="logout-icon">🚪</span>
+              <span class="logout-label" data-i18n="auth.logout">Exit / Guest</span>
+            </button>
           </div>
 
           <button id="langToggle" class="lang-toggle-btn" aria-label="Switch Language / Tukar Bahasa">
@@ -160,6 +184,9 @@
           <button id="heroGoToMatchupsBtn" class="hero-btn-primary" onclick="switchTab('matchups')">
             ⚔️ View Live Matchups
           </button>
+          <button id="heroGoToDeskBtn" class="hero-btn-admin admin-only-item" onclick="switchTab('desk')" style="display: none;">
+            🏆 Open Tournament Desk
+          </button>
           <button id="heroGoToRoomsBtn" class="hero-btn-secondary" onclick="document.querySelector('[data-tab=schedule]').click(); setTimeout(() => document.getElementById('roomGeneratorWidget').scrollIntoView({ behavior: 'smooth' }), 100);">
             ⚡ Quick Room Generator & Join
           </button>
@@ -177,7 +204,7 @@
         <button class="tab-btn" data-tab="rules" data-i18n="nav.rules">📜 Official Rules & 7 House Rules</button>
         <button class="tab-btn" data-tab="schedule" data-i18n="nav.schedule">🎮 Digital Platform & Room Setup</button>
         <button class="tab-btn" data-tab="matchups" data-i18n="nav.matchups">⚔️ Live Matchups</button>
-        <button class="tab-btn" data-tab="desk" data-i18n="nav.tournamentDesk">🏆 Tournament Desk</button>
+        <button class="tab-btn desk-tab-btn admin-only-item" data-tab="desk" data-i18n="nav.tournamentDesk">🏆 Tournament Desk</button>
       </nav>
     </div>
 
@@ -743,6 +770,20 @@
 
       <!-- TAB 5: TOURNAMENT DESK & MATCH RANDOMIZER (ORGANIZER DESK) -->
       <section id="deskView" class="tab-content">
+        <!-- Admin Session Pill / Status -->
+        <div class="desk-admin-session-bar" id="deskAdminSessionBar" style="display: none;">
+          <div class="admin-session-info">
+            <span class="session-crown">👑</span>
+            <div>
+              <span class="session-user" data-i18n="auth.deskBannerTitle">Authenticated Organizer Session</span>
+              <span class="session-local" data-i18n="auth.deskBannerSub">Local browser session active. Only you can view this desk.</span>
+            </div>
+          </div>
+          <button type="button" class="btn-guest-switch" id="deskSwitchGuestBtn" data-i18n="auth.switchToGuest">
+            👁️ Switch to Guest View
+          </button>
+        </div>
+
         <!-- Section Header -->
         <div class="section-header">
           <div>
@@ -1092,6 +1133,60 @@
           <button type="button" class="dialog-btn dialog-btn-cancel" id="customDialogCancelBtn">Cancel</button>
           <button type="button" class="dialog-btn dialog-btn-confirm" id="customDialogConfirmBtn">Confirm</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Admin / Organizer Login Modal (Local Authentication Only) -->
+    <div id="adminLoginModalOverlay" class="admin-login-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle">
+      <div class="admin-login-card">
+        <button id="adminLoginCloseX" class="admin-modal-close-x" type="button" aria-label="Close dialog">✕</button>
+        <div class="admin-card-icon-bubble">
+          <span>🔐</span>
+        </div>
+        <div class="admin-card-header">
+          <span class="admin-card-badge" data-i18n="auth.adminBadge">Admin Desk</span>
+          <h3 id="adminModalTitle" class="admin-card-title" data-i18n="auth.modalTitle">Tournament Organizer Login</h3>
+          <p class="admin-card-subtitle" data-i18n="auth.modalSubtitle">Enter organizer credentials to access tournament desk, randomize brackets, and record winners. Saved locally in your browser.</p>
+        </div>
+        
+        <form id="adminLoginForm" class="admin-login-form">
+          <div class="admin-input-group">
+            <label for="adminUsernameInput" class="admin-input-label" data-i18n="auth.usernameLabel">Username</label>
+            <div class="admin-input-wrapper">
+              <span class="admin-input-icon">👤</span>
+              <input type="text" id="adminUsernameInput" class="admin-text-input" placeholder="admin" autocomplete="username" required>
+            </div>
+          </div>
+
+          <div class="admin-input-group">
+            <label for="adminPasswordInput" class="admin-input-label" data-i18n="auth.passwordLabel">Password</label>
+            <div class="admin-input-wrapper">
+              <span class="admin-input-icon">🔑</span>
+              <input type="password" id="adminPasswordInput" class="admin-text-input" placeholder="••••••••" autocomplete="current-password" required>
+              <button type="button" id="adminTogglePasswordBtn" class="admin-pwd-toggle-btn" aria-label="Toggle password visibility">👁️</button>
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div id="adminLoginError" class="admin-login-error" style="display: none;" role="alert">
+            <span class="error-icon">⚠️</span>
+            <span id="adminLoginErrorText" class="error-text">Invalid credentials. Default: admin / uno2026</span>
+          </div>
+
+          <div class="admin-local-hint">
+            <span class="hint-icon">🔒</span>
+            <span data-i18n="auth.localNote">🔒 No database required. Credentials authenticate locally on your device. Default: admin / uno2026</span>
+          </div>
+
+          <div class="admin-form-actions">
+            <button type="submit" id="adminLoginSubmitBtn" class="admin-submit-btn" data-i18n="auth.loginBtn">
+              Log In to Desk 🚀
+            </button>
+            <button type="button" id="adminLoginCancelBtn" class="admin-cancel-btn" data-i18n="auth.cancelBtn">
+              Continue as Guest
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 

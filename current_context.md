@@ -4,11 +4,33 @@
 > **Target Event Date:** Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)  
 > **Venue:** Common Area, Level 2, Hive 5, MRANTI Building  
 > **Platform:** BuddyBoardGames UNO (Digital Round 1) & Physical Decks (Rounds 2 & 3)  
-> **Status:** Production Ready • 9/9 Test Suites Passing (`npm test`)
+> **Status:** Production Ready • 10/10 Test Suites Passing (`npm test`)
 
 ---
 
-## Final Guideline Poster & Motto Sync `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Guest vs Admin Role Separation & Local Authentication `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **Seamless zero-friction Guest Mode.** Any participant visiting the portal enters as a **Guest** by default with zero registration, login, or friction required.
+* **Separated guest vs admin windows:**
+  * **Guest Window:** Sees Beginner Guide (`#guide`), Official Rules (`#rules`), Digital Platform (`#schedule`), and Live Matchups (`#matchups`). Tournament Desk is completely hidden from both the main navigation grid (4 tabs) and header quick nav. Direct URL access to `#desk` is automatically guarded and redirected to `#matchups` with an organizer prompt.
+  * **Admin Window (Unlocked):** Unlocks the full **Tournament Desk** (`#desk`) with bracket randomization, attendee roster management, 3-table/4-table heats formatting, and live winner recording.
+* **Pure client-side local authentication (No database required):**
+  * Stored and validated locally inside browser `localStorage`.
+  * Default organizer credentials: Username `admin`, Password `uno2026`.
+  * Authenticated state persists locally across page reloads (`uno_admin_logged_in: 'true'`) so organizers don't lose session state mid-tournament.
+* **Glassmorphism organizer login modal:**
+  * Accessible via header button (`🔐 Organizer Login`).
+  * Features autofocus, show/hide password toggle (`👁️` / `🙈`), shake animation on invalid credentials, and keyboard `Enter` / `Esc` handling.
+* **Header admin status indicator & 1-click logout:**
+  * When logged in, header displays a glowing green pulse badge: `👑 Admin Mode` alongside an `Exit / Guest` button.
+  * Tournament Desk displays a top status banner: *"Authenticated Organizer Session — Local browser session active"*.
+  * Clicking `Exit / Guest` or `Switch to Guest View` clears local authentication, reverts the navigation grid to 4 tabs, and redirects to `#matchups`.
+
+---
+
+## Final Guideline Poster & Motto Sync `25 October 2026`
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
 

@@ -274,7 +274,7 @@ export const TRANSLATIONS = {
         selectWinnerPrompt: "Select Winner to Advance:",
         winnerWonSuffix: "Won 👑",
         byeTitle: "🎁 Round 1 BYE Pass Awarded",
-        byeDesc: "advances directly to Round 2 physical tables without playing Round 1 due to odd player count."
+        byeDesc: "advances directly to Round 2 physical tables (BYE pass awarded due to odd participant count)."
       },
       round2: {
         title: "Round 2 Physical Card Heats",
@@ -300,7 +300,7 @@ export const TRANSLATIONS = {
       title: "Round 1 Matchups & Digital Rooms",
       subtitle: "Find your table number and paired opponent. Click 'Launch BBG Room' to enter your game room immediately.",
       safeNotice: "🛡️ Participant Read-Only View — Click any table room button to play!",
-      searchPlaceholder: "🔍 Search your name to find your table (e.g. Noorfaizal)...",
+      searchPlaceholder: "Search your name to find your table (e.g. Noorfaizal)...",
       shareBtn: "🔗 Copy Matchups Link",
       emptyPrompt: "Round 1 pairings have not been generated yet. Please wait for the tournament organizer to start the round.",
       statusInProgress: "⏳ In Progress • Playing to 150 pts",
@@ -587,7 +587,7 @@ export const TRANSLATIONS = {
         selectWinnerPrompt: "Pilih Pemenang:",
         winnerWonSuffix: "Menang 👑",
         byeTitle: "🎁 Pas Percuma Pusingan 1 (BYE)",
-        byeDesc: "layak terus ke meja fizikal Pusingan 2 tanpa perlu bermain Pusingan 1 akibat bilangan ganjil."
+        byeDesc: "layak terus ke meja kad fizikal Pusingan 2 (pas BYE diberikan akibat bilangan peserta ganjil)."
       },
       round2: {
         title: "Pusingan 2 Meja Kad Fizikal",
@@ -613,7 +613,7 @@ export const TRANSLATIONS = {
       title: "Jadual Perlawanan Pusingan 1 & Bilik Digital",
       subtitle: "Cari nombor meja dan lawan anda. Klik 'Buka Bilik BBG' untuk terus masuk ke bilik perlawanan anda.",
       safeNotice: "🛡️ Paparan Peserta Sahaja — Klik butang meja untuk mula bermain!",
-      searchPlaceholder: "🔍 Cari nama anda untuk lihat meja (cth: Noorfaizal)...",
+      searchPlaceholder: "Cari nama anda untuk lihat meja (cth: Noorfaizal)...",
       shareBtn: "🔗 Salin Pautan Jadual",
       emptyPrompt: "Jadual perlawanan Pusingan 1 belum dijana lagi. Sila tunggu penganjur memulakan pusingan.",
       statusInProgress: "⏳ Sedang Berlangsung • Menang 150 mata",

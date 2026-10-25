@@ -8,7 +8,16 @@
 
 ---
 
-## Executive Header Streamlining & Decluttering `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Search Placeholder & BYE Banner Typography Fix `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#fee2e2;color:#991b1b;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">FIXED</span>
+
+* **Removed duplicate magnifying glass icon (`🔍 🔍`).** Fixed redundant `🔍` emoji prefix inside `publicMatchups.searchPlaceholder` translation strings in `app.js`. The search input field now renders a single crisp search icon on the left with clean placeholder text (`Search your name to find your table (e.g. Noorfaizal)...`).
+* **Polished Round 1 BYE pass description.** Refined awkward wording to clear tournament language: `advances directly to Round 2 physical tables (BYE pass awarded due to odd participant count)`.
+
+---
+
+## Executive Header Streamlining & Decluttering `25 October 2026`
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
 

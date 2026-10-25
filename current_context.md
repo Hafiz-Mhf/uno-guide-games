@@ -8,7 +8,20 @@
 
 ---
 
-## Guest vs Admin Role Separation & Local Authentication `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Executive Header Streamlining & Decluttering `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
+
+* **Eliminated header crowding & visual competition.** Removed duplicate center quick-nav pills and redundant event date capsule (`28 Oct 2026 • 3:00 PM`) from the top header bar, immediately freeing ~500px of horizontal breathing room. (Event date, time, duration, and venue remain prominent in the Hero banner below).
+* **Zero title truncation.** Removed ellipsis cut-off (`HR & Admin UNO En...`). Event title `HR & Admin UNO Engagement Day 2026` and gold `Championship Edition` badge now render in full crisp typography across all screen resolutions without squeezing.
+* **Balanced executive layout.** Header now features an uncluttered 2-pillar architecture:
+  * **Left:** Event Emblem Logo + Department (`● Talent Development | HR`) + Full Championship Title.
+  * **Right:** Clean utility action pills (`🔐 Organizer Login` / `👑 Admin Mode` + `🌐 BM`).
+* **Expanded container width.** Increased `.header-inner` width from 1240px to 1400px with generous 20px flex gaps.
+
+---
+
+## Guest vs Admin Role Separation & Local Authentication `25 October 2026`
 
 <span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
 

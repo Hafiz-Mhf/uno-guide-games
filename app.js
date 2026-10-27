@@ -275,8 +275,8 @@ export const TRANSLATIONS = {
         launchRoomBtn: "Launch BBG Room ↗",
         selectWinnerPrompt: "Select Winner to Advance:",
         winnerWonSuffix: "Won 👑",
-        byeTitle: "🎁 Round 1 BYE Pass Awarded",
-        byeDesc: "advances directly to Round 2 physical tables (BYE pass awarded due to odd participant count)."
+        byeTitle: "🎁 Round 1 BYE Pass",
+        byeDesc: "Advances directly to Round 2 Physical Card Heats without playing a digital 1v1 match (randomly awarded due to odd participant count)."
       },
       round2: {
         title: "Round 2 Physical Card Heats",
@@ -590,7 +590,7 @@ export const TRANSLATIONS = {
         selectWinnerPrompt: "Pilih Pemenang:",
         winnerWonSuffix: "Menang 👑",
         byeTitle: "🎁 Pas Percuma Pusingan 1 (BYE)",
-        byeDesc: "layak terus ke meja kad fizikal Pusingan 2 (pas BYE diberikan akibat bilangan peserta ganjil)."
+        byeDesc: "Layak terus ke Meja Fizikal Pusingan 2 tanpa perlu bertanding di Pusingan 1 (diberikan secara rawak akibat bilangan peserta ganjil)."
       },
       round2: {
         title: "Pusingan 2 Meja Kad Fizikal",
@@ -1559,11 +1559,22 @@ export function renderPublicMatchups() {
   if (byeNoticeEl) {
     if (tournamentState.round1?.byePlayer) {
       const bp = tournamentState.round1.byePlayer;
-      byeNoticeEl.style.display = 'block';
+      const isBM = currentLang === 'bm';
+      byeNoticeEl.style.display = 'flex';
       byeNoticeEl.innerHTML = `
-        <div class="bye-badge">${deskDict.matches.byeTitle}</div>
-        <div class="bye-content">
-          <strong>${bp.name}</strong> ${deskDict.matches.byeDesc}
+        <div class="bye-icon-bubble" aria-hidden="true">🎁</div>
+        <div class="bye-body">
+          <div class="bye-header-row">
+            <span class="bye-badge">${deskDict.matches.byeTitle}</span>
+            <span class="bye-status-pill">✓ ${isBM ? 'Layak Terus Pusingan 2' : 'Direct Round 2 Qualifier'}</span>
+          </div>
+          <div class="bye-player-name-row">
+            <h4 class="bye-player-name">${bp.name}</h4>
+            <span class="bye-dept-chip">${bp.dept || 'Talent Development'}</span>
+          </div>
+          <p class="bye-content bye-desc-text">
+            ${deskDict.matches.byeDesc}
+          </p>
         </div>
       `;
     } else {
@@ -1831,11 +1842,22 @@ export function renderTournamentDesk() {
   if (byeNoticeEl) {
     if (tournamentState.round1?.byePlayer) {
       const bp = tournamentState.round1.byePlayer;
-      byeNoticeEl.style.display = 'block';
+      const isBM = currentLang === 'bm';
+      byeNoticeEl.style.display = 'flex';
       byeNoticeEl.innerHTML = `
-        <div class="bye-badge">${deskDict.matches.byeTitle}</div>
-        <div class="bye-content">
-          <strong>${bp.name}</strong> (${bp.dept || 'General'}) ${deskDict.matches.byeDesc}
+        <div class="bye-icon-bubble" aria-hidden="true">🎁</div>
+        <div class="bye-body">
+          <div class="bye-header-row">
+            <span class="bye-badge">${deskDict.matches.byeTitle}</span>
+            <span class="bye-status-pill">✓ ${isBM ? 'Layak Terus Pusingan 2' : 'Direct Round 2 Qualifier'}</span>
+          </div>
+          <div class="bye-player-name-row">
+            <h4 class="bye-player-name">${bp.name}</h4>
+            <span class="bye-dept-chip">${bp.dept || 'Talent Development'}</span>
+          </div>
+          <p class="bye-content bye-desc-text">
+            ${deskDict.matches.byeDesc}
+          </p>
         </div>
       `;
     } else {

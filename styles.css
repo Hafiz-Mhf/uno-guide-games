@@ -4042,36 +4042,125 @@ body {
   font-size: 12px;
 }
 
-/* BYE Notice Card */
-.desk-bye-card {
-  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-  border: 2px solid #F59E0B;
-  border-radius: var(--radius-md);
-  padding: 14px 18px;
-  margin-bottom: 24px;
+/* BYE Notice Card (Tournament Desk & Public Matchups View) */
+.desk-bye-card,
+.desk-bye-notice {
+  background: linear-gradient(135deg, #FFFDF5 0%, #FEF3C7 100%);
+  border: 1.5px solid #F59E0B;
+  border-left: 5px solid #D97706;
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.bye-icon-bubble {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #FDE68A;
+  border: 1px solid #F59E0B;
   display: flex;
   align-items: center;
-  gap: 14px;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.25);
+  margin-top: 2px;
+}
+
+.bye-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.bye-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
 }
 
 .bye-badge {
-  font-family: 'Outfit', sans-serif;
-  font-size: 12px;
-  font-weight: 900;
-  color: #B45309;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 850;
+  color: #92400E;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   background: #FDE68A;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
+  border: 1px solid rgba(217, 119, 6, 0.3);
+  padding: 3px 10px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
   flex-shrink: 0;
+  line-height: 1.4;
 }
 
-.bye-content {
-  font-size: 13.5px;
-  color: #78350F;
+.bye-status-pill {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 750;
+  color: #065F46;
+  background: #D1FAE5;
+  border: 1px solid #6EE7B7;
+  padding: 3px 9px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
   line-height: 1.4;
+}
+
+.bye-player-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 3px 0 2px;
+}
+
+.bye-player-name {
+  margin: 0;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #78350F;
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+}
+
+.bye-dept-chip {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #92400E;
+  background: rgba(254, 243, 199, 0.85);
+  border: 1px solid #FCD34D;
+  padding: 2px 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.bye-content,
+.bye-desc-text {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #92400E;
+  line-height: 1.55;
+  margin: 2px 0 0;
 }
 
 /* 4. Round 1 Matches Grid */

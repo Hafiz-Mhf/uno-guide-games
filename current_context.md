@@ -8,7 +8,26 @@
 
 ---
 
-## "Remove All Players" Roster Feature `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Round 1 BYE Pass Banner Typography & Layout Polish `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
+
+* **Fixed unstyled stretched banner bug.** Added proper `.desk-bye-notice` styling to match `.desk-bye-card`, preventing the `.bye-badge` element from stretching into an awkward full-width yellow strip with uncontained text below.
+* **Executive structured card layout:**
+  * Replaced the single unstyled text block with a 3-tier card hierarchy:
+    * **Left:** Golden `🎁` icon bubble with subtle elevation.
+    * **Top Meta:** Pill badge (`🎁 Round 1 BYE Pass`) alongside an emerald qualifier badge (`✓ Direct Round 2 Qualifier`).
+    * **Participant Spotlight:** High-contrast, bold 17px participant name with department chip (`[ Talent Development ]`), making the recipient instantly identifiable.
+    * **Clear Explanation Line:** Spaced 13px line with 1.55 line-height explaining why the pass was awarded and that no digital 1v1 match is needed.
+* **Warm Amber & Emerald Palette:**
+  * Generous 16px/20px padding with 14px border-radius, warm gold-amber gradient, 5px deep-amber accent border (`#D97706`), and 22px bottom margin to separate cleanly from match cards.
+* **Bilingual text refinement:**
+  * **English:** *"Advances directly to Round 2 Physical Card Heats without playing a digital 1v1 match (randomly awarded due to odd participant count)."*
+  * **Bahasa Melayu:** *"Layak terus ke Meja Fizikal Pusingan 2 tanpa perlu bertanding di Pusingan 1 (diberikan secara rawak akibat bilangan peserta ganjil)."*
+
+---
+
+## "Remove All Players" Roster Feature `27 October 2026`
 
 <span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
 

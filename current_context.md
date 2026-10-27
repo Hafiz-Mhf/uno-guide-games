@@ -8,7 +8,21 @@
 
 ---
 
-## Round 1 BYE Pass Banner Typography & Layout Polish `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Round 1 Format Update: Best of 1 Only `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
+
+* **Removed points setup reference (`150 pts`):**
+  * Eliminated all mentions of playing to 150 points across the application to prevent confusion during BuddyBoardGames room setup.
+  * Live matchup card status indicator now displays: `⏳ In Progress • Best of 1` (Bahasa Melayu: `⏳ Sedang Berlangsung • Best of 1`).
+  * Updated Schedule overview (`scheduleTab.r2Desc`) to *"30 players compete in 15 simultaneous 1v1 head-to-head browser matches (Best of 1). The 15 winners advance."*
+  * Updated Technical Setup instructions (`technicalSetup.step5` and `index.html`) to *"5. Play your Best of 1 match. Upon completion, report the winner to the tournament desk."*
+* **Zero Configuration Friction:**
+  * Players simply click "Launch BBG Room" and play a standard single game. First player to empty their hand wins and advances to Round 2 physical tables.
+
+---
+
+## Round 1 BYE Pass Banner Typography & Layout Polish `27 October 2026`
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
 

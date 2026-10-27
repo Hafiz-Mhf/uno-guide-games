@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Vercel
+.vercel/
+
+# Operating System Files
+.DS_Store
+Thumbs.db

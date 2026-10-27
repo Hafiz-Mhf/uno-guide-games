@@ -2378,16 +2378,13 @@ export function logoutAdmin() {
   isDeskOrganizerUnlocked = false;
   renderAuthUI();
 
-  // If currently on desk tab, revert to matchups
-  const currentActiveBtn = typeof document !== 'undefined' ? document.querySelector('.tab-btn.active') : null;
-  if (currentActiveBtn && currentActiveBtn.getAttribute('data-tab') === 'desk') {
-    switchTab('matchups', true, true);
-  }
+  // Revert strictly to matchups (guest view)
+  switchTab('matchups', true, true);
 
   const isBM = currentLang === 'bm';
   showToast(isBM
-    ? 'Log keluar berjaya. Beralih ke Paparan Tetamu.'
-    : 'Logged out. Switched to Guest View.', '👋');
+    ? 'Log keluar berjaya. Beralih ke Paparan Tetamu (Perlawanan Langsung).'
+    : 'Logged out. Switched to Guest View (Live Matchups).', '👋');
 }
 
 export function renderAuthUI() {
@@ -2418,7 +2415,7 @@ export function renderAuthUI() {
     adminStatusGroup.style.display = isAdmin ? 'inline-flex' : 'none';
   }
 
-  // Toggle admin-only items (desk tab button, desk quick nav pill, hero desk button)
+  // Toggle admin-only items (guide, rules, schedule, desk tabs, quick nav pills, hero buttons)
   document.querySelectorAll('.admin-only-item').forEach(el => {
     el.style.display = isAdmin ? '' : 'none';
   });
@@ -2427,6 +2424,14 @@ export function renderAuthUI() {
   const deskAdminBanner = document.getElementById('deskAdminSessionBar');
   if (deskAdminBanner) {
     deskAdminBanner.style.display = isAdmin ? 'flex' : 'none';
+  }
+
+  // If in guest mode, enforce matchups tab as active
+  if (!isAdmin && typeof document !== 'undefined') {
+    const activeTabBtn = document.querySelector('.tab-btn.active');
+    if (activeTabBtn && activeTabBtn.getAttribute('data-tab') !== 'matchups') {
+      switchTab('matchups', false, true);
+    }
   }
 }
 
@@ -2576,14 +2581,14 @@ export function switchTab(tab, shouldScroll = true, updateHistory = true) {
   const validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
   if (!validTabs.includes(tab)) return;
 
-  // Gate desk tab for guests when login modal is available in browser DOM
-  if (tab === 'desk' && !isAdminAuthenticated()) {
+  // Gate non-matchup tabs (guide, rules, schedule, desk) for guests when login modal is available in browser DOM
+  if (tab !== 'matchups' && !isAdminAuthenticated()) {
     if (typeof document !== 'undefined' && document.getElementById('adminLoginModalOverlay')) {
       openAdminLoginModal();
       const isBM = currentLang === 'bm';
       showToast(isBM
-        ? '🔐 Akses Meja Kejohanan memerlukan log masuk Penganjur.'
-        : '🔐 Tournament Desk requires Organizer login.', '🔐');
+        ? (tab === 'desk' ? '🔐 Akses Meja Kejohanan memerlukan log masuk Penganjur.' : '🔐 Bahagian ini memerlukan log masuk Penganjur / Admin.')
+        : (tab === 'desk' ? '🔐 Tournament Desk requires Organizer login.' : '🔐 This section requires Organizer / Admin login.'), '🔐');
       return;
     }
   }
@@ -2813,19 +2818,19 @@ export function initApp() {
   updateI18n();
   renderAuthUI();
 
-  // Restore persisted active tab (URL Hash > localStorage > default 'guide')
-  let initialTab = 'guide';
+  // Restore persisted active tab (URL Hash > localStorage > default 'matchups' for guest, 'guide' for admin)
+  const isAdmin = isAdminAuthenticated();
+  let initialTab = isAdmin ? 'guide' : 'matchups';
   try {
     const hash = (typeof window !== 'undefined' && window.location && window.location.hash)
       ? window.location.hash.replace(/^#/, '').trim()
       : '';
-    const isAdmin = isAdminAuthenticated();
     if (validTabs.includes(hash)) {
-      initialTab = (hash === 'desk' && !isAdmin) ? 'matchups' : hash;
+      initialTab = (!isAdmin && hash !== 'matchups') ? 'matchups' : hash;
     } else if (typeof localStorage !== 'undefined') {
       const stored = localStorage.getItem('uno_active_tab');
       if (stored && validTabs.includes(stored)) {
-        initialTab = (stored === 'desk' && !isAdmin) ? 'matchups' : stored;
+        initialTab = (!isAdmin && stored !== 'matchups') ? 'matchups' : stored;
       }
     }
   } catch (e) {}

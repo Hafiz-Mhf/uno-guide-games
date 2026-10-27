@@ -49,10 +49,12 @@
         try {
           isAdmin = localStorage.getItem('uno_admin_logged_in') === 'true';
         } catch (e) {}
-        if (targetTab === 'desk' && !isAdmin) {
+        if (!isAdmin) {
+          targetTab = 'matchups';
+        } else if (targetTab === 'desk' && !isAdmin) {
           targetTab = 'matchups';
         }
-        if (targetTab && validTabs.indexOf(targetTab) !== -1 && targetTab !== 'guide') {
+        if (targetTab && validTabs.indexOf(targetTab) !== -1) {
           document.addEventListener('DOMContentLoaded', function() {
             var btn = document.querySelector('.tab-btn[data-tab="' + targetTab + '"]');
             var view = document.getElementById(targetTab + 'View');
@@ -103,15 +105,15 @@
 
         <!-- Center: Quick Tab Navigation (Desktop) -->
         <nav class="header-quick-nav" aria-label="Quick Section Navigation">
-          <button type="button" class="quick-nav-pill" data-switch-tab="guide">
+          <button type="button" class="quick-nav-pill admin-only-item" data-switch-tab="guide">
             <span class="pill-icon">🕹️</span>
             <span class="pill-label">Guide</span>
           </button>
-          <button type="button" class="quick-nav-pill" data-switch-tab="rules">
+          <button type="button" class="quick-nav-pill admin-only-item" data-switch-tab="rules">
             <span class="pill-icon">📜</span>
             <span class="pill-label">Rules</span>
           </button>
-          <button type="button" class="quick-nav-pill" data-switch-tab="schedule">
+          <button type="button" class="quick-nav-pill admin-only-item" data-switch-tab="schedule">
             <span class="pill-icon">🎮</span>
             <span class="pill-label">Platform</span>
           </button>
@@ -187,7 +189,7 @@
           <button id="heroGoToDeskBtn" class="hero-btn-admin admin-only-item" onclick="switchTab('desk')" style="display: none;">
             🏆 Open Tournament Desk
           </button>
-          <button id="heroGoToRoomsBtn" class="hero-btn-secondary" onclick="document.querySelector('[data-tab=schedule]').click(); setTimeout(() => document.getElementById('roomGeneratorWidget').scrollIntoView({ behavior: 'smooth' }), 100);">
+          <button id="heroGoToRoomsBtn" class="hero-btn-secondary admin-only-item" onclick="document.querySelector('[data-tab=schedule]').click(); setTimeout(() => document.getElementById('roomGeneratorWidget').scrollIntoView({ behavior: 'smooth' }), 100);" style="display: none;">
             ⚡ Quick Room Generator & Join
           </button>
           <button id="viewPostersBtn" class="hero-btn-ghost" type="button" onclick="openPosterModalDirect('announcement')" data-i18n="buttons.viewPosters">
@@ -199,19 +201,19 @@
 
     <!-- Navigation Tabs Controller -->
     <div class="tab-nav-wrapper">
-      <nav class="tab-nav" aria-label="Main Navigation">
-        <button class="tab-btn active" data-tab="guide" data-i18n="nav.guide">🕹️ Beginner Guide & Practice Mat</button>
-        <button class="tab-btn" data-tab="rules" data-i18n="nav.rules">📜 Official Rules & 7 House Rules</button>
-        <button class="tab-btn" data-tab="schedule" data-i18n="nav.schedule">🎮 Digital Platform & Room Setup</button>
-        <button class="tab-btn" data-tab="matchups" data-i18n="nav.matchups">⚔️ Live Matchups</button>
-        <button class="tab-btn desk-tab-btn admin-only-item" data-tab="desk" data-i18n="nav.tournamentDesk">🏆 Tournament Desk</button>
+      <nav class="tab-nav guest-mode" aria-label="Main Navigation">
+        <button class="tab-btn admin-only-item" data-tab="guide" data-i18n="nav.guide" style="display: none;">🕹️ Beginner Guide & Practice Mat</button>
+        <button class="tab-btn admin-only-item" data-tab="rules" data-i18n="nav.rules" style="display: none;">📜 Official Rules & 7 House Rules</button>
+        <button class="tab-btn admin-only-item" data-tab="schedule" data-i18n="nav.schedule" style="display: none;">🎮 Digital Platform & Room Setup</button>
+        <button class="tab-btn active" data-tab="matchups" data-i18n="nav.matchups">⚔️ Live Matchups</button>
+        <button class="tab-btn desk-tab-btn admin-only-item" data-tab="desk" data-i18n="nav.tournamentDesk" style="display: none;">🏆 Tournament Desk</button>
       </nav>
     </div>
 
     <!-- Main Content Views -->
     <main class="content-area">
       <!-- TAB 1: BEGINNER GUIDE & INTERACTIVE PRACTICE MAT -->
-      <section id="guideView" class="tab-content active">
+      <section id="guideView" class="tab-content">
         <!-- Official 4-Step Event Guidelines Card (From Official Poster) -->
         <section class="official-guidelines-card">
           <div class="guidelines-card-header-row">
@@ -708,7 +710,7 @@
       </section>
 
       <!-- TAB 4: LIVE MATCHUPS & DIGITAL ROOMS (PARTICIPANT READ-ONLY VIEW) -->
-      <section id="matchupsView" class="tab-content">
+      <section id="matchupsView" class="tab-content active">
         <!-- Section Header -->
         <div class="section-header">
           <div>

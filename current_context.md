@@ -8,7 +8,27 @@
 
 ---
 
-## Search Placeholder & BYE Banner Typography Fix `25 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Guest-Only Live Matchups Isolation `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **Strict Guest Mode (Live Matchups Only):**
+  * When guests (participants/attendees) access the portal, the other 3 content sections (`#guide` Beginner Guide & Practice Mat, `#rules` Official Rules & 7 House Rules, and `#schedule` Digital Platform) as well as `#desk` (Tournament Desk) are **completely hidden**.
+  * **Only `#matchups` (Live Matchups & Digital Rooms)** is displayed to guests in both navigation and page content.
+  * Tab navigation for guests renders as a sleek, centered single pill: `[ ⚔️ Live Matchups ]`.
+  * Hero banner hides admin/platform buttons (`⚡ Quick Room Generator & Join`, `🏆 Open Tournament Desk`) and only displays participant buttons (`⚔️ View Live Matchups` and `🖼️ View Official Posters`).
+* **Navigation & Direct URL Shielding:**
+  * Initial page load and refresh for unauthenticated guests directly lands on `#matchups`.
+  * If a guest attempts to switch to any other tab via direct hash or JavaScript, the system triggers the Organizer Login modal and keeps the guest on `#matchups`.
+  * Strict CSS display guards (`body.role-guest #guideView, #rulesView, #scheduleView, #deskView { display: none !important; }`) guarantee that non-matchup sections cannot be exposed in guest mode.
+* **Full 5-Tab Admin Mode:**
+  * Entering local organizer credentials (`admin` / `uno2026`) immediately unlocks the full 5-tab segmented grid (`Guide`, `Rules`, `Platform`, `Live Matchups`, `Tournament Desk`).
+  * Organizers have full access to navigate between all sections.
+  * Logging out via `Exit / Guest` instantly returns to the restricted single-tab guest view.
+
+---
+
+## Search Placeholder & BYE Banner Typography Fix `25 October 2026`
 
 <span style="background:#fee2e2;color:#991b1b;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">FIXED</span>
 

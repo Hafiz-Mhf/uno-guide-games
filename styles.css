@@ -5068,15 +5068,31 @@ body.role-admin #adminStatusGroup {
   display: inline-flex !important;
 }
 
-/* Tab Navigation Grid Responsive Widths for 4-tab (Guest) vs 5-tab (Admin) */
+/* Tab Navigation Grid Responsive Widths: 1-tab centered pill for Guest vs 5-tab full grid for Admin */
 body.role-guest .tab-nav,
 .tab-nav.guest-mode {
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: 1fr !important;
+  max-width: 320px;
+  margin: 0 auto;
 }
 
 body.role-admin .tab-nav,
 .tab-nav.admin-mode {
   grid-template-columns: repeat(5, 1fr) !important;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Strict View Shield: Guests can only see Live Matchups section */
+body.role-guest #guideView,
+body.role-guest #rulesView,
+body.role-guest #scheduleView,
+body.role-guest #deskView {
+  display: none !important;
+}
+
+body.role-guest #matchupsView.active {
+  display: block !important;
 }
 
 /* Header Organizer Auth Trigger Button */

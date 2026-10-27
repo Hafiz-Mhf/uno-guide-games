@@ -90,9 +90,22 @@ for (const id of requiredAuthIds) {
   }
 }
 
-// Verify admin-only-item class is tagged on desk tab and quick nav pill
+// Verify admin-only-item class is tagged on desk, guide, rules, schedule tabs
 if (!html.includes('admin-only-item') || !html.includes('desk-tab-btn admin-only-item')) {
   console.error('FAIL: index.html missing admin-only-item class on desk tab button');
+  process.exit(1);
+}
+
+// Verify other 3 tabs (guide, rules, schedule) are admin-only and only matchups is public for guests
+const adminTabs = ['guide', 'rules', 'schedule', 'desk'];
+for (const tab of adminTabs) {
+  if (!html.includes(`data-tab="${tab}"`)) {
+    console.error(`FAIL: missing tab button for "${tab}"`);
+    process.exit(1);
+  }
+}
+if (!html.includes('class="tab-btn active" data-tab="matchups"')) {
+  console.error('FAIL: matchups tab must be default active public tab for guest');
   process.exit(1);
 }
 

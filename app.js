@@ -10,6 +10,7 @@ import {
   removePlayer,
   bulkImportRoster,
   setAllCheckInStatus,
+  removeAllPlayers,
   generateRound1Pairings,
   recordMatchWinner,
   computeRound2Heats,
@@ -253,6 +254,7 @@ export const TRANSLATIONS = {
         bulkImportBtn: "Import to Roster",
         checkAllBtn: "Check In All",
         uncheckAllBtn: "Clear Check-Ins",
+        removeAllBtn: "🗑️ Remove All Players",
         resetBtn: "🔄 Reset to Default 30",
         resetConfirm: "Reset roster back to the original 30 participants?",
         checkedInTag: "Checked In",
@@ -566,6 +568,7 @@ export const TRANSLATIONS = {
         bulkImportBtn: "Import ke Senarai",
         checkAllBtn: "Tanda Hadir Semua",
         uncheckAllBtn: "Kosongkan Kehadiran",
+        removeAllBtn: "🗑️ Padam Semua Pemain",
         resetBtn: "🔄 Tetap Semula ke 30 Asal",
         resetConfirm: "Tetapkan semula senarai peserta kepada 30 pemain asal?",
         checkedInTag: "Hadir",
@@ -2104,6 +2107,41 @@ export function setupTournamentDeskEvents() {
         tournamentState = resetTournamentState(localStorage);
         renderTournamentDesk();
         showToast(isBM ? 'Roster telah diset semula ke 30 peserta asal' : 'Roster reset to default 30 participants', '🔄');
+      }
+    });
+  }
+
+  // Remove all players from roster with custom popout
+  const removeAllBtn = document.getElementById('deskRemoveAllBtn');
+  if (removeAllBtn) {
+    removeAllBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
+      const isBM = currentLang === 'bm';
+      if (!tournamentState.roster || tournamentState.roster.length === 0) {
+        showToast(isBM ? 'Tiada pemain di dalam senarai.' : 'No players in roster to remove.', 'ℹ️');
+        return;
+      }
+      const confirmed = await showCustomConfirm({
+        icon: '🗑️',
+        kicker: isBM ? 'Padam Semua Pemain' : 'Clear Entire Roster',
+        title: isBM ? 'Keluarkan Semua Pemain dari Senarai?' : 'Remove All Players from Roster?',
+        message: isBM
+          ? `Tindakan ini akan memadamkan kesemua ${tournamentState.roster.length} pemain dan mengosongkan perlawanan Pusingan 1 sedia ada.`
+          : `This will remove all ${tournamentState.roster.length} participants from the roster and clear any current Round 1 matchups.`,
+        note: isBM
+          ? '💡 Anda boleh menambah pemain baru atau menekan "Tetap Semula ke 30 Asal" pada bila-bila masa.'
+          : '💡 You can add new players, paste a roster via Bulk Import, or click "Reset to Default 30" at any time.',
+        confirmText: isBM ? 'Padam Semua Pemain' : 'Remove All Players',
+        cancelText: isBM ? 'Batal' : 'Cancel',
+        confirmVariant: 'danger'
+      });
+
+      if (confirmed) {
+        tournamentState = removeAllPlayers(tournamentState);
+        saveTournamentState(localStorage, tournamentState);
+        renderTournamentDesk();
+        showToast(isBM ? 'Semua pemain telah dipadam dari senarai' : 'All players removed from roster', '🗑️');
       }
     });
   }

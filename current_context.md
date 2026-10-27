@@ -8,7 +8,26 @@
 
 ---
 
-## Guest-Only Live Matchups Isolation `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## "Remove All Players" Roster Feature `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **1-Click "Remove All Players" Button (`#deskRemoveAllBtn`):**
+  * Added a dedicated `🗑️ Remove All Players` action button in the Tournament Desk Player Roster & Check-In panel (`.desk-roster-quick-actions`).
+  * Styled with a clear `.btn-micro.danger` crimson aesthetic so organizers instantly recognize it as a destructive bulk operation.
+  * Subject to Organizer Protection lock (`#deskLockBar`), preventing accidental clicks unless organizer mode is unlocked.
+* **Safety Confirmation Popout & Zero-Player State:**
+  * Clicking triggers the custom confirmation modal (`showCustomConfirm`) warning the organizer that all participants and existing matches will be cleared.
+  * On confirmation, executes `removeAllPlayers(state)`: empties `roster`, clears Round 1 pairings, and resets Round 2 physical heats.
+  * When roster is empty, live attendance metrics cleanly update to 0 (`0 Registered`, `0 Checked In`, `⚠️ Min 2 Players Needed`), and the roster grid renders an informative empty state.
+  * Reversible at any time: clicking `🔄 Reset to Default 30` immediately restores all 30 official participants.
+* **Bilingual Translation & State Synchronization:**
+  * Fully localized in English (`🗑️ Remove All Players`) and Bahasa Melayu (`🗑️ Padam Semua Pemain`).
+  * Unit, DOM, and E2E simulation test suites updated and passing 10/10 (`npm test`).
+
+---
+
+## Guest-Only Live Matchups Isolation `27 October 2026`
 
 <span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
 

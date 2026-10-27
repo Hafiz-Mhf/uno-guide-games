@@ -77,6 +77,25 @@ export function removePlayer(state, playerId) {
   return { ...state, roster };
 }
 
+export function removeAllPlayers(state) {
+  return {
+    ...state,
+    roster: [],
+    round1: {
+      generatedAt: null,
+      byePlayer: null,
+      matches: []
+    },
+    round2: {
+      tableAlpha: [],
+      tableBeta: [],
+      tableGamma: [],
+      tableDelta: [],
+      numTables: state.round2?.numTables || 3
+    }
+  };
+}
+
 export function setAllCheckInStatus(state, checkedIn) {
   const roster = state.roster.map(p => ({ ...p, checkedIn: !!checkedIn }));
   return { ...state, roster };

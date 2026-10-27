@@ -31,6 +31,7 @@ const requiredIds = [
   'deskRandomizeBtn',
   'deskCopyMatchupsBtn',
   'deskResetBtn',
+  'deskRemoveAllBtn',
   'deskMatchesGrid',
   'deskByeNotice',
   'deskRound2HeatsGrid'

@@ -3801,6 +3801,18 @@ body {
   background: #EDE9FE;
 }
 
+.btn-micro.danger {
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #DC2626;
+}
+
+.btn-micro.danger:hover {
+  background: #FEE2E2;
+  border-color: #F87171;
+  color: #B91C1C;
+}
+
 /* Bulk Drawer */
 .desk-bulk-drawer {
   background: var(--bg-surface-alt);
@@ -5038,6 +5050,7 @@ body {
 .desk-controls-protected .btn-winner-pick,
 .desk-controls-protected #deskRandomizeBtn,
 .desk-controls-protected #deskResetBtn,
+.desk-controls-protected #deskRemoveAllBtn,
 .desk-controls-protected #deskCheckAllBtn,
 .desk-controls-protected #deskUncheckAllBtn,
 .desk-controls-protected #deskAddPlayerBtn,

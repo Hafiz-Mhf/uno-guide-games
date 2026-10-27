@@ -7,6 +7,7 @@ import {
   togglePlayerCheckIn,
   addPlayer,
   removePlayer,
+  removeAllPlayers,
   bulkImportRoster,
   setAllCheckInStatus,
   generateRound1Pairings,
@@ -101,6 +102,13 @@ Charlie
 s = bulkImportRoster(s, text);
 if (!s.roster.find(p => p.name === 'Alice Tan') || !s.roster.find(p => p.name === 'Bob Wong')) {
   console.error('FAIL: bulkImportRoster failed');
+  process.exit(1);
+}
+
+// Remove all players
+s = removeAllPlayers(s);
+if (!Array.isArray(s.roster) || s.roster.length !== 0 || s.round1.matches.length !== 0) {
+  console.error('FAIL: removeAllPlayers failed to clear roster and matches');
   process.exit(1);
 }
 

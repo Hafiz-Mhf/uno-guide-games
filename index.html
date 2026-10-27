@@ -761,12 +761,41 @@
           </div>
         </div>
 
-        <!-- Grand Final Stage Explainer Card -->
-        <div class="public-final-explainer-card">
-          <div class="final-card-icon">🏆</div>
-          <div class="final-card-content">
-            <h4 data-i18n="publicMatchups.grandFinalTitle">Grand Final Stage</h4>
-            <p data-i18n="publicMatchups.grandFinalDesc">The 1st place finisher from each Round 2 physical heat advances to the ultimate Grand Final championship match!</p>
+        <!-- Round 3 Grand Finale & Championship Stage -->
+        <div id="publicGrandFinalSection" class="desk-heats-panel desk-grandfinal-panel">
+          <div class="desk-panel-header desk-grandfinal-header">
+            <div>
+              <span class="badge-pill-cyan" data-i18n="publicMatchups.grandFinalBadge">Round 3 Championship Stage</span>
+              <h4 class="desk-panel-title" data-i18n="publicMatchups.grandFinalTitle">🏆 Grand Finale & Official Standings</h4>
+              <p class="desk-panel-desc" data-i18n="publicMatchups.grandFinalDesc">The 1st place finisher from each Round 2 physical heat advances to this championship showdown! View the live finalists and official tournament standings below.</p>
+            </div>
+            <div class="desk-heats-header-actions">
+              <span id="publicFinalistsCount" class="badge-pill-gold">Finalists: 0 / 3</span>
+            </div>
+          </div>
+
+          <!-- Grand Final Qualified Table -->
+          <div class="grandfinal-showcase">
+            <h5 class="showcase-section-title" data-i18n="publicMatchups.finalTableTitle">👑 Championship Final Table</h5>
+            <div id="publicGrandFinalGrid" class="grandfinal-seats-grid">
+              <!-- Dynamically populated with qualified finalists -->
+            </div>
+          </div>
+
+          <!-- Championship Podium -->
+          <div class="grandfinal-podium-section">
+            <h5 class="showcase-section-title" data-i18n="publicMatchups.podiumTitle">Official Championship Podium</h5>
+            <div id="publicPodiumBoard" class="podium-display-wrapper">
+              <!-- Dynamically populated with 2nd, 1st, 3rd (and 4th) Place Podium Blocks -->
+            </div>
+          </div>
+
+          <!-- Official Standings Leaderboard Table -->
+          <div class="grandfinal-standings-section">
+            <h5 class="showcase-section-title" data-i18n="publicMatchups.standingsTitle">Official Tournament Standings</h5>
+            <div id="publicStandingsTable" class="standings-table-wrapper">
+              <!-- Dynamically populated leaderboard table with names -->
+            </div>
           </div>
         </div>
       </section>
@@ -939,6 +968,32 @@
 
           <div id="deskRound2HeatsGrid" class="desk-round2-grid">
             <!-- Rendered dynamically: Table Alpha, Beta, Gamma -->
+          </div>
+        </div>
+
+        <!-- 6. Round 3 Grand Finale & Championship Desk -->
+        <div id="deskGrandFinalCard" class="desk-card desk-grandfinal-card">
+          <div class="desk-card-header">
+            <div>
+              <span class="tech-pill bg-gold" data-i18n="tournamentDesk.grandFinal.badge">Round 3 Championship Stage</span>
+              <h4 class="desk-card-title" data-i18n="tournamentDesk.grandFinal.title">Round 3: Grand Finale & Championship Podium</h4>
+              <p class="desk-card-desc" data-i18n="tournamentDesk.grandFinal.subtitle">Crown 1 winner per heat table above to fill this table. Once the physical showdown finishes, award 1st, 2nd, and 3rd place.</p>
+            </div>
+            <div class="desk-card-actions">
+              <button id="deskResetFinaleBtn" class="btn-secondary-action btn-sm-action" type="button" data-i18n="tournamentDesk.grandFinal.resetBtn">
+                🔄 Reset Finale Placements
+              </button>
+            </div>
+          </div>
+
+          <!-- Finalists & Placement Selection Grid -->
+          <div id="deskGrandFinalRoster" class="desk-grandfinal-roster">
+            <!-- Dynamically populated with qualified finalists and 1st/2nd/3rd assignment buttons -->
+          </div>
+
+          <!-- Live Podium Preview on Desk -->
+          <div id="deskPodiumPreview" class="desk-podium-preview">
+            <!-- Dynamically populated live podium preview -->
           </div>
         </div>
       </section>

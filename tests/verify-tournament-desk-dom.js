@@ -34,7 +34,11 @@ const requiredIds = [
   'deskRemoveAllBtn',
   'deskMatchesGrid',
   'deskByeNotice',
-  'deskRound2HeatsGrid'
+  'deskRound2HeatsGrid',
+  'deskGrandFinalCard',
+  'deskResetFinaleBtn',
+  'deskGrandFinalRoster',
+  'deskPodiumPreview'
 ];
 
 for (const id of requiredIds) {
@@ -45,8 +49,8 @@ for (const id of requiredIds) {
 }
 
 // Verify EN and BM translations
-if (!TRANSLATIONS.en.tournamentDesk || !TRANSLATIONS.bm.tournamentDesk) {
-  console.error('FAIL: app.js missing tournamentDesk translations');
+if (!TRANSLATIONS.en.tournamentDesk?.grandFinal || !TRANSLATIONS.bm.tournamentDesk?.grandFinal) {
+  console.error('FAIL: app.js missing tournamentDesk.grandFinal translations');
   process.exit(1);
 }
 

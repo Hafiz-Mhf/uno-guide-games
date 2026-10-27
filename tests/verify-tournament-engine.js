@@ -14,7 +14,12 @@ import {
   recordMatchWinner,
   computeRound2Heats,
   formatMatchupsClipboard,
-  setRound2TableCount
+  setRound2TableCount,
+  recordHeatWinner,
+  recordPodiumPlace,
+  resetGrandFinal,
+  computeGrandFinalists,
+  computeChampionshipStandings
 } from '../tournament-engine.js';
 
 console.log('Testing tournament-engine state lifecycle...');
@@ -241,6 +246,68 @@ if (stateR2.round2.numTables !== 4) {
 stateR2 = setRound2TableCount(stateR2, 3);
 if (stateR2.round2.numTables !== 3) {
   console.error('FAIL: setRound2TableCount 3 failed');
+  process.exit(1);
+}
+
+// Test 9: Grand Finale Heat Winners & Championship Standings
+let stateGF = createDefaultTournamentState();
+const pairingsGF = generateRound1Pairings(stateGF.roster);
+stateGF.round1 = pairingsGF;
+// Set winners for Round 1
+pairingsGF.matches.forEach(m => {
+  stateGF = recordMatchWinner(stateGF, m.matchId, m.player1.id);
+});
+
+// Calculate heats
+const heatsGF = computeRound2Heats(stateGF.round1.byePlayer, stateGF.round1.matches, 3);
+const alphaPlayer = heatsGF.tableAlpha[0];
+const betaPlayer = heatsGF.tableBeta[0];
+const gammaPlayer = heatsGF.tableGamma[0];
+
+// Crown heat winners
+stateGF = recordHeatWinner(stateGF, 'alpha', alphaPlayer.id);
+stateGF = recordHeatWinner(stateGF, 'beta', betaPlayer.id);
+stateGF = recordHeatWinner(stateGF, 'gamma', gammaPlayer.id);
+
+if (stateGF.round2.winners.alpha !== alphaPlayer.id || stateGF.round2.winners.beta !== betaPlayer.id) {
+  console.error('FAIL: recordHeatWinner failed to record table winners');
+  process.exit(1);
+}
+
+// Compute finalists
+const gfResult = computeGrandFinalists(stateGF);
+if (gfResult.finalists.length !== 3 || gfResult.finalists[0].id !== alphaPlayer.id) {
+  console.error('FAIL: computeGrandFinalists failed to identify 3 finalists');
+  process.exit(1);
+}
+
+// Award podium: alpha = 1st, beta = 2nd, gamma = 3rd
+stateGF = recordPodiumPlace(stateGF, 'first', alphaPlayer.id);
+stateGF = recordPodiumPlace(stateGF, 'second', betaPlayer.id);
+stateGF = recordPodiumPlace(stateGF, 'third', gammaPlayer.id);
+
+const standings = computeChampionshipStandings(stateGF);
+if (
+  standings.podium.first.id !== alphaPlayer.id ||
+  standings.podium.second.id !== betaPlayer.id ||
+  standings.podium.third.id !== gammaPlayer.id ||
+  standings.isChampionCrowned !== true
+) {
+  console.error('FAIL: computeChampionshipStandings podium verification failed');
+  process.exit(1);
+}
+
+// Test un-crowning heat winner clears them from podium
+stateGF = recordHeatWinner(stateGF, 'alpha', alphaPlayer.id); // toggle off
+if (stateGF.round2.winners.alpha !== null || stateGF.grandFinal.podium.first !== null) {
+  console.error('FAIL: Toggling off heat winner must clear their podium spot');
+  process.exit(1);
+}
+
+// Test resetGrandFinal
+stateGF = resetGrandFinal(stateGF);
+if (stateGF.round2.winners.beta !== null || stateGF.grandFinal.podium.second !== null) {
+  console.error('FAIL: resetGrandFinal failed to clear winners and podium');
   process.exit(1);
 }
 

@@ -36,7 +36,12 @@ const publicIds = [
   'publicByeNotice',
   'publicQualifiersCount',
   'deskLockBar',
-  'deskLockToggleBtn'
+  'deskLockToggleBtn',
+  'publicGrandFinalSection',
+  'publicFinalistsCount',
+  'publicGrandFinalGrid',
+  'publicPodiumBoard',
+  'publicStandingsTable'
 ];
 
 for (const id of publicIds) {

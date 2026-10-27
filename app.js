@@ -15,7 +15,12 @@ import {
   recordMatchWinner,
   computeRound2Heats,
   setRound2TableCount,
-  formatMatchupsClipboard
+  formatMatchupsClipboard,
+  recordHeatWinner,
+  recordPodiumPlace,
+  resetGrandFinal,
+  computeGrandFinalists,
+  computeChampionshipStandings
 } from './tournament-engine.js';
 
 export const TRANSLATIONS = {
@@ -295,6 +300,24 @@ export const TRANSLATIONS = {
         unlockedTitle: "Organizer Controls: Active",
         unlockedDesc: "You can now edit pairings, record winners, and manage participants.",
         lockBtn: "🔒 Lock Controls"
+      },
+      grandFinal: {
+        badge: "Round 3 Championship Stage",
+        title: "Round 3: Grand Finale & Championship Podium",
+        subtitle: "Crown 1 winner per heat table above to fill this table. Once the physical showdown finishes, award 1st, 2nd, and 3rd place.",
+        crownWinnerBtn: "👑 Crown Winner",
+        crownedBadge: "👑 Heat Champion",
+        uncrownBtn: "↩️ Change",
+        resetBtn: "🔄 Reset Finale Placements",
+        resetConfirm: "Reset all Grand Finale podium placements and heat winners?",
+        assignPrompt: "Award Podium Position:",
+        firstPlaceBtn: "🥇 1st (Champion)",
+        secondPlaceBtn: "🥈 2nd Place",
+        thirdPlaceBtn: "🥉 3rd Place",
+        fourthPlaceBtn: "🎖️ 4th Place",
+        pendingFinalists: "Waiting for Round 2 heat winners to qualify...",
+        tableTitle: "Championship Showdown Table",
+        heatTableLabel: "Heat Winner:"
       }
     },
     publicMatchups: {
@@ -313,8 +336,26 @@ export const TRANSLATIONS = {
       vs: "VS",
       round2Title: "Round 2 Physical Card Heats",
       round2Subtitle: "Winners from Round 1 automatically fill Table Alpha, Beta, Gamma (and Delta).",
-      grandFinalTitle: "🏆 Grand Final Stage",
-      grandFinalDesc: "The 1st place finisher from each Round 2 physical heat advances to the ultimate Grand Final championship match!"
+      grandFinalBadge: "Round 3 Championship Stage",
+      grandFinalTitle: "🏆 Grand Finale & Official Standings",
+      grandFinalDesc: "The 1st place finisher from each Round 2 physical heat advances to this championship showdown! View the live finalists and official tournament standings below.",
+      finalTableTitle: "👑 Championship Final Table",
+      podiumTitle: "Official Championship Podium",
+      standingsTitle: "Official Tournament Standings",
+      championLabel: "Grand Champion",
+      runnerUpLabel: "Runner-Up",
+      thirdPlaceLabel: "2nd Runner-Up",
+      fourthPlaceLabel: "4th Place Finalist",
+      awaitingWinner: "Pending Heat Result...",
+      rankCol: "Rank",
+      playerCol: "Participant",
+      deptCol: "Department",
+      accoladeCol: "Accolade / Title",
+      statusCol: "Status",
+      statusCrowned: "🏆 Crowned",
+      statusFinalist: "⭐ Finalist",
+      statusPending: "⏳ Showdown in Progress",
+      standingsPendingNote: "Final standings will be updated in real time as the Grand Finale concludes."
     },
     auth: {
       adminLogin: "Organizer Login",
@@ -609,6 +650,24 @@ export const TRANSLATIONS = {
         unlockedTitle: "Kawalan Penganjur: Aktif",
         unlockedDesc: "Anda kini boleh menyusun perlawanan, mencatat pemenang, dan mengurus peserta.",
         lockBtn: "🔒 Kunci Kawalan"
+      },
+      grandFinal: {
+        badge: "Pusingan 3 Pentas Akhir",
+        title: "Pusingan 3: Pentas Akhir & Podium Kejuaraan",
+        subtitle: "Pilih 1 pemenang bagi setiap meja pusingan 2 di atas untuk mara ke sini. Selepas perlawanan akhir selesai, tetapkan tempat pertama, kedua, dan ketiga.",
+        crownWinnerBtn: "👑 Pilih Pemenang",
+        crownedBadge: "👑 Juara Kumpulan",
+        uncrownBtn: "↩️ Tukar",
+        resetBtn: "🔄 Set Semula Keputusan Akhir",
+        resetConfirm: "Set semula semua kedudukan podium Pentas Akhir dan pemenang kumpulan?",
+        assignPrompt: "Tetapkan Kedudukan Podium:",
+        firstPlaceBtn: "🥇 Tempat Pertama (Juara)",
+        secondPlaceBtn: "🥈 Tempat Ke-2",
+        thirdPlaceBtn: "🥉 Tempat Ke-3",
+        fourthPlaceBtn: "🎖️ Tempat Ke-4",
+        pendingFinalists: "Menunggu pemenang meja Pusingan 2 untuk layak...",
+        tableTitle: "Meja Perlawanan Akhir Kejuaraan",
+        heatTableLabel: "Juara Kumpulan:"
       }
     },
     publicMatchups: {
@@ -627,8 +686,26 @@ export const TRANSLATIONS = {
       vs: "LWN",
       round2Title: "Pusingan 2: Meja Kad Fizikal",
       round2Subtitle: "Pemenang Pusingan 1 akan mengisi Meja Alpha, Beta, Gamma (dan Delta) secara automatik.",
-      grandFinalTitle: "🏆 Pentas Akhir Kejuaraan",
-      grandFinalDesc: "Juara tempat pertama dari setiap meja Pusingan 2 akan mara berentap merebut piala kejuaraan!"
+      grandFinalBadge: "Pusingan 3 Pentas Akhir",
+      grandFinalTitle: "🏆 Pentas Akhir & Kedudukan Rasmi Kejohanan",
+      grandFinalDesc: "Juara dari setiap meja kad fizikal Pusingan 2 mara ke perlawanan akhir ini! Lihat peserta akhir dan kedudukan rasmi kejohanan di bawah.",
+      finalTableTitle: "👑 Meja Perlawanan Akhir Kejuaraan",
+      podiumTitle: "Podium Kejuaraan Rasmi",
+      standingsTitle: "Kedudukan Rasmi Kejohanan",
+      championLabel: "Juara Keseluruhan",
+      runnerUpLabel: "Naib Juara",
+      thirdPlaceLabel: "Tempat Ketiga",
+      fourthPlaceLabel: "Tempat Keempat",
+      awaitingWinner: "Menunggu Keputusan Kumpulan...",
+      rankCol: "Kedudukan",
+      playerCol: "Peserta",
+      deptCol: "Jabatan",
+      accoladeCol: "Gelaran / Keputusan",
+      statusCol: "Status",
+      statusCrowned: "🏆 Ditetapkan",
+      statusFinalist: "⭐ Peserta Akhir",
+      statusPending: "⏳ Sedang Berlangsung",
+      standingsPendingNote: "Kedudukan akhir akan dikemas kini serta-merta sebaik sahaja perlawanan tamat."
     },
     auth: {
       adminLogin: "Log Masuk Penganjur",
@@ -1710,11 +1787,13 @@ export function renderPublicMatchups() {
             ${Array.from({ length: targetTableCap }, (_, idx) => {
               const player = t.list[idx];
               if (player) {
+                const isTableWinner = tournamentState.round2?.winners?.[t.id] === player.id;
                 return `
-                  <li class="table-seat filled">
-                    <span class="seat-num">${idx + 1}</span>
+                  <li class="table-seat filled ${isTableWinner ? 'heat-winner-seat' : ''}">
+                    <span class="seat-num">${isTableWinner ? '👑' : idx + 1}</span>
                     <div class="seat-player">
                       <strong>${player.name}</strong>
+                      ${isTableWinner ? `<span class="seat-winner-badge">⭐ ${pmDict.statusFinalist || 'Finalist'}</span>` : ''}
                     </div>
                   </li>
                 `;
@@ -1731,6 +1810,186 @@ export function renderPublicMatchups() {
       `;
     }).join('');
   }
+
+  // 5. Public Grand Finale Stage & Championship Standings
+  const publicFinalistsCount = document.getElementById('publicFinalistsCount');
+  const publicGrandFinalGrid = document.getElementById('publicGrandFinalGrid');
+  const publicPodiumBoard = document.getElementById('publicPodiumBoard');
+  const publicStandingsTable = document.getElementById('publicStandingsTable');
+
+  const gf = computeGrandFinalists(tournamentState);
+  const standings = computeChampionshipStandings(tournamentState);
+  const isBM = currentLang === 'bm';
+
+  if (publicFinalistsCount) {
+    publicFinalistsCount.textContent = `${gf.finalists.length} / ${gf.expectedFinalists} ${isBM ? 'Peserta Akhir' : 'Finalists'}`;
+  }
+
+  if (publicGrandFinalGrid) {
+    publicGrandFinalGrid.innerHTML = gf.tables.map(t => {
+      if (t.winner) {
+        return `
+          <div class="grandfinal-showcase-card is-qualified">
+            <div class="gf-card-top">
+              <span class="gf-source-tag">${t.title}</span>
+              <span class="gf-status-tag">⭐ ${pmDict.statusFinalist || 'Finalist'}</span>
+            </div>
+            <div class="gf-card-body">
+              <span class="gf-crown-icon">👑</span>
+              <strong class="gf-player-name">${t.winner.name}</strong>
+              <span class="gf-player-dept">${t.winner.dept || 'General'}</span>
+            </div>
+          </div>
+        `;
+      }
+      return `
+        <div class="grandfinal-showcase-card is-pending">
+          <div class="gf-card-top">
+            <span class="gf-source-tag">${t.title}</span>
+            <span class="gf-status-tag">⏳ ${pmDict.statusPending || 'In Progress'}</span>
+          </div>
+          <div class="gf-card-body">
+            <span class="gf-pending-icon">🎲</span>
+            <strong class="gf-player-name pending-text">${pmDict.awaitingWinner || 'Awaiting Heat Winner...'}</strong>
+            <span class="gf-player-dept">${isBM ? 'Perlawanan Meja Fizikal' : 'Physical Table Showdown'}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  if (publicPodiumBoard) {
+    publicPodiumBoard.innerHTML = renderPodiumMarkup(standings, dict, false);
+  }
+
+  if (publicStandingsTable) {
+    publicStandingsTable.innerHTML = renderStandingsTableMarkup(standings, dict);
+  }
+}
+
+export function renderPodiumMarkup(standings, dict, isDesk = false) {
+  const pmDict = dict.publicMatchups || {};
+  const { podium, numTables } = standings;
+  const p1 = podium.first;
+  const p2 = podium.second;
+  const p3 = podium.third;
+  const p4 = podium.fourth;
+
+  return `
+    <div class="olympic-podium-container ${numTables === 4 ? 'has-fourth' : ''}">
+      <!-- 2nd Place (Silver - Left) -->
+      <div class="podium-step step-second ${p2 ? 'filled' : 'pending'}">
+        <div class="podium-player-card">
+          <div class="podium-medal-badge silver">🥈</div>
+          <div class="podium-player-meta">
+            <strong class="podium-player-name">${p2 ? p2.name : (pmDict.awaitingWinner || 'Pending Showdown...')}</strong>
+            <span class="podium-player-dept">${p2 ? (p2.dept || 'General') : 'Showdown Finalist'}</span>
+          </div>
+          <div class="podium-trophy-title">${pmDict.runnerUpLabel || 'Runner-Up'}</div>
+        </div>
+        <div class="podium-block block-silver">
+          <span class="podium-rank-num">2</span>
+          <span class="podium-pedestal-label">2ND PLACE</span>
+        </div>
+      </div>
+
+      <!-- 1st Place (Gold Champion - Center, Tallest) -->
+      <div class="podium-step step-first ${p1 ? 'filled is-champion' : 'pending'}">
+        <div class="podium-player-card champion-card">
+          <div class="podium-crown-glow">👑</div>
+          <div class="podium-medal-badge gold">🥇</div>
+          <div class="podium-player-meta">
+            <strong class="podium-player-name champion-name">${p1 ? p1.name : (pmDict.awaitingWinner || 'Pending Showdown...')}</strong>
+            <span class="podium-player-dept champion-dept">${p1 ? (p1.dept || 'General') : 'Grand Champion Showdown'}</span>
+          </div>
+          <div class="podium-trophy-title champion-tag">🏆 ${pmDict.championLabel || 'Grand Champion'} 2026</div>
+        </div>
+        <div class="podium-block block-gold">
+          <span class="podium-rank-num">1</span>
+          <span class="podium-pedestal-label">GRAND CHAMPION</span>
+        </div>
+      </div>
+
+      <!-- 3rd Place (Bronze - Right) -->
+      <div class="podium-step step-third ${p3 ? 'filled' : 'pending'}">
+        <div class="podium-player-card">
+          <div class="podium-medal-badge bronze">🥉</div>
+          <div class="podium-player-meta">
+            <strong class="podium-player-name">${p3 ? p3.name : (pmDict.awaitingWinner || 'Pending Showdown...')}</strong>
+            <span class="podium-player-dept">${p3 ? (p3.dept || 'General') : 'Showdown Finalist'}</span>
+          </div>
+          <div class="podium-trophy-title">${pmDict.thirdPlaceLabel || '2nd Runner-Up'}</div>
+        </div>
+        <div class="podium-block block-bronze">
+          <span class="podium-rank-num">3</span>
+          <span class="podium-pedestal-label">3RD PLACE</span>
+        </div>
+      </div>
+
+      ${numTables === 4 ? `
+        <!-- 4th Place (Finalist - Side Block) -->
+        <div class="podium-step step-fourth ${p4 ? 'filled' : 'pending'}">
+          <div class="podium-player-card">
+            <div class="podium-medal-badge finalist">🎖️</div>
+            <div class="podium-player-meta">
+              <strong class="podium-player-name">${p4 ? p4.name : (pmDict.awaitingWinner || 'Pending Showdown...')}</strong>
+              <span class="podium-player-dept">${p4 ? (p4.dept || 'General') : 'Showdown Finalist'}</span>
+            </div>
+            <div class="podium-trophy-title">${pmDict.fourthPlaceLabel || '4th Place Finalist'}</div>
+          </div>
+          <div class="podium-block block-fourth">
+            <span class="podium-rank-num">4</span>
+            <span class="podium-pedestal-label">4TH PLACE</span>
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+}
+
+export function renderStandingsTableMarkup(standings, dict) {
+  const pmDict = dict.publicMatchups || {};
+  const { placements } = standings;
+
+  const rows = placements.map(pl => {
+    const isAwarded = !!pl.player;
+    return `
+      <tr class="standings-row rank-${pl.rank} ${isAwarded ? 'is-crowned' : 'is-pending'}">
+        <td class="standings-col-rank">
+          <span class="rank-badge rank-badge-${pl.rank}">${pl.medal} #${pl.rank}</span>
+        </td>
+        <td class="standings-col-name">
+          ${isAwarded ? `<strong class="player-crowned-name">${pl.player.name}</strong>` : `<span class="player-pending-name">${pmDict.awaitingWinner || 'Pending Showdown Result...'}</span>`}
+        </td>
+        <td class="standings-col-dept">
+          ${isAwarded ? (pl.player.dept || 'General') : '—'}
+        </td>
+        <td class="standings-col-accolade">
+          <span class="accolade-tag rank-tag-${pl.rank}">${pl.medal} ${pl.label}</span>
+        </td>
+        <td class="standings-col-status">
+          ${isAwarded ? `<span class="status-pill status-crowned">${pmDict.statusCrowned || '🏆 Crowned'}</span>` : `<span class="status-pill status-in-progress">${pmDict.statusPending || '⏳ In Progress'}</span>`}
+        </td>
+      </tr>
+    `;
+  });
+
+  return `
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th>${pmDict.rankCol || 'Rank'}</th>
+          <th>${pmDict.playerCol || 'Participant'}</th>
+          <th>${pmDict.deptCol || 'Department'}</th>
+          <th>${pmDict.accoladeCol || 'Accolade / Title'}</th>
+          <th>${pmDict.statusCol || 'Status'}</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.join('')}
+      </tbody>
+    </table>
+  `;
 }
 
 // ==========================================================================
@@ -1982,11 +2241,17 @@ export function renderTournamentDesk() {
             ${Array.from({ length: targetTableCap }, (_, idx) => {
               const player = t.list[idx];
               if (player) {
+                const isTableWinner = tournamentState.round2?.winners?.[t.id] === player.id;
                 return `
-                  <li class="table-seat filled">
-                    <span class="seat-num">${idx + 1}</span>
+                  <li class="table-seat filled ${isTableWinner ? 'heat-winner-seat' : ''}">
+                    <span class="seat-num">${isTableWinner ? '👑' : idx + 1}</span>
                     <div class="seat-player">
                       <strong>${player.name}</strong>
+                    </div>
+                    <div class="seat-actions">
+                      <button type="button" class="btn-heat-winner-crown ${isTableWinner ? 'is-crowned' : ''}" data-action="crown-heat-winner" data-table="${t.id}" data-player-id="${player.id}">
+                        ${isTableWinner ? (deskDict.grandFinal?.crownedBadge || '👑 Heat Champion') : (deskDict.grandFinal?.crownWinnerBtn || '👑 Crown Winner')}
+                      </button>
                     </div>
                   </li>
                 `;
@@ -2002,6 +2267,89 @@ export function renderTournamentDesk() {
         </div>
       `;
     }).join('');
+  }
+
+  // 6. Round 3 Grand Finale & Championship Desk
+  const grandFinalRosterEl = document.getElementById('deskGrandFinalRoster');
+  const deskPodiumPreviewEl = document.getElementById('deskPodiumPreview');
+  const gf = computeGrandFinalists(tournamentState);
+  const standings = computeChampionshipStandings(tournamentState);
+  const gfDict = deskDict.grandFinal || {};
+  const isBM = currentLang === 'bm';
+
+  if (grandFinalRosterEl) {
+    if (gf.tables.every(t => !t.winner)) {
+      grandFinalRosterEl.innerHTML = `
+        <div class="desk-empty-state">
+          <span>⏳ ${gfDict.pendingFinalists || 'Waiting for Round 2 heat winners to qualify...'}</span>
+          <p class="desk-empty-hint">${gfDict.subtitle || 'Crown 1 winner per heat table above to advance them here.'}</p>
+        </div>
+      `;
+    } else {
+      grandFinalRosterEl.innerHTML = `
+        <div class="grandfinal-desk-grid">
+          ${gf.tables.map(t => {
+            if (!t.winner) {
+              return `
+                <div class="grandfinal-desk-slot empty">
+                  <div class="slot-source-badge">${t.title}</div>
+                  <div class="slot-empty-notice">
+                    <span class="slot-empty-icon">⏳</span>
+                    <span>${deskDict.round2?.slotEmpty || 'Awaiting Heat Winner...'}</span>
+                  </div>
+                </div>
+              `;
+            }
+            const p = t.winner;
+            const podium = tournamentState.grandFinal?.podium || {};
+            const is1st = podium.first === p.id;
+            const is2nd = podium.second === p.id;
+            const is3rd = podium.third === p.id;
+            const is4th = gf.numTables === 4 && podium.fourth === p.id;
+
+            let placementBadge = '';
+            if (is1st) placementBadge = `<span class="placement-pill gold">🥇 1st (${isBM ? 'Juara' : 'Champion'})</span>`;
+            else if (is2nd) placementBadge = `<span class="placement-pill silver">🥈 2nd (${isBM ? 'Naib Juara' : 'Runner-Up'})</span>`;
+            else if (is3rd) placementBadge = `<span class="placement-pill bronze">🥉 3rd (${isBM ? 'Tempat Ke-3' : '3rd Place'})</span>`;
+            else if (is4th) placementBadge = `<span class="placement-pill finalist">🎖️ 4th (${isBM ? 'Tempat Ke-4' : '4th Place'})</span>`;
+
+            return `
+              <div class="grandfinal-desk-slot filled ${placementBadge ? 'has-placement' : ''}">
+                <div class="slot-source-badge">${t.title} ${gfDict.heatTableLabel || 'Winner:'}</div>
+                <div class="slot-player-info">
+                  <strong class="slot-player-name">👑 ${p.name}</strong>
+                  <span class="slot-player-dept">${p.dept || 'General'}</span>
+                  ${placementBadge}
+                </div>
+                <div class="slot-placement-actions">
+                  <span class="placement-label">${gfDict.assignPrompt || 'Assign Placement:'}</span>
+                  <div class="placement-buttons-row">
+                    <button type="button" class="btn-placement-pick ${is1st ? 'active-gold' : ''}" data-action="pick-podium" data-place="first" data-player-id="${p.id}" title="${is1st ? 'Remove 1st place' : 'Award 1st Place (Champion)'}">
+                      🥇 1st
+                    </button>
+                    <button type="button" class="btn-placement-pick ${is2nd ? 'active-silver' : ''}" data-action="pick-podium" data-place="second" data-player-id="${p.id}" title="${is2nd ? 'Remove 2nd place' : 'Award 2nd Place'}">
+                      🥈 2nd
+                    </button>
+                    <button type="button" class="btn-placement-pick ${is3rd ? 'active-bronze' : ''}" data-action="pick-podium" data-place="third" data-player-id="${p.id}" title="${is3rd ? 'Remove 3rd place' : 'Award 3rd Place'}">
+                      🥉 3rd
+                    </button>
+                    ${gf.numTables === 4 ? `
+                      <button type="button" class="btn-placement-pick ${is4th ? 'active-finalist' : ''}" data-action="pick-podium" data-place="fourth" data-player-id="${p.id}" title="${is4th ? 'Remove 4th place' : 'Award 4th Place'}">
+                        🎖️ 4th
+                      </button>
+                    ` : ''}
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+  }
+
+  if (deskPodiumPreviewEl) {
+    deskPodiumPreviewEl.innerHTML = renderPodiumMarkup(standings, dict, true);
   }
 }
 
@@ -2339,6 +2687,87 @@ export function setupTournamentDeskEvents() {
         showToast(isBM ? 'Mod Penganjur Dibuka! 🔓' : 'Organizer Mode Unlocked! 🔓', '🔓');
       } else {
         showToast(isBM ? 'Kawalan Meja Dikunci 🔒' : 'Organizer Controls Locked 🔒', '🔒');
+      }
+    });
+  }
+
+  // Round 2 Heat Winner crowning event delegation
+  const round2DeskGrid = document.getElementById('deskRound2HeatsGrid');
+  if (round2DeskGrid) {
+    round2DeskGrid.addEventListener('click', async (e) => {
+      const crownBtn = e.target.closest('button[data-action="crown-heat-winner"]');
+      if (!crownBtn) return;
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
+      const tableKey = crownBtn.getAttribute('data-table');
+      const playerId = crownBtn.getAttribute('data-player-id');
+      if (tableKey && playerId) {
+        tournamentState = recordHeatWinner(tournamentState, tableKey, playerId);
+        saveTournamentState(localStorage, tournamentState);
+        renderTournamentDesk();
+        renderPublicMatchups();
+        const isBM = currentLang === 'bm';
+        const crowned = tournamentState.round2?.winners?.[tableKey] === playerId;
+        showToast(
+          crowned
+            ? (isBM ? `Pemenang Kumpulan ditetapkan! Mara ke Pentas Akhir 👑` : `Heat Winner crowned! Advances to Grand Finale 👑`)
+            : (isBM ? `Pemenang Kumpulan dibatalkan` : `Heat Winner cleared`),
+          '👑'
+        );
+      }
+    });
+  }
+
+  // Grand Finale Podium Placement assignment delegation
+  const grandFinalRoster = document.getElementById('deskGrandFinalRoster');
+  if (grandFinalRoster) {
+    grandFinalRoster.addEventListener('click', async (e) => {
+      const pickBtn = e.target.closest('button[data-action="pick-podium"]');
+      if (!pickBtn) return;
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
+      const placeKey = pickBtn.getAttribute('data-place');
+      const playerId = pickBtn.getAttribute('data-player-id');
+      if (placeKey && playerId) {
+        tournamentState = recordPodiumPlace(tournamentState, placeKey, playerId);
+        saveTournamentState(localStorage, tournamentState);
+        renderTournamentDesk();
+        renderPublicMatchups();
+        const isBM = currentLang === 'bm';
+        const assigned = tournamentState.grandFinal?.podium?.[placeKey] === playerId;
+        showToast(
+          assigned
+            ? (isBM ? `Kedudukan podium berjaya ditetapkan!` : `Podium placement updated!`)
+            : (isBM ? `Kedudukan dipadamkan` : `Placement cleared`),
+          '🏆'
+        );
+      }
+    });
+  }
+
+  // Reset Finale Placements button
+  const resetFinaleBtn = document.getElementById('deskResetFinaleBtn');
+  if (resetFinaleBtn) {
+    resetFinaleBtn.addEventListener('click', async () => {
+      const allowed = await ensureOrganizerUnlocked();
+      if (!allowed) return;
+      const isBM = currentLang === 'bm';
+      const confirmed = await showCustomConfirm({
+        icon: '🔄',
+        kicker: isBM ? 'Set Semula Pentas Akhir' : 'Reset Grand Finale',
+        title: isBM ? 'Set Semula Keputusan Pentas Akhir?' : 'Reset Grand Finale Results?',
+        message: deskDict.grandFinal?.resetConfirm || 'Reset all Grand Finale podium placements and heat winners?',
+        note: isBM ? '⚠️ Semua pemenang kumpulan dan kedudukan podium akan dikosongkan.' : '⚠️ All crowned heat winners and podium standings will be cleared.',
+        confirmText: isBM ? 'Set Semula' : 'Reset Placements',
+        cancelText: isBM ? 'Batal' : 'Cancel',
+        confirmVariant: 'danger'
+      });
+      if (confirmed) {
+        tournamentState = resetGrandFinal(tournamentState);
+        saveTournamentState(localStorage, tournamentState);
+        renderTournamentDesk();
+        renderPublicMatchups();
+        showToast(isBM ? 'Keputusan Pentas Akhir telah diset semula.' : 'Grand Finale placements reset.', '🔄');
       }
     });
   }

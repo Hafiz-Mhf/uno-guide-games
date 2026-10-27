@@ -24,7 +24,21 @@ export function createDefaultTournamentState() {
       tableBeta: [],
       tableGamma: [],
       tableDelta: [],
-      numTables: 3
+      numTables: 3,
+      winners: {
+        alpha: null,
+        beta: null,
+        gamma: null,
+        delta: null
+      }
+    },
+    grandFinal: {
+      podium: {
+        first: null,
+        second: null,
+        third: null,
+        fourth: null
+      }
     }
   };
 }
@@ -36,6 +50,17 @@ export function loadTournamentState(storage = (typeof localStorage !== 'undefine
     if (!raw) return createDefaultTournamentState();
     const parsed = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.roster)) return createDefaultTournamentState();
+    if (!parsed.round2) parsed.round2 = { numTables: 3 };
+    if (!parsed.round2.winners) {
+      parsed.round2.winners = { alpha: null, beta: null, gamma: null, delta: null };
+    }
+    if (!parsed.grandFinal) {
+      parsed.grandFinal = {
+        podium: { first: null, second: null, third: null, fourth: null }
+      };
+    } else if (!parsed.grandFinal.podium) {
+      parsed.grandFinal.podium = { first: null, second: null, third: null, fourth: null };
+    }
     return parsed;
   } catch (err) {
     return createDefaultTournamentState();
@@ -91,7 +116,11 @@ export function removeAllPlayers(state) {
       tableBeta: [],
       tableGamma: [],
       tableDelta: [],
-      numTables: state.round2?.numTables || 3
+      numTables: state.round2?.numTables || 3,
+      winners: { alpha: null, beta: null, gamma: null, delta: null }
+    },
+    grandFinal: {
+      podium: { first: null, second: null, third: null, fourth: null }
     }
   };
 }
@@ -263,3 +292,156 @@ export function formatMatchupsClipboard(round1State) {
   lines.push('🎮 Digital Game Room: https://buddyboardgames.com/uno');
   return lines.join('\n');
 }
+
+export function recordHeatWinner(state, tableKey, playerId) {
+  const validKeys = ['alpha', 'beta', 'gamma', 'delta'];
+  if (!validKeys.includes(tableKey)) return state;
+
+  const currentWinners = { ...(state.round2?.winners || {}) };
+  const currentWinner = currentWinners[tableKey];
+  const newWinner = currentWinner === playerId ? null : playerId;
+  currentWinners[tableKey] = newWinner;
+
+  let podium = { ...(state.grandFinal?.podium || {}) };
+  if (currentWinner && currentWinner !== newWinner) {
+    ['first', 'second', 'third', 'fourth'].forEach(key => {
+      if (podium[key] === currentWinner) {
+        podium[key] = null;
+      }
+    });
+  }
+
+  return {
+    ...state,
+    round2: {
+      ...(state.round2 || {}),
+      winners: currentWinners
+    },
+    grandFinal: {
+      ...(state.grandFinal || {}),
+      podium
+    }
+  };
+}
+
+export function recordPodiumPlace(state, placeKey, playerId) {
+  const validPlaces = ['first', 'second', 'third', 'fourth'];
+  if (!validPlaces.includes(placeKey)) return state;
+
+  const podium = { ...(state.grandFinal?.podium || {}) };
+
+  if (podium[placeKey] === playerId) {
+    podium[placeKey] = null;
+  } else {
+    validPlaces.forEach(p => {
+      if (podium[p] === playerId) {
+        podium[p] = null;
+      }
+    });
+    podium[placeKey] = playerId;
+  }
+
+  return {
+    ...state,
+    grandFinal: {
+      ...(state.grandFinal || {}),
+      podium
+    }
+  };
+}
+
+export function resetGrandFinal(state) {
+  return {
+    ...state,
+    round2: {
+      ...(state.round2 || {}),
+      winners: { alpha: null, beta: null, gamma: null, delta: null }
+    },
+    grandFinal: {
+      podium: { first: null, second: null, third: null, fourth: null }
+    }
+  };
+}
+
+export function computeGrandFinalists(state) {
+  const numTables = state.round2?.numTables === 4 ? 4 : 3;
+  const heats = computeRound2Heats(
+    state.round1?.byePlayer,
+    state.round1?.matches || [],
+    numTables
+  );
+  const winners = state.round2?.winners || {};
+
+  const tableList = [
+    { key: 'alpha', title: 'Table Alpha (Heat 1)', list: heats.tableAlpha, winnerId: winners.alpha || null },
+    { key: 'beta', title: 'Table Beta (Heat 2)', list: heats.tableBeta, winnerId: winners.beta || null },
+    { key: 'gamma', title: 'Table Gamma (Heat 3)', list: heats.tableGamma, winnerId: winners.gamma || null }
+  ];
+
+  if (numTables === 4) {
+    tableList.push({ key: 'delta', title: 'Table Delta (Heat 4)', list: heats.tableDelta, winnerId: winners.delta || null });
+  }
+
+  const tables = tableList.map(t => {
+    const winnerPlayer = t.list.find(p => p.id === t.winnerId) || null;
+    return {
+      key: t.key,
+      title: t.title,
+      winner: winnerPlayer,
+      players: t.list
+    };
+  });
+
+  const finalists = tables.map(t => t.winner).filter(Boolean);
+
+  return {
+    numTables,
+    tables,
+    finalists,
+    expectedFinalists: numTables,
+    isComplete: finalists.length === numTables
+  };
+}
+
+export function computeChampionshipStandings(state) {
+  const gf = computeGrandFinalists(state);
+  const podium = state.grandFinal?.podium || {};
+
+  const allFinalistMap = new Map();
+  gf.finalists.forEach(p => allFinalistMap.set(p.id, p));
+  const rosterMap = new Map((state.roster || []).map(p => [p.id, p]));
+  const getPlayer = (id) => (id ? allFinalistMap.get(id) || rosterMap.get(id) || null : null);
+
+  const first = getPlayer(podium.first);
+  const second = getPlayer(podium.second);
+  const third = getPlayer(podium.third);
+  const fourth = gf.numTables === 4 ? getPlayer(podium.fourth) : null;
+
+  const placements = [
+    { rank: 1, key: 'first', medal: '🥇', label: 'Grand Champion', player: first },
+    { rank: 2, key: 'second', medal: '🥈', label: 'Runner-Up', player: second },
+    { rank: 3, key: 'third', medal: '🥉', label: '2nd Runner-Up', player: third }
+  ];
+
+  if (gf.numTables === 4) {
+    placements.push({ rank: 4, key: 'fourth', medal: '🎖️', label: '4th Place Finalist', player: fourth });
+  }
+
+  const placedIds = new Set([podium.first, podium.second, podium.third, podium.fourth].filter(Boolean));
+  const unplacedFinalists = gf.finalists.filter(p => !placedIds.has(p.id));
+
+  return {
+    numTables: gf.numTables,
+    finalists: gf.finalists,
+    podium: {
+      first,
+      second,
+      third,
+      fourth
+    },
+    placements,
+    unplacedFinalists,
+    isChampionCrowned: !!first
+  };
+}
+

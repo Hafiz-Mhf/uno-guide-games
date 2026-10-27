@@ -8,7 +8,40 @@
 
 ---
 
-## Round 1 Format Update: Best of 1 Only `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Round 3 Grand Finale & Official Championship Standings `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **End-to-End Progression from Round 2 Heats to Grand Finale:**
+  * Enabled crowning of heat winners directly on each Round 2 physical heat table card (`Table Alpha`, `Table Beta`, `Table Gamma`, and `Table Delta` if 4-table format) on the Tournament Desk (`#desk`).
+  * Clicking `👑 Crown Winner` on a seated player crowns them as the Heat Champion, highlights their card with a gold badge, and automatically advances them to the **Round 3: Grand Finale Championship Table**.
+  * Uncrowning or changing a heat winner updates seamlessly and clears any dependent podium spot.
+* **Round 3 Grand Finale Management Desk (`#deskGrandFinalCard`):**
+  * Displays the qualified heat champions side-by-side with heat source badges (`Table Alpha Winner`, `Table Beta Winner`, etc.).
+  * Dedicated placement selector buttons allow organizers to award podium positions with a single click:
+    * `🥇 1st Place` (Grand Champion)
+    * `🥈 2nd Place` (Runner-Up)
+    * `🥉 3rd Place` (2nd Runner-Up)
+    * `🎖️ 4th Place` (4th Place Finalist - when in 4-table format)
+  * Includes a live desk preview of the podium and a `🔄 Reset Finale Placements` button with custom popout confirmation.
+* **Official Championship Standings & 3D Olympic Podium (`#matchupsView`):**
+  * Replaced the static placeholder card with a live, dynamic **Grand Finale & Championship Standings** showcase:
+    * **Championship Final Table Showcase:** Displays the 3 or 4 finalists qualified from the physical heats with their names and departments.
+    * **3D Olympic-Style Championship Podium:**
+      * Center (Tallest, Height: 180px): Glowing Gold Pedestal with Crown `👑` and Medal `🥇`, spotlighting the Grand Champion's full name, department, and title `🏆 GRAND CHAMPION 2026`.
+      * Left (Height: 135px): Silver Metallic Pedestal with `🥈` for the Runner-Up.
+      * Right (Height: 105px): Rich Bronze Pedestal with `🥉` for the 2nd Runner-Up.
+      * 4th Block (Height: 80px): Sleek Blue Pedestal for 4th Place Finalist when 4 tables are active.
+    * **Official Tournament Standings Leaderboard Table:**
+      * Executive leaderboard with Rank (`🥇 #1`, `🥈 #2`, `🥉 #3`, `🎖️ #4`), Participant Name in bold, Department, Accolade / Title, and Crowned Status.
+      * Visible to all attendees in Guest View so everyone can see the tournament champions and final standings.
+* **Full Bilingual Support & Test Suite:**
+  * English and Bahasa Melayu translations for all new elements, badges, and status pills.
+  * 10/10 test suites passing (`npm test`).
+
+---
+
+## Round 1 Format Update: Best of 1 Only `27 October 2026`
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">IMPROVED</span>
 

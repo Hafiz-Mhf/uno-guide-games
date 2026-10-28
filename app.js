@@ -823,15 +823,15 @@ export function openShareQrModal() {
   const qrImg = document.getElementById('qrCodeImage');
   if (!modal) return;
 
-  const publicUrl = (typeof window !== 'undefined' && window.location)
+  const publicUrl = (typeof window !== 'undefined' && window.location && window.location.origin && !window.location.origin.includes('localhost') && !window.location.origin.includes('127.0.0.1'))
     ? (window.location.origin + window.location.pathname + '?view=guest#matchups')
-    : 'https://buddyboardgames.com/uno';
+    : 'https://uno-guide-games.vercel.app';
 
   if (urlInput) urlInput.value = publicUrl;
 
   if (qrImg) {
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(publicUrl)}`;
-    qrImg.src = qrUrl;
+    // Official QR code image for instant offline rendering without external api dependencies
+    qrImg.src = 'uno-app-qr.png';
   }
 
   modal.style.display = 'flex';
@@ -3445,6 +3445,8 @@ export function initApp() {
     window.isAdminAuthenticated = isAdminAuthenticated;
     window.openAdminLoginModal = openAdminLoginModal;
     window.closeAdminLoginModal = closeAdminLoginModal;
+    window.openShareQrModal = openShareQrModal;
+    window.closeShareQrModal = closeShareQrModal;
   }
 
   const validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];

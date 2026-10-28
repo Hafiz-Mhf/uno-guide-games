@@ -29,6 +29,11 @@ if (!isNodeTestEnvironment()) {
 }
 
 // 2. Verify HTML structure for Cloud Sync & QR Modal
+if (!fs.existsSync('uno-app-qr.png')) {
+  console.error('FAIL: Missing official QR asset uno-app-qr.png');
+  process.exit(1);
+}
+
 const html = fs.readFileSync('index.html', 'utf-8');
 const requiredSyncElements = [
   'cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
@@ -37,6 +42,7 @@ const requiredSyncElements = [
   'id="deskQuickShareBtn"',
   'id="shareQrModalOverlay"',
   'id="qrCodeImage"',
+  'src="uno-app-qr.png"',
   'id="shareDirectUrlInput"',
   'id="modalCopyShareUrlBtn"',
   'id="closeShareQrModalBtn"',

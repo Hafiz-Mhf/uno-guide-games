@@ -326,6 +326,7 @@ export const TRANSLATIONS = {
         crownWinnerBtn: "👑 Crown Winner",
         crownedBadge: "👑 Heat Champion",
         uncrownBtn: "↩️ Change",
+        printStandingsBtn: "🖨️ Print Standings",
         resetBtn: "🔄 Reset Finale Placements",
         resetConfirm: "Reset all Grand Finale podium placements and heat winners?",
         assignPrompt: "Award Podium Position:",
@@ -346,6 +347,7 @@ export const TRANSLATIONS = {
       secondChanceBadge: "🃏 Second Chance",
       searchPlaceholder: "Search your name to find your table (e.g. Noorfaizal)...",
       shareBtn: "🔗 Copy Matchups Link",
+      printStandingsBtn: "🖨️ Print Standings & Podium",
       emptyPrompt: "Round 1 pairings have not been generated yet. Please wait for the tournament organizer to start the round.",
       statusInProgress: "⏳ In Progress • Best of 1",
       statusWinner: "🏆 Winner:",
@@ -375,6 +377,13 @@ export const TRANSLATIONS = {
       statusFinalist: "⭐ Finalist",
       statusPending: "⏳ Showdown in Progress",
       standingsPendingNote: "Final standings will be updated in real time as the Grand Finale concludes."
+    },
+    print: {
+      department: "Talent Development & Human Resource Division",
+      subtitle: "UNO Engagement Day 2026",
+      venueDate: "Wednesday, 28 October 2026 • Level 2, Hive 5, MRANTI",
+      standingsTitle: "OFFICIAL CHAMPIONSHIP STANDINGS & PODIUM",
+      footerNote: "Official tournament record generated via UNO Tournament Desk • Talent Development & HR Division"
     },
     auth: {
       adminLogin: "Organizer Login",
@@ -700,6 +709,7 @@ export const TRANSLATIONS = {
         crownWinnerBtn: "👑 Pilih Pemenang",
         crownedBadge: "👑 Juara Kumpulan",
         uncrownBtn: "↩️ Tukar",
+        printStandingsBtn: "🖨️ Cetak Kedudukan",
         resetBtn: "🔄 Set Semula Keputusan Akhir",
         resetConfirm: "Set semula semua kedudukan podium Pentas Akhir dan pemenang kumpulan?",
         assignPrompt: "Tetapkan Kedudukan Podium:",
@@ -720,6 +730,7 @@ export const TRANSLATIONS = {
       secondChanceBadge: "🃏 Peluang Kedua",
       searchPlaceholder: "Cari nama anda untuk lihat meja (cth: Noorfaizal)...",
       shareBtn: "🔗 Salin Pautan Jadual",
+      printStandingsBtn: "🖨️ Cetak Kedudukan & Podium",
       emptyPrompt: "Jadual perlawanan Pusingan 1 belum dijana lagi. Sila tunggu penganjur memulakan pusingan.",
       statusInProgress: "⏳ Sedang Berlangsung • Best of 1",
       statusWinner: "🏆 Pemenang:",
@@ -749,6 +760,13 @@ export const TRANSLATIONS = {
       statusFinalist: "⭐ Peserta Akhir",
       statusPending: "⏳ Sedang Berlangsung",
       standingsPendingNote: "Kedudukan akhir akan dikemas kini serta-merta sebaik sahaja perlawanan tamat."
+    },
+    print: {
+      department: "Bahagian Pembangunan Bakat & Sumber Manusia",
+      subtitle: "Hari Penglibatan UNO 2026",
+      venueDate: "Rabu, 28 Oktober 2026 • Aras 2, Hive 5, MRANTI",
+      standingsTitle: "KEDUDUKAN RASMI KEJUARAAN & PODIUM",
+      footerNote: "Rekod kejohanan rasmi dijana melalui Meja Kejohanan UNO • Bahagian Pembangunan Bakat & Sumber Manusia"
     },
     auth: {
       adminLogin: "Log Masuk Penganjur",
@@ -3066,11 +3084,67 @@ export function setupTournamentDeskEvents() {
     }
   });
 
-  // Print button
+  // Contextual Print Handlers
+  function cleanupPrintModes() {
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.classList.remove('print-mode-standings', 'print-mode-desk');
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener('afterprint', cleanupPrintModes);
+  }
+
+  function triggerPrintStandings() {
+    if (typeof document === 'undefined' || !document.body) return;
+    document.body.classList.remove('print-mode-desk');
+    document.body.classList.add('print-mode-standings');
+    setTimeout(() => {
+      window.print();
+      setTimeout(cleanupPrintModes, 1000);
+    }, 50);
+  }
+
+  function triggerPrintDesk() {
+    if (typeof document === 'undefined' || !document.body) return;
+    document.body.classList.remove('print-mode-standings');
+    document.body.classList.add('print-mode-desk');
+    setTimeout(() => {
+      window.print();
+      setTimeout(cleanupPrintModes, 1000);
+    }, 50);
+  }
+
+  // Standings & Podium Print Buttons
+  const printStandingsBtn = document.getElementById('printStandingsBtn');
+  if (printStandingsBtn) {
+    printStandingsBtn.addEventListener('click', triggerPrintStandings);
+  }
+
+  const deskPrintStandingsBtn = document.getElementById('deskPrintStandingsBtn');
+  if (deskPrintStandingsBtn) {
+    deskPrintStandingsBtn.addEventListener('click', triggerPrintStandings);
+  }
+
+  // Desk Matchups Print Button
   const printBtn = document.getElementById('deskPrintBtn');
   if (printBtn) {
-    printBtn.addEventListener('click', () => {
-      window.print();
+    printBtn.addEventListener('click', triggerPrintDesk);
+  }
+
+  // Keyboard shortcut (Ctrl+P / Cmd+P) contextual trigger
+  if (typeof window !== 'undefined') {
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
+        const matchupsView = document.getElementById('matchupsView');
+        if (matchupsView && matchupsView.classList.contains('active')) {
+          document.body.classList.remove('print-mode-desk');
+          document.body.classList.add('print-mode-standings');
+        } else {
+          document.body.classList.remove('print-mode-standings');
+          document.body.classList.add('print-mode-desk');
+        }
+      }
     });
   }
 }

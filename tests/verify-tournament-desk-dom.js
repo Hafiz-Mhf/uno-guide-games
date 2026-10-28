@@ -54,4 +54,29 @@ if (!TRANSLATIONS.en.tournamentDesk?.grandFinal || !TRANSLATIONS.bm.tournamentDe
   process.exit(1);
 }
 
+// Verify Second Chance translations
+const r2En = TRANSLATIONS.en.tournamentDesk?.round2;
+const r2Bm = TRANSLATIONS.bm.tournamentDesk?.round2;
+if (!r2En?.secondChanceBtn || !r2Bm?.secondChanceBtn) {
+  console.error('FAIL: Missing secondChanceBtn in translations');
+  process.exit(1);
+}
+if (!r2En?.secondChanceBadge || !r2Bm?.secondChanceBadge) {
+  console.error('FAIL: Missing secondChanceBadge in translations');
+  process.exit(1);
+}
+if (!r2En?.secondChanceSelectPrompt || !r2Bm?.secondChanceSelectPrompt) {
+  console.error('FAIL: Missing secondChanceSelectPrompt in translations');
+  process.exit(1);
+}
+if (!r2En?.secondChanceEmptySlot || !r2Bm?.secondChanceEmptySlot) {
+  console.error('FAIL: Missing secondChanceEmptySlot in translations');
+  process.exit(1);
+}
+if (!r2En?.secondChanceAddedToast || !r2Bm?.secondChanceAddedToast) {
+  console.error('FAIL: Missing secondChanceAddedToast in translations');
+  process.exit(1);
+}
+
 console.log('PASS: Task 4 DOM and translation assertions passed.');
+

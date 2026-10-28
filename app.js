@@ -20,7 +20,10 @@ import {
   recordPodiumPlace,
   resetGrandFinal,
   computeGrandFinalists,
-  computeChampionshipStandings
+  computeChampionshipStandings,
+  addSecondChancePlayer,
+  removeSecondChancePlayer,
+  getEligibleSecondChancePlayers
 } from './tournament-engine.js';
 import {
   initSyncEngine,
@@ -297,7 +300,12 @@ export const TRANSLATIONS = {
         tableBeta: "Table Beta (Heat 2)",
         tableGamma: "Table Gamma (Heat 3)",
         tableDelta: "Table Delta (Heat 4)",
-        slotEmpty: "Awaiting Round 1 Winner..."
+        slotEmpty: "Awaiting Round 1 Winner...",
+        secondChanceBtn: "+ Add Second Chance",
+        secondChanceBadge: "🃏 Second Chance",
+        secondChanceSelectPrompt: "Select attendee for Second Chance...",
+        secondChanceEmptySlot: "Empty (Add player to reach 4 pax)",
+        secondChanceAddedToast: "Player added to Table as Second Chance!"
       },
       lockBar: {
         lockedTitle: "Organizer Controls: Protected",
@@ -331,6 +339,7 @@ export const TRANSLATIONS = {
       title: "Round 1 Matchups & Digital Rooms",
       subtitle: "Find your table number and paired opponent. Click 'Launch BBG Room' to enter your game room immediately.",
       safeNotice: "🛡️ Participant Read-Only View — Click any table room button to play!",
+      secondChanceBadge: "🃏 Second Chance",
       searchPlaceholder: "Search your name to find your table (e.g. Noorfaizal)...",
       shareBtn: "🔗 Copy Matchups Link",
       emptyPrompt: "Round 1 pairings have not been generated yet. Please wait for the tournament organizer to start the round.",
@@ -661,7 +670,12 @@ export const TRANSLATIONS = {
         tableBeta: "Meja Beta (Kumpulan 2)",
         tableGamma: "Meja Gamma (Kumpulan 3)",
         tableDelta: "Meja Delta (Kumpulan 4)",
-        slotEmpty: "Menunggu Pemenang Pusingan 1..."
+        slotEmpty: "Menunggu Pemenang Pusingan 1...",
+        secondChanceBtn: "+ Tambah Peluang Kedua",
+        secondChanceBadge: "🃏 Peluang Kedua",
+        secondChanceSelectPrompt: "Pilih peserta untuk Peluang Kedua...",
+        secondChanceEmptySlot: "Kosong (Tambah pemain untuk cukupkan 4)",
+        secondChanceAddedToast: "Peserta ditambah ke meja sebagai Peluang Kedua!"
       },
       lockBar: {
         lockedTitle: "Kawalan Penganjur: Dilindungi",
@@ -695,6 +709,7 @@ export const TRANSLATIONS = {
       title: "Jadual Perlawanan Pusingan 1 & Bilik Digital",
       subtitle: "Cari nombor meja dan lawan anda. Klik 'Buka Bilik BBG' untuk terus masuk ke bilik perlawanan anda.",
       safeNotice: "🛡️ Paparan Peserta Sahaja — Klik butang meja untuk mula bermain!",
+      secondChanceBadge: "🃏 Peluang Kedua",
       searchPlaceholder: "Cari nama anda untuk lihat meja (cth: Noorfaizal)...",
       shareBtn: "🔗 Salin Pautan Jadual",
       emptyPrompt: "Jadual perlawanan Pusingan 1 belum dijana lagi. Sila tunggu penganjur memulakan pusingan.",
@@ -1839,7 +1854,9 @@ export function renderPublicMatchups() {
   const heats = computeRound2Heats(
     tournamentState.round1?.byePlayer,
     tournamentState.round1?.matches || [],
-    numTables
+    numTables,
+    tournamentState.round2?.secondChance || {},
+    tournamentState.roster || []
   );
   const totalExpected = tournamentState.round1?.matches?.length
     ? tournamentState.round1.matches.length + (tournamentState.round1.byePlayer ? 1 : 0)
@@ -1869,7 +1886,7 @@ export function renderPublicMatchups() {
     const rem = totalExpected % numTables;
 
     publicRound2Grid.innerHTML = tables.map((t, tableIdx) => {
-      const targetTableCap = Math.max(t.list.length, baseCap + (tableIdx < rem ? 1 : 0), 5);
+      const targetTableCap = Math.max(t.list.length, baseCap + (tableIdx < rem ? 1 : 0), 4);
       return `
         <div class="round2-table-card border-${t.color}">
           <div class="table-card-head bg-${t.color}">
@@ -1882,19 +1899,23 @@ export function renderPublicMatchups() {
               if (player) {
                 const isTableWinner = tournamentState.round2?.winners?.[t.id] === player.id;
                 return `
-                  <li class="table-seat filled ${isTableWinner ? 'heat-winner-seat' : ''}">
+                  <li class="table-seat filled ${isTableWinner ? 'heat-winner-seat' : ''} ${player.isSecondChance ? 'second-chance-seat' : ''}">
                     <span class="seat-num">${isTableWinner ? '👑' : idx + 1}</span>
                     <div class="seat-player">
                       <strong>${player.name}</strong>
-                      ${isTableWinner ? `<span class="seat-winner-badge">⭐ ${pmDict.statusFinalist || 'Finalist'}</span>` : ''}
+                      <div class="seat-badges-row">
+                        ${player.isSecondChance ? `<span class="second-chance-chip">${pmDict.secondChanceBadge || deskDict.round2.secondChanceBadge || '🃏 Second Chance'}</span>` : ''}
+                        ${isTableWinner ? `<span class="seat-winner-badge">⭐ ${pmDict.statusFinalist || 'Finalist'}</span>` : ''}
+                      </div>
                     </div>
                   </li>
                 `;
               }
+              const isSecondChanceSlot = idx < 4;
               return `
                 <li class="table-seat empty">
                   <span class="seat-num">${idx + 1}</span>
-                  <span class="seat-empty-text">${deskDict.round2.slotEmpty}</span>
+                  <span class="seat-empty-text">${isSecondChanceSlot ? (deskDict.round2?.secondChanceEmptySlot || deskDict.round2.slotEmpty) : deskDict.round2.slotEmpty}</span>
                 </li>
               `;
             }).join('')}
@@ -2285,8 +2306,12 @@ export function renderTournamentDesk() {
   const heats = computeRound2Heats(
     tournamentState.round1?.byePlayer,
     tournamentState.round1?.matches || [],
-    numTables
+    numTables,
+    tournamentState.round2?.secondChance || {},
+    tournamentState.roster || []
   );
+
+  const eligibleSecondChance = getEligibleSecondChancePlayers(tournamentState);
 
   const totalExpected = tournamentState.round1?.matches?.length
     ? tournamentState.round1.matches.length + (tournamentState.round1.byePlayer ? 1 : 0)
@@ -2322,7 +2347,7 @@ export function renderTournamentDesk() {
     const rem = totalExpected % numTables;
 
     round2GridEl.innerHTML = tables.map((t, tableIdx) => {
-      const targetTableCap = Math.max(t.list.length, baseCap + (tableIdx < rem ? 1 : 0), 5);
+      const targetTableCap = Math.max(t.list.length, baseCap + (tableIdx < rem ? 1 : 0), 4);
 
       return `
         <div class="round2-table-card border-${t.color}">
@@ -2336,10 +2361,16 @@ export function renderTournamentDesk() {
               if (player) {
                 const isTableWinner = tournamentState.round2?.winners?.[t.id] === player.id;
                 return `
-                  <li class="table-seat filled ${isTableWinner ? 'heat-winner-seat' : ''}">
+                  <li class="table-seat filled ${isTableWinner ? 'heat-winner-seat' : ''} ${player.isSecondChance ? 'second-chance-seat' : ''}">
                     <span class="seat-num">${isTableWinner ? '👑' : idx + 1}</span>
                     <div class="seat-player">
-                      <strong>${player.name}</strong>
+                      <div class="seat-player-row">
+                        <strong>${player.name}</strong>
+                        ${player.isSecondChance ? `
+                          <span class="second-chance-chip">${deskDict.round2?.secondChanceBadge || '🃏 Second Chance'}</span>
+                          <button type="button" class="btn-remove-second-chance" data-action="remove-second-chance" data-table="${t.id}" data-player-id="${player.id}" title="Remove second chance player">✕</button>
+                        ` : ''}
+                      </div>
                     </div>
                     <div class="seat-actions">
                       <button type="button" class="btn-heat-winner-crown ${isTableWinner ? 'is-crowned' : ''}" data-action="crown-heat-winner" data-table="${t.id}" data-player-id="${player.id}">
@@ -2349,14 +2380,24 @@ export function renderTournamentDesk() {
                   </li>
                 `;
               }
+              const isSecondChanceSlot = idx < 4;
               return `
                 <li class="table-seat empty">
                   <span class="seat-num">${idx + 1}</span>
-                  <span class="seat-empty-text">${deskDict.round2.slotEmpty}</span>
+                  <span class="seat-empty-text">${isSecondChanceSlot ? (deskDict.round2?.secondChanceEmptySlot || deskDict.round2.slotEmpty) : deskDict.round2.slotEmpty}</span>
                 </li>
               `;
             }).join('')}
           </ol>
+          <div class="second-chance-select-wrap">
+            <select class="desk-second-chance-select" id="select-second-chance-${t.id}">
+              <option value="">${deskDict.round2?.secondChanceSelectPrompt || 'Select attendee for Second Chance...'}</option>
+              ${eligibleSecondChance.map(ep => `<option value="${ep.id}">${ep.name} (${ep.dept || 'Staff'})</option>`).join('')}
+            </select>
+            <button type="button" class="btn-add-second-chance" data-action="add-second-chance" data-table="${t.id}">
+              ${deskDict.round2?.secondChanceBtn || '+ Add Second Chance'}
+            </button>
+          </div>
         </div>
       `;
     }).join('');
@@ -2799,29 +2840,80 @@ export function setupTournamentDeskEvents() {
     });
   }
 
-  // Round 2 Heat Winner crowning event delegation
+  // Round 2 Heat Winner crowning & Second Chance event delegation
   const round2DeskGrid = document.getElementById('deskRound2HeatsGrid');
   if (round2DeskGrid) {
     round2DeskGrid.addEventListener('click', async (e) => {
       const crownBtn = e.target.closest('button[data-action="crown-heat-winner"]');
-      if (!crownBtn) return;
-      const allowed = await ensureOrganizerUnlocked();
-      if (!allowed) return;
-      const tableKey = crownBtn.getAttribute('data-table');
-      const playerId = crownBtn.getAttribute('data-player-id');
-      if (tableKey && playerId) {
-        tournamentState = recordHeatWinner(tournamentState, tableKey, playerId);
+      if (crownBtn) {
+        const allowed = await ensureOrganizerUnlocked();
+        if (!allowed) return;
+        const tableKey = crownBtn.getAttribute('data-table');
+        const playerId = crownBtn.getAttribute('data-player-id');
+        if (tableKey && playerId) {
+          tournamentState = recordHeatWinner(tournamentState, tableKey, playerId);
+          persistTournamentState(tournamentState);
+          renderTournamentDesk();
+          renderPublicMatchups();
+          const isBM = currentLang === 'bm';
+          const crowned = tournamentState.round2?.winners?.[tableKey] === playerId;
+          showToast(
+            crowned
+              ? (isBM ? `Pemenang Kumpulan ditetapkan! Mara ke Pentas Akhir 👑` : `Heat Winner crowned! Advances to Grand Finale 👑`)
+              : (isBM ? `Pemenang Kumpulan dibatalkan` : `Heat Winner cleared`),
+            '👑'
+          );
+        }
+        return;
+      }
+
+      const addBtn = e.target.closest('button[data-action="add-second-chance"]');
+      if (addBtn) {
+        const allowed = await ensureOrganizerUnlocked();
+        if (!allowed) return;
+        const tableKey = addBtn.getAttribute('data-table');
+        const selectEl = document.getElementById(`select-second-chance-${tableKey}`);
+        const playerId = selectEl?.value;
+        const isBM = currentLang === 'bm';
+        if (!playerId) {
+          showCustomAlert({
+            title: isBM ? 'Pilih Peserta' : 'Select Attendee',
+            message: isBM ? 'Sila pilih peserta daripada senarai terlebih dahulu.' : 'Please select an attendee from the dropdown first.',
+            buttonText: isBM ? 'Faham' : 'OK',
+            variant: 'warning'
+          });
+          return;
+        }
+        tournamentState = addSecondChancePlayer(tournamentState, tableKey, playerId);
         persistTournamentState(tournamentState);
         renderTournamentDesk();
         renderPublicMatchups();
-        const isBM = currentLang === 'bm';
-        const crowned = tournamentState.round2?.winners?.[tableKey] === playerId;
+        const dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
         showToast(
-          crowned
-            ? (isBM ? `Pemenang Kumpulan ditetapkan! Mara ke Pentas Akhir 👑` : `Heat Winner crowned! Advances to Grand Finale 👑`)
-            : (isBM ? `Pemenang Kumpulan dibatalkan` : `Heat Winner cleared`),
-          '👑'
+          dict.tournamentDesk?.round2?.secondChanceAddedToast || (isBM ? 'Peserta ditambah ke meja sebagai Peluang Kedua!' : 'Player added to Table as Second Chance!'),
+          '🃏'
         );
+        return;
+      }
+
+      const removeBtn = e.target.closest('button[data-action="remove-second-chance"]');
+      if (removeBtn) {
+        const allowed = await ensureOrganizerUnlocked();
+        if (!allowed) return;
+        const tableKey = removeBtn.getAttribute('data-table');
+        const playerId = removeBtn.getAttribute('data-player-id');
+        if (tableKey && playerId) {
+          tournamentState = removeSecondChancePlayer(tournamentState, tableKey, playerId);
+          persistTournamentState(tournamentState);
+          renderTournamentDesk();
+          renderPublicMatchups();
+          const isBM = currentLang === 'bm';
+          showToast(
+            isBM ? 'Pemain dikeluarkan dari meja' : 'Player removed from table',
+            'ℹ️'
+          );
+        }
+        return;
       }
     });
   }

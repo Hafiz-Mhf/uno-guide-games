@@ -89,8 +89,8 @@ if (!SCENARIOS || SCENARIOS.length < 3) {
 // 6. Simulate Full Tournament Desk Workflow
 console.log('Simulating Tournament Desk Workflow...');
 let state = createDefaultTournamentState();
-if (state.roster.length !== 30) {
-  console.error('FAIL: Initial roster size must be 30');
+if (state.roster.length !== 34) {
+  console.error('FAIL: Initial roster size must be 34');
   process.exit(1);
 }
 
@@ -101,17 +101,17 @@ state = togglePlayerCheckIn(state, state.roster[1].id, false);
 // Simulate 1 replacement added
 state = addPlayer(state, 'Nur Aisyah', 'HR Operations');
 
-// Checked in count should be 29 (30 - 2 + 1)
+// Checked in count should be 33 (34 - 2 + 1)
 const checkedIn = state.roster.filter(p => p.checkedIn);
-if (checkedIn.length !== 29) {
-  console.error(`FAIL: Expected 29 checked-in players, got ${checkedIn.length}`);
+if (checkedIn.length !== 33) {
+  console.error(`FAIL: Expected 33 checked-in players, got ${checkedIn.length}`);
   process.exit(1);
 }
 
 // Generate pairings
 const pairings = generateRound1Pairings(checkedIn);
-if (pairings.matches.length !== 14 || !pairings.byePlayer) {
-  console.error('FAIL: Expected 14 matches and 1 BYE player for 29 attendees');
+if (pairings.matches.length !== 16 || !pairings.byePlayer) {
+  console.error('FAIL: Expected 16 matches and 1 BYE player for 33 attendees');
   process.exit(1);
 }
 
@@ -123,7 +123,7 @@ pairings.matches.forEach(m => {
 
 // Compute Round 2
 const round2 = computeRound2Heats(state.round1.byePlayer, state.round1.matches);
-if (round2.totalQualifiers !== 15 || round2.tableAlpha.length !== 5 || round2.tableBeta.length !== 5 || round2.tableGamma.length !== 5) {
+if (round2.totalQualifiers !== 17 || round2.tableAlpha.length !== 6 || round2.tableBeta.length !== 6 || round2.tableGamma.length !== 5) {
   console.error(`FAIL: Round 2 qualification failed: ${JSON.stringify(round2)}`);
   process.exit(1);
 }

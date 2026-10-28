@@ -4,11 +4,74 @@
 > **Target Event Date:** Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)  
 > **Venue:** Common Area, Level 2, Hive 5, MRANTI Building  
 > **Platform:** BuddyBoardGames UNO (Digital Round 1) & Physical Decks (Rounds 2 & 3)  
-> **Status:** Production Ready • 10/10 Test Suites Passing (`npm test`)
+> **Status:** Production Ready • 11/11 Test Suites Passing (`npm test`)
 
 ---
 
-## Grand Finale Standings & Podium Reset with Draw Re-shuffle `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Official 34 HR Participant Roster Live & Test Names Removed `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">UPDATED</span>
+
+* **All Test Names Fully Removed:**
+  * Replaced all mock/test names in [`tournament-data.js`](file:///d:/uno-guide-rules/tournament-data.js) and [`tournament-engine.js`](file:///d:/uno-guide-rules/tournament-engine.js) with the official 34 HR Division attendees:
+    1. Zaharudin Bin Ismail
+    2. Mohd Rizal Bin Abd Rahim
+    3. Zain Padzar Bin Musa
+    4. Ahaime Bin Abu Seman @ Hj Ahmad
+    5. Sapawi Bin M Noor
+    6. Rahmat Firdaus Bin Osman
+    7. Rusnita Binti Che Harun
+    8. Raja Norfazeela Bt Raja Badri Shah
+    9. Wan Nor Fadula Binti Wan Noh
+    10. Hamidun Bin Samsuddin
+    11. Aahmad Bin Mahmud
+    12. Ahmad Zainuddin Bin Mamat
+    13. Mohd Sidek Bin Ibrahim
+    14. Noorfaizal Bin Abdul Rahman
+    15. Sabrina Binti Mohd Haris Maurice
+    16. Siti Aznee Binti Noor Hassan
+    17. Saiful Yusri Bin Othman
+    18. Naimi Adilah binti Mohd Ruslan
+    19. Noor Haizah Binti Abdul Halim
+    20. Zarina Binti Salim
+    21. Mustaqim Kumar bin Abdullah
+    22. Zahuri bin Mat Ibrahim
+    23. Nur Amalina binti Amran
+    24. Ganes a/l Bandu Rengan
+    25. Norkhairul Hafiza binti Hamzah
+    26. Nur Fatimah binti Attaullah
+    27. Afiqah binti Mad Kassim
+    28. Hanisah Nabihah binti Azlan
+    29. Rachel How Zhen Yi
+    30. Adibah binti Zainal Abidin
+    31. Muhammad Syafiq Rahimi bin Rosly
+    32. Siti Norashikin binti Alias
+    33. Fadzlul Baqi Faez bin Fadzil
+    34. Muhammad Hafiz Faruqi bin Md Saifuddin
+* **Round 1 Digital Matches & Heats Structure Updated:**
+  * 34 Registered Attendees -> Exactly 17 1v1 Matches (Tables 1 to 17, 0 BYEs).
+  * 17 Round 2 Qualifiers naturally map to: Table Alpha (6 pax), Table Beta (6 pax), Table Gamma (5 pax).
+* **Live Supabase State Updated:**
+  * Pushed the fresh 34-participant state directly into the remote Supabase database (`uno_tournament_2026`). All mobile attendees scanning the QR code or visiting `#matchups` immediately see the official 34-player roster and pairings.
+* **Test Suites Updated:**
+  * Updated [`tests/verify-data.js`](file:///d:/uno-guide-rules/tests/verify-data.js), [`tests/verify-tournament-engine.js`](file:///d:/uno-guide-rules/tests/verify-tournament-engine.js), and [`tests/e2e-simulation.js`](file:///d:/uno-guide-rules/tests/e2e-simulation.js).
+  * All 11 test suites passing (`npm test`).
+
+---
+
+## Supabase Real-Time Cloud Sync & Venue QR Code Sharing `28 October 2026`
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **Cross-Device Real-Time Cloud Sync:**
+  * Connected application to Supabase database project `csdhoihirffjqkkhkfnv.supabase.co` (`tournament_state` table).
+  * Implemented real-time postgres websocket subscription via [`sync-engine.js`](file:///d:/uno-guide-rules/sync-engine.js).
+  * Organizer changes on laptop (check-ins, pairings, match winner selections, heat crowns, podium finishes) instantly sync live to attendees' mobile phones without requiring a page refresh.
+* **Share Link & QR Code Modal (`#shareQrModalOverlay`):**
+  * Added quick-access buttons `📱 Share Link & QR Code` in both the Tournament Desk and Live Matchups views.
+  * Modal displays high-resolution scannable QR code directing attendees straight to `/#matchups`, complete with direct URL copy button.
+* **Live Status Indicator (`#cloudSyncStatusPill`):**
+  * Displays real-time connection pulse dot (`Live Cloud Sync`) in the executive header.
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">FIXED</span>
 

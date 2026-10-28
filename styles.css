@@ -6340,6 +6340,307 @@ body.role-guest #matchupsView.active {
   .podium-block.block-fourth { height: 60px; }
 }
 
+/* ==========================================================================
+   Supabase Real-Time Cloud Sync & Share QR Code System
+   ========================================================================== */
+
+/* Real-Time Cloud Sync Indicator Pill in Header */
+.cloud-sync-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #166534;
+  box-shadow: 0 1px 2px rgba(22, 101, 52, 0.05);
+  transition: all 0.25s ease;
+  user-select: none;
+  cursor: default;
+}
+
+.cloud-sync-pill.is-syncing {
+  background: #FEFCE8;
+  border-color: #FEF08A;
+  color: #854D0E;
+}
+
+.cloud-sync-pill.is-offline {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  color: #475569;
+}
+
+.sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22C55E;
+  box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  animation: pulseGreen 2.2s infinite;
+  flex-shrink: 0;
+}
+
+.cloud-sync-pill.is-syncing .sync-dot {
+  background: #EAB308;
+  animation: pulseYellow 1.2s infinite;
+}
+
+.cloud-sync-pill.is-offline .sync-dot {
+  background: #94A3B8;
+  animation: none;
+}
+
+@keyframes pulseYellow {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(234, 179, 8, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(234, 179, 8, 0); }
+}
+
+/* Desk Cloud Bar */
+.desk-cloud-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
+  border: 1px solid #A7F3D0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.06);
+}
+
+.cloud-bar-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cloud-pulse-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #065F46;
+}
+
+.cloud-bar-desc {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11.5px;
+  color: #047857;
+  line-height: 1.4;
+}
+
+.btn-cloud-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #059669;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-cloud-share:hover {
+  background: #047857;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.35);
+}
+
+/* Share & QR Code Modal */
+.share-qr-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 460px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  animation: modalScaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.share-qr-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.share-qr-title-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.share-qr-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.share-qr-title {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.share-qr-subtitle {
+  margin: 4px 0 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  color: #64748B;
+  line-height: 1.45;
+}
+
+.share-qr-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.qr-code-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.qr-code-box {
+  background: #FFFFFF;
+  border: 2px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-code-img {
+  display: block;
+  border-radius: 8px;
+  max-width: 100%;
+  height: auto;
+}
+
+.qr-scan-hint {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  text-align: center;
+}
+
+.share-url-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.share-url-label {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.share-url-input-wrap {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.share-url-input {
+  flex: 1;
+  padding: 8px 12px;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+  border-radius: 10px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  color: #0F172A;
+  outline: none;
+}
+
+.btn-copy-share {
+  background: #1E293B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-share:hover {
+  background: #0F172A;
+}
+
+.share-live-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #F0FDF4;
+  border: 1px solid #BBF7D0;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: #166534;
+  width: 100%;
+}
+
+.share-qr-footer {
+  width: 100%;
+}
+
+.share-done-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 10px;
+}
+
+@media (max-width: 600px) {
+  .desk-cloud-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-cloud-share {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
 
 
 

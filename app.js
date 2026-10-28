@@ -22,6 +22,12 @@ import {
   computeGrandFinalists,
   computeChampionshipStandings
 } from './tournament-engine.js';
+import {
+  initSyncEngine,
+  pushTournamentStateToCloud,
+  onSyncStatusChange,
+  getSyncStatus
+} from './sync-engine.js';
 
 export const TRANSLATIONS = {
   en: {
@@ -260,8 +266,8 @@ export const TRANSLATIONS = {
         checkAllBtn: "Check In All",
         uncheckAllBtn: "Clear Check-Ins",
         removeAllBtn: "🗑️ Remove All Players",
-        resetBtn: "🔄 Reset to Default 30",
-        resetConfirm: "Reset roster back to the original 30 participants?",
+        resetBtn: "🔄 Reset to Default 34",
+        resetConfirm: "Reset roster back to the original 34 participants?",
         checkedInTag: "Checked In",
         absentTag: "Absent",
         deleteBtnTitle: "Remove player from roster"
@@ -372,6 +378,20 @@ export const TRANSLATIONS = {
       deskBannerTitle: "Authenticated Organizer Session",
       deskBannerSub: "Local browser session active. Only you can view this desk.",
       switchToGuest: "👁️ Switch to Guest View"
+    },
+    cloudSync: {
+      live: "Cloud Live",
+      syncing: "Syncing...",
+      offline: "Local Mode",
+      deskBadge: "⚡ Supabase Real-Time Sync Active (uno-game)",
+      deskHint: "Changes made here automatically update on all attendees' mobile phones in real time.",
+      shareQrBtn: "Share Link & QR Code 📱",
+      modalTitle: "Share Live Matchups & Standings",
+      modalSubtitle: "Scan this QR code or copy the link to view the live tournament bracket on mobile phones.",
+      scanTip: "Point phone camera at this QR code to join live",
+      copyUrlBtn: "Copy Link",
+      copiedUrl: "Copied! 📋",
+      closeModal: "Close"
     }
   },
   bm: {
@@ -610,8 +630,8 @@ export const TRANSLATIONS = {
         checkAllBtn: "Tanda Hadir Semua",
         uncheckAllBtn: "Kosongkan Kehadiran",
         removeAllBtn: "🗑️ Padam Semua Pemain",
-        resetBtn: "🔄 Tetap Semula ke 30 Asal",
-        resetConfirm: "Tetapkan semula senarai peserta kepada 30 pemain asal?",
+        resetBtn: "🔄 Tetap Semula ke 34 Asal",
+        resetConfirm: "Tetapkan semula senarai peserta kepada 34 pemain asal?",
         checkedInTag: "Hadir",
         absentTag: "Tidak Hadir",
         deleteBtnTitle: "Keluarkan pemain dari senarai"
@@ -722,6 +742,20 @@ export const TRANSLATIONS = {
       deskBannerTitle: "Sesi Penganjur Disahkan",
       deskBannerSub: "Sesi pelayar setempat aktif. Hanya anda yang boleh melihat meja ini.",
       switchToGuest: "👁️ Beralih ke Paparan Tetamu"
+    },
+    cloudSync: {
+      live: "Awan Aktif",
+      syncing: "Menyegerak...",
+      offline: "Mod Tempatan",
+      deskBadge: "⚡ Segerak Masa-Nyata Supabase Aktif (uno-game)",
+      deskHint: "Perubahan di sini dikemas kini secara langsung pada telefon bimbit semua peserta.",
+      shareQrBtn: "Kongsi Pautan & Kod QR 📱",
+      modalTitle: "Kongsi Jadual & Kedudukan Langsung",
+      modalSubtitle: "Imbas kod QR ini atau salin pautan untuk melihat perlawanan kejohanan di telefon bimbit.",
+      scanTip: "Halakan kamera telefon ke kod QR ini untuk akses terus",
+      copyUrlBtn: "Salin Pautan",
+      copiedUrl: "Telah Disalin! 📋",
+      closeModal: "Tutup"
     }
   }
 };
@@ -730,6 +764,65 @@ let currentLang = 'en';
 
 // Tournament Desk Reactive State
 export let tournamentState = typeof window !== 'undefined' ? loadTournamentState() : loadTournamentState(null);
+
+export function persistTournamentState(state = tournamentState) {
+  saveTournamentState(localStorage, state);
+  pushTournamentStateToCloud(state);
+}
+
+export function updateCloudSyncUI(status) {
+  const pill = document.getElementById('cloudSyncStatusPill');
+  const label = document.getElementById('cloudSyncLabel');
+  const deskLabel = document.getElementById('deskCloudStatusLabel');
+  const isBM = currentLang === 'bm';
+
+  if (!pill) return;
+
+  pill.classList.remove('is-syncing', 'is-offline');
+
+  if (status === 'connected') {
+    if (label) label.textContent = isBM ? 'Awan Aktif' : 'Cloud Live';
+    if (deskLabel) deskLabel.textContent = isBM ? '⚡ Segerak Masa-Nyata Supabase Aktif (uno-game)' : '⚡ Supabase Real-Time Sync Active (uno-game)';
+  } else if (status === 'syncing') {
+    pill.classList.add('is-syncing');
+    if (label) label.textContent = isBM ? 'Menyegerak...' : 'Syncing...';
+    if (deskLabel) deskLabel.textContent = isBM ? '🔄 Menyegerak ke Supabase...' : '🔄 Syncing to Supabase...';
+  } else {
+    pill.classList.add('is-offline');
+    if (label) label.textContent = isBM ? 'Mod Tempatan' : 'Local Mode';
+    if (deskLabel) deskLabel.textContent = isBM ? '⚪ Mod Tempatan (Luar Talian)' : '⚪ Local Mode (Offline)';
+  }
+}
+
+export function openShareQrModal() {
+  const modal = document.getElementById('shareQrModalOverlay');
+  const urlInput = document.getElementById('shareDirectUrlInput');
+  const qrImg = document.getElementById('qrCodeImage');
+  if (!modal) return;
+
+  const publicUrl = (typeof window !== 'undefined' && window.location)
+    ? (window.location.origin + window.location.pathname + '#matchups')
+    : 'https://buddyboardgames.com/uno';
+
+  if (urlInput) urlInput.value = publicUrl;
+
+  if (qrImg) {
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=${encodeURIComponent(publicUrl)}`;
+    qrImg.src = qrUrl;
+  }
+
+  modal.style.display = 'flex';
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+export function closeShareQrModal() {
+  const modal = document.getElementById('shareQrModalOverlay');
+  if (!modal) return;
+  modal.style.display = 'none';
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
 
 // Playground State
 let currentScenarioIdx = 0;
@@ -1574,7 +1667,7 @@ export function showCustomAlert({
 }
 
 export function showToast(message, icon = '✅', durationMs = 2800) {
-  if (typeof document === 'undefined') return;
+  if (typeof document === 'undefined' || typeof document.createElement !== 'function') return;
   let container = document.getElementById('appToastContainer');
   if (!container) {
     container = document.createElement('div');
@@ -2376,7 +2469,7 @@ export function setupTournamentDeskEvents() {
     if (!name) return;
 
     tournamentState = addPlayer(tournamentState, name, '');
-    saveTournamentState(localStorage, tournamentState);
+    persistTournamentState(tournamentState);
     nameInput.value = '';
     renderTournamentDesk();
     const isBM = currentLang === 'bm';
@@ -2416,7 +2509,7 @@ export function setupTournamentDeskEvents() {
         const prevCount = tournamentState.roster.length;
         tournamentState = bulkImportRoster(tournamentState, text);
         const addedCount = tournamentState.roster.length - prevCount;
-        saveTournamentState(localStorage, tournamentState);
+        persistTournamentState(tournamentState);
         bulkTextarea.value = '';
         if (bulkContainer) bulkContainer.style.display = 'none';
         renderTournamentDesk();
@@ -2433,7 +2526,7 @@ export function setupTournamentDeskEvents() {
       const allowed = await ensureOrganizerUnlocked();
       if (!allowed) return;
       tournamentState = setAllCheckInStatus(tournamentState, true);
-      saveTournamentState(localStorage, tournamentState);
+      persistTournamentState(tournamentState);
       renderTournamentDesk();
       const isBM = currentLang === 'bm';
       showToast(isBM ? 'Semua peserta ditandakan hadir' : 'All participants marked checked-in', '✅');
@@ -2446,7 +2539,7 @@ export function setupTournamentDeskEvents() {
       const allowed = await ensureOrganizerUnlocked();
       if (!allowed) return;
       tournamentState = setAllCheckInStatus(tournamentState, false);
-      saveTournamentState(localStorage, tournamentState);
+      persistTournamentState(tournamentState);
       renderTournamentDesk();
       const isBM = currentLang === 'bm';
       showToast(isBM ? 'Semua tanda kehadiran dikosongkan' : 'All check-in marks cleared', '🔄');
@@ -2463,10 +2556,10 @@ export function setupTournamentDeskEvents() {
       const confirmed = await showCustomConfirm({
         icon: '🔄',
         kicker: isBM ? 'Set Semula Roster' : 'Reset Tournament Roster',
-        title: isBM ? 'Set Semula ke 30 Peserta Asal?' : 'Reset to Default 30 Roster?',
+        title: isBM ? 'Set Semula ke 34 Peserta Asal?' : 'Reset to Default 34 Roster?',
         message: isBM
-          ? 'Tindakan ini akan mengembalikan senarai asal 30 peserta dan mengosongkan semua perlawanan Pusingan 1.'
-          : 'This will restore the original 30 registered participants and clear any current match pairings.',
+          ? 'Tindakan ini akan mengembalikan senarai asal 34 peserta dan mengosongkan semua perlawanan Pusingan 1.'
+          : 'This will restore the original 34 registered participants and clear any current match pairings.',
         note: isBM ? '⚠️ Perubahan nama atau peserta tambahan akan dipadam.' : '⚠️ Any custom added players or match results will be cleared.',
         confirmText: isBM ? 'Set Semula Roster' : 'Reset Roster',
         cancelText: isBM ? 'Kekalkan Sekarang' : 'Keep Current',
@@ -2475,9 +2568,10 @@ export function setupTournamentDeskEvents() {
 
       if (confirmed) {
         tournamentState = resetTournamentState(localStorage);
+        persistTournamentState(tournamentState);
         renderTournamentDesk();
         renderPublicMatchups();
-        showToast(isBM ? 'Roster telah diset semula ke 30 peserta asal' : 'Roster reset to default 30 participants', '🔄');
+        showToast(isBM ? 'Roster telah diset semula ke 34 peserta asal' : 'Roster reset to default 34 participants', '🔄');
       }
     });
   }
@@ -2501,8 +2595,8 @@ export function setupTournamentDeskEvents() {
           ? `Tindakan ini akan memadamkan kesemua ${tournamentState.roster.length} pemain dan mengosongkan perlawanan Pusingan 1 sedia ada.`
           : `This will remove all ${tournamentState.roster.length} participants from the roster and clear any current Round 1 matchups.`,
         note: isBM
-          ? '💡 Anda boleh menambah pemain baru atau menekan "Tetap Semula ke 30 Asal" pada bila-bila masa.'
-          : '💡 You can add new players, paste a roster via Bulk Import, or click "Reset to Default 30" at any time.',
+          ? '💡 Anda boleh menambah pemain baru atau menekan "Tetap Semula ke 34 Asal" pada bila-bila masa.'
+          : '💡 You can add new players, paste a roster via Bulk Import, or click "Reset to Default 34" at any time.',
         confirmText: isBM ? 'Padam Semua Pemain' : 'Remove All Players',
         cancelText: isBM ? 'Batal' : 'Cancel',
         confirmVariant: 'danger'
@@ -2510,7 +2604,7 @@ export function setupTournamentDeskEvents() {
 
       if (confirmed) {
         tournamentState = removeAllPlayers(tournamentState);
-        saveTournamentState(localStorage, tournamentState);
+        persistTournamentState(tournamentState);
         renderTournamentDesk();
         renderPublicMatchups();
         showToast(isBM ? 'Semua pemain telah dipadam dari senarai' : 'All players removed from roster', '🗑️');
@@ -2531,7 +2625,7 @@ export function setupTournamentDeskEvents() {
 
       if (action === 'toggle-check') {
         tournamentState = togglePlayerCheckIn(tournamentState, id);
-        saveTournamentState(localStorage, tournamentState);
+        persistTournamentState(tournamentState);
         renderTournamentDesk();
       } else if (action === 'delete-player') {
         const isBM = currentLang === 'bm';
@@ -2552,7 +2646,7 @@ export function setupTournamentDeskEvents() {
 
         if (confirmed) {
           tournamentState = removePlayer(tournamentState, id);
-          saveTournamentState(localStorage, tournamentState);
+          persistTournamentState(tournamentState);
           renderTournamentDesk();
           showToast(isBM ? `Peserta "${pName}" dikeluarkan` : `Removed "${pName}" from roster`, '🗑️');
         }
@@ -2603,7 +2697,7 @@ export function setupTournamentDeskEvents() {
       const pairings = generateRound1Pairings(checkedIn);
       tournamentState.round1 = pairings;
       tournamentState = resetGrandFinal(tournamentState);
-      saveTournamentState(localStorage, tournamentState);
+      persistTournamentState(tournamentState);
       renderTournamentDesk();
       renderPublicMatchups();
       showToast(isBM ? '🎲 Perlawanan Pusingan 1 berjaya dijana!' : '🎲 Round 1 pairings generated successfully!', '🎲');
@@ -2622,7 +2716,7 @@ export function setupTournamentDeskEvents() {
       const winnerId = btn.getAttribute('data-winner');
 
       tournamentState = recordMatchWinner(tournamentState, matchId, winnerId);
-      saveTournamentState(localStorage, tournamentState);
+      persistTournamentState(tournamentState);
       renderTournamentDesk();
       renderPublicMatchups();
       const winner = tournamentState.roster.find(p => p.id === winnerId);
@@ -2671,7 +2765,7 @@ export function setupTournamentDeskEvents() {
       if (!allowed) return;
       const count = parseInt(btn.getAttribute('data-tables'), 10) || 3;
       tournamentState = setRound2TableCount(tournamentState, count);
-      saveTournamentState(localStorage, tournamentState);
+      persistTournamentState(tournamentState);
       renderTournamentDesk();
       renderPublicMatchups();
       const isBM = currentLang === 'bm';
@@ -2711,7 +2805,7 @@ export function setupTournamentDeskEvents() {
       const playerId = crownBtn.getAttribute('data-player-id');
       if (tableKey && playerId) {
         tournamentState = recordHeatWinner(tournamentState, tableKey, playerId);
-        saveTournamentState(localStorage, tournamentState);
+        persistTournamentState(tournamentState);
         renderTournamentDesk();
         renderPublicMatchups();
         const isBM = currentLang === 'bm';
@@ -2738,7 +2832,7 @@ export function setupTournamentDeskEvents() {
       const playerId = pickBtn.getAttribute('data-player-id');
       if (placeKey && playerId) {
         tournamentState = recordPodiumPlace(tournamentState, placeKey, playerId);
-        saveTournamentState(localStorage, tournamentState);
+        persistTournamentState(tournamentState);
         renderTournamentDesk();
         renderPublicMatchups();
         const isBM = currentLang === 'bm';
@@ -2772,7 +2866,7 @@ export function setupTournamentDeskEvents() {
       });
       if (confirmed) {
         tournamentState = resetGrandFinal(tournamentState);
-        saveTournamentState(localStorage, tournamentState);
+        persistTournamentState(tournamentState);
         renderTournamentDesk();
         renderPublicMatchups();
         showToast(isBM ? 'Keputusan Pentas Akhir telah diset semula.' : 'Grand Finale placements reset.', '🔄');
@@ -2791,14 +2885,62 @@ export function setupTournamentDeskEvents() {
   const shareBtn = document.getElementById('copyMatchupsShareBtn');
   if (shareBtn) {
     shareBtn.addEventListener('click', () => {
+      openShareQrModal();
       const isBM = currentLang === 'bm';
       const url = (typeof window !== 'undefined' && window.location)
         ? (window.location.origin + window.location.pathname + '#matchups')
         : '#matchups';
       copyTextToClipboard(url, shareBtn, null);
-      showToast(isBM ? '🔗 Pautan jadual disalin untuk peserta!' : '🔗 Matchups link copied for participants!', '🔗');
+      showToast(isBM ? '📱 Pautan disalin & Kod QR dibuka!' : '📱 Matchups link copied & QR code ready!', '📱');
     });
   }
+
+  // Desk Share & QR Code Buttons
+  const deskShareQrBtn = document.getElementById('deskShareQrBtn');
+  if (deskShareQrBtn) {
+    deskShareQrBtn.addEventListener('click', openShareQrModal);
+  }
+
+  const deskQuickShareBtn = document.getElementById('deskQuickShareBtn');
+  if (deskQuickShareBtn) {
+    deskQuickShareBtn.addEventListener('click', openShareQrModal);
+  }
+
+  // QR Modal Close & Copy Events
+  const closeQrBtn = document.getElementById('closeShareQrModalBtn');
+  if (closeQrBtn) closeQrBtn.addEventListener('click', closeShareQrModal);
+
+  const doneQrBtn = document.getElementById('doneShareQrBtn');
+  if (doneQrBtn) doneQrBtn.addEventListener('click', closeShareQrModal);
+
+  const modalQrOverlay = document.getElementById('shareQrModalOverlay');
+  if (modalQrOverlay) {
+    modalQrOverlay.addEventListener('click', (e) => {
+      if (e.target === modalQrOverlay) closeShareQrModal();
+    });
+  }
+
+  const modalCopyBtn = document.getElementById('modalCopyShareUrlBtn');
+  if (modalCopyBtn) {
+    modalCopyBtn.addEventListener('click', () => {
+      const urlInput = document.getElementById('shareDirectUrlInput');
+      if (urlInput && urlInput.value) {
+        copyTextToClipboard(urlInput.value, modalCopyBtn, null);
+        const isBM = currentLang === 'bm';
+        showToast(isBM ? 'Pautan disalin ke papan keratan! 📋' : 'Link copied to clipboard! 📋', '📋');
+        modalCopyBtn.textContent = isBM ? 'Telah Disalin! 📋' : 'Copied! 📋';
+        setTimeout(() => {
+          modalCopyBtn.textContent = isBM ? 'Salin Pautan' : 'Copy Link';
+        }, 2000);
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeShareQrModal();
+    }
+  });
 
   // Print button
   const printBtn = document.getElementById('deskPrintBtn');
@@ -3333,6 +3475,26 @@ export function initApp() {
   } catch (e) {}
 
   switchTab(initialTab, false, true);
+
+  // Initialize Supabase Cloud Sync (uno-game)
+  initSyncEngine({
+    getLocalState: () => tournamentState,
+    onRemoteUpdate: (remoteState, isPoll) => {
+      if (!remoteState || !remoteState.version) return;
+      tournamentState = remoteState;
+      saveTournamentState(localStorage, tournamentState);
+      renderTournamentDesk();
+      renderPublicMatchups();
+      if (!isPoll) {
+        const isBM = currentLang === 'bm';
+        showToast(isBM ? 'Data kejohanan dikemaskini dari awan! ☁️' : 'Tournament data updated from cloud! ☁️', '☁️', 2000);
+      }
+    }
+  });
+
+  onSyncStatusChange((status) => {
+    updateCloudSyncUI(status);
+  });
 }
 
 // Fail-safe self-initialization

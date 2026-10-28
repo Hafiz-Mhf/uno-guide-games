@@ -25,8 +25,8 @@ import {
 console.log('Testing tournament-engine state lifecycle...');
 
 const state = createDefaultTournamentState();
-if (!Array.isArray(state.roster) || state.roster.length !== 30) {
-  console.error(`FAIL: Expected 30 default roster items, found ${state.roster?.length}`);
+if (!Array.isArray(state.roster) || state.roster.length !== 34) {
+  console.error(`FAIL: Expected 34 default roster items, found ${state.roster?.length}`);
   process.exit(1);
 }
 
@@ -45,14 +45,14 @@ const mockStorage = {
 
 saveTournamentState(mockStorage, state);
 const loaded = loadTournamentState(mockStorage);
-if (loaded.roster.length !== 30) {
+if (loaded.roster.length !== 34) {
   console.error('FAIL: loadTournamentState failed to deserialize');
   process.exit(1);
 }
 
 resetTournamentState(mockStorage);
 const resetState = loadTournamentState(mockStorage);
-if (resetState.roster.length !== 30) {
+if (resetState.roster.length !== 34) {
   console.error('FAIL: resetTournamentState failed');
   process.exit(1);
 }

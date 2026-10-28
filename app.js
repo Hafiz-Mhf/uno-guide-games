@@ -386,11 +386,11 @@ export const TRANSLATIONS = {
       statusRound1: "🕹️ Digital 1v1"
     },
     print: {
-      department: "Talent Development & Human Resource Division",
-      subtitle: "UNO Engagement Day 2026",
-      venueDate: "Wednesday, 28 October 2026 • Level 2, Hive 5, MRANTI",
+      department: "Human Resource Division",
+      subtitle: "October Engagement Session",
+      venueDate: "Wednesday, 28 October 2026 • Common Area, Level 2, Hive 5, MRANTI",
       standingsTitle: "OFFICIAL CHAMPIONSHIP STANDINGS & PODIUM",
-      footerNote: "Official tournament record generated via UNO Tournament Desk • Talent Development & HR Division"
+      footerNote: "Official tournament record generated via UNO Tournament Desk • Human Resource Division"
     },
     auth: {
       adminLogin: "Organizer Login",
@@ -776,11 +776,11 @@ export const TRANSLATIONS = {
       statusRound1: "🕹️ Digital 1v1"
     },
     print: {
-      department: "Bahagian Pembangunan Bakat & Sumber Manusia",
-      subtitle: "Hari Penglibatan UNO 2026",
-      venueDate: "Rabu, 28 Oktober 2026 • Aras 2, Hive 5, MRANTI",
+      department: "Bahagian Sumber Manusia",
+      subtitle: "Sesi Penglibatan Oktober",
+      venueDate: "Rabu, 28 Oktober 2026 • Common Area, Aras 2, Hive 5, MRANTI",
       standingsTitle: "KEDUDUKAN RASMI KEJUARAAN & PODIUM",
-      footerNote: "Rekod kejohanan rasmi dijana melalui Meja Kejohanan UNO • Bahagian Pembangunan Bakat & Sumber Manusia"
+      footerNote: "Rekod kejohanan rasmi dijana melalui Meja Kejohanan UNO • Bahagian Sumber Manusia"
     },
     auth: {
       adminLogin: "Log Masuk Penganjur",

@@ -29,6 +29,12 @@
   * Full English and Bahasa Melayu translations for tier headers, accolades (`Semi-Finalist` / `Finalis Separuh Akhir`, `Round 1 Contender` / `Peserta Pusingan 1`), and status pills in [`app.js`](file:///d:/uno-guide-rules/app.js).
 * **Dedicated Multi-Page Print Layout:**
   * Enabled smooth multi-page pagination for 34 rows and tier headers with `page-break-inside: auto`, `page-break-after: avoid` on tier headers, and `-webkit-print-color-adjust: exact !important`.
+* **Executive Print Letterhead Exact Branding:**
+  * Aligned the print header branding across [`index.html`](file:///d:/uno-guide-rules/index.html) and [`app.js`](file:///d:/uno-guide-rules/app.js) to:
+    * Organization: **Human Resource Division** (BM: *Bahagian Sumber Manusia*)
+    * Event Subtitle: **October Engagement Session** (BM: *Sesi Penglibatan Oktober*)
+    * Venue: **Wednesday, 28 October 2026 • Common Area, Level 2, Hive 5, MRANTI**
+    * Verification Note: *Official tournament record generated via UNO Tournament Desk • Human Resource Division*
 * **Automated Test Coverage:**
   * Added automated test assertions in [`tests/verify-standings-print.js`](file:///d:/uno-guide-rules/tests/verify-standings-print.js) validating `fullStandings`, tier grouping, CSS styles, and roster participant integrity.
   * 12/12 test suites passing (`npm test`).

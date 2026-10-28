@@ -25,6 +25,15 @@ if (!indexHtml.includes('class="print-standings-header"')) {
 if (!indexHtml.includes('class="print-standings-footer"')) {
   throw new Error('FAIL: index.html missing .print-standings-footer element');
 }
+if (!indexHtml.includes('id="printStandingsContainer"')) {
+  throw new Error('FAIL: index.html missing #printStandingsContainer element');
+}
+if (!indexHtml.includes('id="printPodiumBoard"')) {
+  throw new Error('FAIL: index.html missing #printPodiumBoard element');
+}
+if (!indexHtml.includes('id="printStandingsTable"')) {
+  throw new Error('FAIL: index.html missing #printStandingsTable element');
+}
 
 // 2. Verify Print CSS Rules in styles.css
 if (!stylesCss.includes('print-color-adjust: exact')) {
@@ -58,6 +67,9 @@ if (!appJs.includes('print-mode-standings')) {
 }
 if (!appJs.includes('printStandingsBtn')) {
   throw new Error('FAIL: app.js missing printStandingsBtn listener');
+}
+if (!appJs.includes('updatePrintStandingsBoard')) {
+  throw new Error('FAIL: app.js missing updatePrintStandingsBoard function');
 }
 
 console.log('PASS: All Standings & Championship Podium Print Engine assertions passed successfully!');

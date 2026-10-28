@@ -2023,6 +2023,19 @@ export function renderPublicMatchups() {
   if (publicStandingsTable) {
     publicStandingsTable.innerHTML = renderStandingsTableMarkup(standings, dict);
   }
+
+  updatePrintStandingsBoard(standings, dict);
+}
+
+export function updatePrintStandingsBoard(standings = computeChampionshipStandings(tournamentState), dict = TRANSLATIONS[currentLang] || TRANSLATIONS.en) {
+  const printPodium = document.getElementById('printPodiumBoard');
+  const printTable = document.getElementById('printStandingsTable');
+  if (printPodium) {
+    printPodium.innerHTML = renderPodiumMarkup(standings, dict, false);
+  }
+  if (printTable) {
+    printTable.innerHTML = renderStandingsTableMarkup(standings, dict);
+  }
 }
 
 export function renderPodiumMarkup(standings, dict, isDesk = false) {
@@ -3091,28 +3104,19 @@ export function setupTournamentDeskEvents() {
     }
   }
 
-  if (typeof window !== 'undefined') {
-    window.addEventListener('afterprint', cleanupPrintModes);
-  }
-
   function triggerPrintStandings() {
     if (typeof document === 'undefined' || !document.body) return;
+    updatePrintStandingsBoard();
     document.body.classList.remove('print-mode-desk');
     document.body.classList.add('print-mode-standings');
-    setTimeout(() => {
-      window.print();
-      setTimeout(cleanupPrintModes, 1000);
-    }, 50);
+    window.print();
   }
 
   function triggerPrintDesk() {
     if (typeof document === 'undefined' || !document.body) return;
     document.body.classList.remove('print-mode-standings');
     document.body.classList.add('print-mode-desk');
-    setTimeout(() => {
-      window.print();
-      setTimeout(cleanupPrintModes, 1000);
-    }, 50);
+    window.print();
   }
 
   // Standings & Podium Print Buttons
@@ -3132,12 +3136,25 @@ export function setupTournamentDeskEvents() {
     printBtn.addEventListener('click', triggerPrintDesk);
   }
 
-  // Keyboard shortcut (Ctrl+P / Cmd+P) contextual trigger
   if (typeof window !== 'undefined') {
+    // Native beforeprint event (catches Ctrl+P, browser menu print, and window.print)
+    window.addEventListener('beforeprint', () => {
+      const matchupsView = document.getElementById('matchupsView');
+      if (matchupsView && matchupsView.classList.contains('active')) {
+        updatePrintStandingsBoard();
+        document.body.classList.remove('print-mode-desk');
+        document.body.classList.add('print-mode-standings');
+      }
+    });
+
+    window.addEventListener('afterprint', cleanupPrintModes);
+
+    // Keyboard shortcut (Ctrl+P / Cmd+P) contextual trigger
     window.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')) {
         const matchupsView = document.getElementById('matchupsView');
         if (matchupsView && matchupsView.classList.contains('active')) {
+          updatePrintStandingsBoard();
           document.body.classList.remove('print-mode-desk');
           document.body.classList.add('print-mode-standings');
         } else {

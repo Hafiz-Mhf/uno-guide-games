@@ -4668,10 +4668,13 @@ body {
 /* ==========================================================================
    Print Stylesheet (@media print)
    ========================================================================== */
+/* ==========================================================================
+   Print Stylesheet (@media print)
+   ========================================================================== */
 @media print {
   @page {
     size: auto;
-    margin: 10mm 14mm 12mm 14mm;
+    margin: 10mm 12mm;
   }
 
   /* Universal print resets */
@@ -4680,19 +4683,24 @@ body {
   *::after {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    text-shadow: none !important;
   }
 
   body {
     background: #FFFFFF !important;
     color: #0F172A !important;
-    font-size: 10.5pt !important;
+    font-size: 10pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* Hide interactive screen-only elements */
+  /* ALWAYS hide interactive and screen chrome in print */
   header,
   .hero-banner,
   .tab-nav-wrapper,
   .corp-footer,
+  .bottom-action-bar,
+  .custom-dialog-overlay,
   .desk-header-actions,
   .desk-roster-quick-actions,
   .desk-add-toolbar,
@@ -4705,129 +4713,115 @@ body {
   .matchups-filter-toolbar,
   .matchups-header-actions,
   .desk-card-actions,
-  .custom-dialog-overlay,
-  .desk-heats-header-actions {
+  .desk-heats-header-actions,
+  .color-picker-overlay,
+  .app-toast-container {
     display: none !important;
   }
 
   /* ------------------------------------------------------------------------
      MODE 1: Standings & Podium Print Mode (.print-mode-standings)
      ------------------------------------------------------------------------ */
-  body.print-mode-standings #deskView,
-  body.print-mode-standings #rulesView,
-  body.print-mode-standings #guideView,
-  body.print-mode-standings #scheduleView,
-  body.print-mode-standings #publicMatchesGrid,
-  body.print-mode-standings .desk-heats-panel:not(.desk-grandfinal-panel),
-  body.print-mode-standings .grandfinal-showcase,
-  body.print-mode-standings .section-header,
-  body.print-mode-standings #publicByeNotice {
+  body.print-mode-standings #app-container {
     display: none !important;
   }
 
-  body.print-mode-standings #matchupsView {
+  body.print-mode-standings #printStandingsContainer {
     display: block !important;
+    width: 100% !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
     padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  body.print-mode-standings #publicGrandFinalSection {
-    display: block !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  body.print-mode-standings .desk-grandfinal-header {
-    display: none !important;
   }
 
   /* Print Letterhead */
   body.print-mode-standings .print-standings-header {
     display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 18px;
-    padding-bottom: 14px;
-    border-bottom: 2px solid #E2E8F0;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    margin-bottom: 14px !important;
+    padding-bottom: 10px !important;
+    border-bottom: 2px solid #CBD5E1 !important;
   }
 
   .print-header-brand {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 8px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    margin-bottom: 6px !important;
   }
 
   .print-header-logo {
-    width: 54px;
-    height: 54px;
-    object-fit: contain;
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: contain !important;
   }
 
   .print-header-dept {
-    font-size: 11pt;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #475569;
-    display: block;
+    font-size: 10pt !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: #475569 !important;
+    display: block !important;
   }
 
   .print-header-title {
-    font-size: 17pt;
-    font-weight: 900;
-    color: #0F172A;
-    margin: 2px 0;
-    line-height: 1.2;
+    font-size: 16pt !important;
+    font-weight: 900 !important;
+    color: #0F172A !important;
+    margin: 2px 0 !important;
+    line-height: 1.2 !important;
   }
 
   .print-header-venue {
-    font-size: 9.5pt;
-    color: #64748B;
-    display: block;
+    font-size: 9pt !important;
+    color: #64748B !important;
+    display: block !important;
   }
 
   .print-header-badge-strip {
-    margin-top: 10px;
+    margin-top: 8px !important;
   }
 
   .print-doc-title {
-    display: inline-block;
+    display: inline-block !important;
     background: #0F172A !important;
     color: #FFFFFF !important;
-    font-size: 10.5pt;
-    font-weight: 900;
-    letter-spacing: 1.5px;
-    padding: 4px 16px;
-    border-radius: 999px;
-    margin: 0;
+    font-size: 10pt !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.2px !important;
+    padding: 3px 14px !important;
+    border-radius: 999px !important;
+    margin: 0 !important;
   }
 
-  /* Podium Styling for Print */
+  /* Podium in Print */
   body.print-mode-standings .grandfinal-podium-section {
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
     padding: 0 !important;
-    margin: 10px auto 20px auto !important;
+    margin: 8px auto 16px auto !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
   body.print-mode-standings .showcase-section-title {
-    text-align: center;
-    font-size: 12pt;
-    font-weight: 800;
-    color: #1E293B;
-    margin-bottom: 14px;
+    text-align: center !important;
+    font-size: 11pt !important;
+    font-weight: 800 !important;
+    color: #1E293B !important;
+    margin-bottom: 10px !important;
   }
 
   body.print-mode-standings .olympic-podium-container {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
     max-width: 100% !important;
     margin: 0 auto !important;
     page-break-inside: avoid !important;
@@ -4835,44 +4829,58 @@ body {
     gap: 12px !important;
   }
 
+  body.print-mode-standings .podium-step {
+    flex: 1 1 0 !important;
+    max-width: 200px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
   body.print-mode-standings .podium-player-card {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
     border: 1px solid #CBD5E1 !important;
     background: #FFFFFF !important;
-    min-height: 110px !important;
-    padding: 10px 8px !important;
+    min-height: 100px !important;
+    padding: 8px 6px !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: 12px !important;
   }
 
   body.print-mode-standings .podium-player-card.champion-card {
     border: 2px solid #F59E0B !important;
     background: linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%) !important;
-    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25) !important;
   }
 
   body.print-mode-standings .podium-block {
+    width: 100% !important;
     box-shadow: none !important;
+    border-radius: 10px 10px 0 0 !important;
   }
 
   body.print-mode-standings .podium-block.block-gold {
-    height: 155px !important;
+    height: 140px !important;
     background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%) !important;
     border-top: 4px solid #FDE68A !important;
   }
 
   body.print-mode-standings .podium-block.block-silver {
-    height: 120px !important;
+    height: 110px !important;
     background: linear-gradient(180deg, #94A3B8 0%, #64748B 100%) !important;
     border-top: 4px solid #E2E8F0 !important;
   }
 
   body.print-mode-standings .podium-block.block-bronze {
-    height: 95px !important;
+    height: 85px !important;
     background: linear-gradient(180deg, #D97706 0%, #9A3412 100%) !important;
     border-top: 4px solid #FDBA74 !important;
   }
 
   body.print-mode-standings .podium-block.block-fourth {
-    height: 75px !important;
+    height: 65px !important;
     background: linear-gradient(180deg, #0284C7 0%, #0369A1 100%) !important;
     border-top: 4px solid #BAE6FD !important;
   }
@@ -4881,9 +4889,9 @@ body {
     animation: none !important;
   }
 
-  /* Standings Table Styling for Print */
+  /* Standings Table in Print */
   body.print-mode-standings .grandfinal-standings-section {
-    margin-top: 15px !important;
+    margin-top: 12px !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
@@ -4903,42 +4911,35 @@ body {
   body.print-mode-standings .standings-table th {
     background: #F1F5F9 !important;
     color: #334155 !important;
-    font-size: 9pt !important;
-    padding: 8px 10px !important;
+    font-size: 8.5pt !important;
+    padding: 6px 8px !important;
     border-bottom: 2px solid #CBD5E1 !important;
   }
 
   body.print-mode-standings .standings-table td {
-    padding: 7px 10px !important;
+    padding: 6px 8px !important;
     border-bottom: 1px solid #E2E8F0 !important;
-    font-size: 9.5pt !important;
+    font-size: 9pt !important;
   }
 
   /* Print Verification Footer */
   body.print-mode-standings .print-standings-footer {
     display: flex !important;
-    flex-direction: column;
-    margin-top: 20px;
-    padding-top: 10px;
-    border-top: 1px solid #CBD5E1;
-    font-size: 8pt;
-    color: #64748B;
-  }
-
-  .print-footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .print-footer-stamp {
-    font-weight: 700;
-    color: #334155;
+    flex-direction: column !important;
+    margin-top: 14px !important;
+    padding-top: 8px !important;
+    border-top: 1px solid #CBD5E1 !important;
+    font-size: 7.5pt !important;
+    color: #64748B !important;
   }
 
   /* ------------------------------------------------------------------------
      MODE 2: Desk Matchups Print Mode (.print-mode-desk or default)
      ------------------------------------------------------------------------ */
+  body:not(.print-mode-standings) #printStandingsContainer {
+    display: none !important;
+  }
+
   body:not(.print-mode-standings) #deskView {
     display: block !important;
   }
@@ -6277,6 +6278,8 @@ body.role-guest #matchupsView.active {
 }
 
 /* Executive Print Letterhead & Footer (Screen default: hidden) */
+#printStandingsContainer,
+.print-standings-container,
 .print-standings-header,
 .print-standings-footer {
   display: none;

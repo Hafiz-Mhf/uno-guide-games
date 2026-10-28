@@ -861,6 +861,7 @@
             </div>
             <div class="desk-heats-header-actions">
               <span id="publicFinalistsCount" class="badge-pill-gold">Finalists: 0 / 3</span>
+              <button id="printStandingsBtn" class="btn-secondary-action btn-sm-action" type="button" data-i18n="publicMatchups.printStandingsBtn">🖨️ Print Standings & Podium</button>
             </div>
           </div>
 
@@ -869,6 +870,21 @@
             <h5 class="showcase-section-title" data-i18n="publicMatchups.finalTableTitle">👑 Championship Final Table</h5>
             <div id="publicGrandFinalGrid" class="grandfinal-seats-grid">
               <!-- Dynamically populated with qualified finalists -->
+            </div>
+          </div>
+
+          <!-- Executive Print Letterhead (Visible in @media print only) -->
+          <div class="print-standings-header" aria-hidden="true">
+            <div class="print-header-brand">
+              <img src="event-logo.png" alt="Talent Development & HR Logo" class="print-header-logo" width="60" height="60">
+              <div class="print-header-text">
+                <span class="print-header-dept" data-i18n="print.department">Talent Development & Human Resource Division</span>
+                <h2 class="print-header-title" data-i18n="print.subtitle">UNO Engagement Day 2026</h2>
+                <span class="print-header-venue" data-i18n="print.venueDate">Wednesday, 28 October 2026 • Level 2, Hive 5, MRANTI</span>
+              </div>
+            </div>
+            <div class="print-header-badge-strip">
+              <h3 class="print-doc-title" data-i18n="print.standingsTitle">OFFICIAL CHAMPIONSHIP STANDINGS & PODIUM</h3>
             </div>
           </div>
 
@@ -885,6 +901,15 @@
             <h5 class="showcase-section-title" data-i18n="publicMatchups.standingsTitle">Official Tournament Standings</h5>
             <div id="publicStandingsTable" class="standings-table-wrapper">
               <!-- Dynamically populated leaderboard table with names -->
+            </div>
+          </div>
+
+          <!-- Executive Print Verification Footer (Visible in @media print only) -->
+          <div class="print-standings-footer" aria-hidden="true">
+            <span class="print-footer-rule"></span>
+            <div class="print-footer-content">
+              <span class="print-footer-stamp">🏆 Official Championship Record</span>
+              <span class="print-footer-note" data-i18n="print.footerNote">Official tournament record generated via UNO Tournament Desk • Talent Development & HR Division</span>
             </div>
           </div>
         </div>
@@ -1087,6 +1112,9 @@
               <p class="desk-card-desc" data-i18n="tournamentDesk.grandFinal.subtitle">Crown 1 winner per heat table above to fill this table. Once the physical showdown finishes, award 1st, 2nd, and 3rd place.</p>
             </div>
             <div class="desk-card-actions">
+              <button id="deskPrintStandingsBtn" class="btn-secondary-action btn-sm-action" type="button" data-i18n="tournamentDesk.grandFinal.printStandingsBtn">
+                🖨️ Print Standings
+              </button>
               <button id="deskResetFinaleBtn" class="btn-secondary-action btn-sm-action" type="button" data-i18n="tournamentDesk.grandFinal.resetBtn">
                 🔄 Reset Finale Placements
               </button>

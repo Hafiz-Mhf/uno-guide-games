@@ -19,7 +19,10 @@ import {
   recordPodiumPlace,
   resetGrandFinal,
   computeGrandFinalists,
-  computeChampionshipStandings
+  computeChampionshipStandings,
+  addSecondChancePlayer,
+  removeSecondChancePlayer,
+  getEligibleSecondChancePlayers
 } from '../tournament-engine.js';
 
 console.log('Testing tournament-engine state lifecycle...');
@@ -344,3 +347,57 @@ if (
 }
 
 console.log('PASS: Task 3 tests & flexible heats tests passed.');
+
+// Test Second Chance methods
+console.log('Testing Second Chance Wildcard System...');
+let testState = createDefaultTournamentState();
+const eligible = getEligibleSecondChancePlayers(testState);
+if (!Array.isArray(eligible) || eligible.length !== 34) {
+  console.error('FAIL: Expected 34 eligible players initially');
+  process.exit(1);
+}
+
+// Add player to Table Alpha
+testState = addSecondChancePlayer(testState, 'alpha', testState.roster[0].id);
+if (!testState.round2.secondChance.alpha.includes(testState.roster[0].id)) {
+  console.error('FAIL: addSecondChancePlayer did not add player to Table Alpha');
+  process.exit(1);
+}
+
+// Ensure player is no longer eligible for other tables
+const eligibleAfter = getEligibleSecondChancePlayers(testState);
+if (eligibleAfter.some(p => p.id === testState.roster[0].id)) {
+  console.error('FAIL: Player added to second chance must not remain eligible');
+  process.exit(1);
+}
+
+// Test computeRound2Heats includes second chance player
+const scHeats = computeRound2Heats(null, [], 3, testState.round2.secondChance);
+if (scHeats.tableAlpha.length !== 1 || !scHeats.tableAlpha[0].isSecondChance) {
+  console.error('FAIL: computeRound2Heats failed to merge second chance player');
+  process.exit(1);
+}
+
+// Crown heat winner and podium, then test removeSecondChancePlayer clears them
+testState = recordHeatWinner(testState, 'alpha', testState.roster[0].id);
+testState = recordPodiumPlace(testState, 'first', testState.roster[0].id);
+testState = removeSecondChancePlayer(testState, 'alpha', testState.roster[0].id);
+if (testState.round2.secondChance.alpha.includes(testState.roster[0].id)) {
+  console.error('FAIL: removeSecondChancePlayer failed to remove player');
+  process.exit(1);
+}
+if (testState.round2.winners.alpha !== null || testState.grandFinal.podium.first !== null) {
+  console.error('FAIL: removeSecondChancePlayer must clear crowned heat winner and podium if player was crowned');
+  process.exit(1);
+}
+
+// Test resetGrandFinal resets secondChance
+testState = addSecondChancePlayer(testState, 'beta', testState.roster[1].id);
+testState = resetGrandFinal(testState);
+if (testState.round2.secondChance.beta.length !== 0) {
+  console.error('FAIL: resetGrandFinal must reset secondChance map');
+  process.exit(1);
+}
+
+console.log('PASS: Second Chance engine methods passed.');
+

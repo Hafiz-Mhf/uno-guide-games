@@ -25,6 +25,12 @@ export function createDefaultTournamentState() {
       tableGamma: [],
       tableDelta: [],
       numTables: 3,
+      secondChance: {
+        alpha: [],
+        beta: [],
+        gamma: [],
+        delta: []
+      },
       winners: {
         alpha: null,
         beta: null,
@@ -51,6 +57,9 @@ export function loadTournamentState(storage = (typeof localStorage !== 'undefine
     const parsed = JSON.parse(raw);
     if (!parsed || !Array.isArray(parsed.roster)) return createDefaultTournamentState();
     if (!parsed.round2) parsed.round2 = { numTables: 3 };
+    if (!parsed.round2.secondChance) {
+      parsed.round2.secondChance = { alpha: [], beta: [], gamma: [], delta: [] };
+    }
     if (!parsed.round2.winners) {
       parsed.round2.winners = { alpha: null, beta: null, gamma: null, delta: null };
     }
@@ -226,7 +235,7 @@ export function setRound2TableCount(state, numTables) {
   };
 }
 
-export function computeRound2Heats(byePlayer, matches, numTables = 3) {
+export function computeRound2Heats(byePlayer, matches, numTables = 3, secondChance = {}, roster = null) {
   const qualifiers = [];
   if (byePlayer) {
     qualifiers.push(byePlayer);
@@ -251,12 +260,50 @@ export function computeRound2Heats(byePlayer, matches, numTables = 3) {
     currentIdx += tableSize;
   }
 
+  // Lookup map for players
+  const playerMap = new Map();
+  if (Array.isArray(roster)) {
+    roster.forEach(p => p && p.id && playerMap.set(p.id, p));
+  }
+  if (Array.isArray(matches)) {
+    matches.forEach(m => {
+      if (m.player1 && m.player1.id) playerMap.set(m.player1.id, m.player1);
+      if (m.player2 && m.player2.id) playerMap.set(m.player2.id, m.player2);
+    });
+  }
+  if (byePlayer && byePlayer.id) {
+    playerMap.set(byePlayer.id, byePlayer);
+  }
+  PLAYERS.forEach(p => {
+    const id = `p-${String(p.id).padStart(2, '0')}`;
+    if (!playerMap.has(id)) {
+      playerMap.set(id, { id, name: p.name, dept: p.department });
+    }
+  });
+
+  const tableKeys = ['alpha', 'beta', 'gamma', 'delta'];
+  for (let i = 0; i < k; i++) {
+    const key = tableKeys[i];
+    const scList = (secondChance && secondChance[key]) || [];
+    scList.forEach(item => {
+      let pObj = typeof item === 'object' && item !== null ? item : playerMap.get(item);
+      if (!pObj) {
+        pObj = { id: String(item), name: String(item), dept: '' };
+      }
+      tableBuckets[i].push({
+        ...pObj,
+        isSecondChance: true
+      });
+    });
+  }
+
   const tableAlpha = tableBuckets[0] || [];
   const tableBeta = tableBuckets[1] || [];
   const tableGamma = tableBuckets[2] || [];
   const tableDelta = tableBuckets[3] || [];
 
   const expectedTotal = (Array.isArray(matches) ? matches.length : 0) + (byePlayer ? 1 : 0);
+  const totalSeated = tableBuckets.reduce((sum, b) => sum + b.length, 0);
 
   return {
     tableAlpha,
@@ -266,8 +313,107 @@ export function computeRound2Heats(byePlayer, matches, numTables = 3) {
     tableBuckets,
     numTables: k,
     totalQualifiers: qualifiers.length,
+    totalSeated,
     expectedQualifiers: expectedTotal,
     remainingToAdvance: Math.max(0, expectedTotal - qualifiers.length)
+  };
+}
+
+export function getEligibleSecondChancePlayers(state) {
+  if (!state || !Array.isArray(state.roster)) return [];
+  const checkedIn = state.roster.filter(p => p.checkedIn);
+  const byeId = state.round1?.byePlayer?.id || null;
+  const r1WinnerIds = new Set();
+  if (Array.isArray(state.round1?.matches)) {
+    state.round1.matches.forEach(m => {
+      if (m.winnerId) r1WinnerIds.add(m.winnerId);
+    });
+  }
+  const secondChanceMap = state.round2?.secondChance || {};
+  const alreadyAssigned = new Set([
+    ...(secondChanceMap.alpha || []),
+    ...(secondChanceMap.beta || []),
+    ...(secondChanceMap.gamma || []),
+    ...(secondChanceMap.delta || [])
+  ]);
+
+  return checkedIn.filter(p => {
+    if (p.id === byeId) return false;
+    if (r1WinnerIds.has(p.id)) return false;
+    if (alreadyAssigned.has(p.id)) return false;
+    return true;
+  });
+}
+
+export function addSecondChancePlayer(state, tableId, playerId) {
+  const validTables = ['alpha', 'beta', 'gamma', 'delta'];
+  if (!validTables.includes(tableId) || !playerId) return state;
+
+  const playerInRoster = (state.roster || []).find(p => p.id === playerId);
+  if (!playerInRoster || !playerInRoster.checkedIn) return state;
+
+  if (state.round1?.byePlayer?.id === playerId) return state;
+  const isR1Winner = (state.round1?.matches || []).some(m => m.winnerId === playerId);
+  if (isR1Winner) return state;
+
+  const secondChance = {
+    alpha: [...(state.round2?.secondChance?.alpha || [])],
+    beta: [...(state.round2?.secondChance?.beta || [])],
+    gamma: [...(state.round2?.secondChance?.gamma || [])],
+    delta: [...(state.round2?.secondChance?.delta || [])]
+  };
+
+  validTables.forEach(t => {
+    secondChance[t] = secondChance[t].filter(id => id !== playerId);
+  });
+
+  secondChance[tableId].push(playerId);
+
+  return {
+    ...state,
+    round2: {
+      ...(state.round2 || {}),
+      secondChance
+    }
+  };
+}
+
+export function removeSecondChancePlayer(state, tableId, playerId) {
+  const validTables = ['alpha', 'beta', 'gamma', 'delta'];
+  if (!validTables.includes(tableId) || !playerId) return state;
+
+  const secondChance = {
+    alpha: [...(state.round2?.secondChance?.alpha || [])],
+    beta: [...(state.round2?.secondChance?.beta || [])],
+    gamma: [...(state.round2?.secondChance?.gamma || [])],
+    delta: [...(state.round2?.secondChance?.delta || [])]
+  };
+
+  secondChance[tableId] = secondChance[tableId].filter(id => id !== playerId);
+
+  const winners = { ...(state.round2?.winners || {}) };
+  let podium = { ...(state.grandFinal?.podium || {}) };
+
+  if (winners[tableId] === playerId) {
+    winners[tableId] = null;
+    ['first', 'second', 'third', 'fourth'].forEach(key => {
+      if (podium[key] === playerId) {
+        podium[key] = null;
+      }
+    });
+  }
+
+  return {
+    ...state,
+    round2: {
+      ...(state.round2 || {}),
+      secondChance,
+      winners
+    },
+    grandFinal: {
+      ...(state.grandFinal || {}),
+      podium
+    }
   };
 }
 
@@ -355,6 +501,7 @@ export function resetGrandFinal(state) {
     ...state,
     round2: {
       ...(state.round2 || {}),
+      secondChance: { alpha: [], beta: [], gamma: [], delta: [] },
       winners: { alpha: null, beta: null, gamma: null, delta: null }
     },
     grandFinal: {
@@ -368,7 +515,9 @@ export function computeGrandFinalists(state) {
   const heats = computeRound2Heats(
     state.round1?.byePlayer,
     state.round1?.matches || [],
-    numTables
+    numTables,
+    state.round2?.secondChance || {},
+    state.roster || []
   );
   const winners = state.round2?.winners || {};
 

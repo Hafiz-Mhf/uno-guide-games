@@ -274,7 +274,7 @@ export function computeRound2Heats(byePlayer, matches, numTables = 3) {
 export function formatMatchupsClipboard(round1State) {
   if (!round1State || !Array.isArray(round1State.matches)) return '';
   const lines = [
-    '🎮 HR & Admin UNO Championship 2026',
+    '🎮 HR Division October Engagement Session',
     '🏆 Round 1 Digital 1v1 Matchups:',
     ''
   ];

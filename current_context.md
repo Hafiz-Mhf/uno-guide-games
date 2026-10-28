@@ -8,7 +8,18 @@
 
 ---
 
-## Round 3 Grand Finale & Official Championship Standings `27 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Title Updated: HR Division October Engagement Session `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">UPDATED</span>
+
+* **Updated Event Title Across Application:**
+  * Changed title to **"HR Division October Engagement Session"** (Bahasa Melayu: *"Sesi Penglibatan Bahagian HR Oktober"*).
+  * Updated in browser `<title>`, sticky executive header `<h1>`, showcase hero banner `<h2>`, clipboard export header, and all bilingual dictionaries in [`app.js`](file:///d:/uno-guide-rules/app.js) and [`index.html`](file:///d:/uno-guide-rules/index.html).
+  * Preserved full layout balance with zero truncation.
+
+---
+
+## Round 3 Grand Finale & Official Championship Standings `27 October 2026`
 
 <span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
 

@@ -25,7 +25,7 @@ import {
 
 export const TRANSLATIONS = {
   en: {
-    appTitle: "HR & Admin UNO Engagement Day 2026",
+    appTitle: "HR Division October Engagement Session",
     department: "Talent Development | Human Resource",
     toggleText: "BM",
     nav: {
@@ -375,7 +375,7 @@ export const TRANSLATIONS = {
     }
   },
   bm: {
-    appTitle: "Hari Penglibatan UNO HR & Pentadbiran 2026",
+    appTitle: "Sesi Penglibatan Bahagian HR Oktober",
     department: "Pembangunan Bakat | Sumber Manusia",
     toggleText: "EN",
     nav: {

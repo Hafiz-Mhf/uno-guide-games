@@ -72,4 +72,27 @@ if (!appJs.includes('updatePrintStandingsBoard')) {
   throw new Error('FAIL: app.js missing updatePrintStandingsBoard function');
 }
 
+// 5. Verify Full Standings Ranks & Tiers
+import { createDefaultTournamentState, computeChampionshipStandings } from '../tournament-engine.js';
+
+const testState = createDefaultTournamentState();
+const testStandings = computeChampionshipStandings(testState);
+
+if (!Array.isArray(testStandings.fullStandings)) {
+  throw new Error('FAIL: computeChampionshipStandings missing fullStandings array');
+}
+
+const actualPlayers = testStandings.fullStandings.filter(s => s.player !== null);
+if (actualPlayers.length !== testState.roster.length) {
+  throw new Error(`FAIL: fullStandings roster player count (${actualPlayers.length}) does not match roster count (${testState.roster.length})`);
+}
+
+if (!stylesCss.includes('.standings-tier-header')) {
+  throw new Error('FAIL: styles.css missing .standings-tier-header styles');
+}
+
+if (!appJs.includes('tierGrandFinal') || !appJs.includes('tierSemiFinal') || !appJs.includes('tierRound1')) {
+  throw new Error('FAIL: app.js missing tier translation keys');
+}
+
 console.log('PASS: All Standings & Championship Podium Print Engine assertions passed successfully!');

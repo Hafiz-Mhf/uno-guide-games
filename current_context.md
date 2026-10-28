@@ -4,11 +4,38 @@
 > **Target Event Date:** Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)  
 > **Venue:** Common Area, Level 2, Hive 5, MRANTI Building  
 > **Platform:** BuddyBoardGames UNO (Digital Round 1) & Physical Decks (Rounds 2 & 3)  
-> **Status:** Production Ready • 11/11 Test Suites Passing (`npm test`)
+> **Status:** Production Ready • 12/12 Test Suites Passing (`npm test`)
 
 ---
 
-## Round 2 "Second Chance" Wildcard System & 6-Stage Run of Show `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Full Tournament Standings (All 34 Participants) & Championship Podium Print Engine `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **Complete Multi-Tier Standings Hierarchy (All 34 Attendees):**
+  * Expanded the Official Tournament Standings leaderboard (`#publicStandingsTable` and `#printStandingsTable`) to display every single tournament participant categorized across three distinct competitive tiers:
+    1. **🏆 Tier 1: Grand Finale Championship Stage (Ranks 1–4):**
+       * `🥇 #1 Grand Champion` (Gold)
+       * `🥈 #2 Runner-Up` (Silver)
+       * `🥉 #3 2nd Runner-Up` (Bronze)
+       * `🎖️ #4 4th Place Finalist` (Blue - active when 4 heat tables are utilized)
+    2. **🎗️ Tier 2: Round 2 Physical Heat Semi-Finalists (Ranks 5–17):**
+       * Displays all players who qualified for Round 2 physical tables (Table Alpha, Beta, Gamma, Delta) and competed in the heats, with heat table indicators (e.g. `🎯 Round 2 Heat • Table Alpha`).
+    3. **🎮 Tier 3: Round 1 Tournament Contenders (Ranks 18–34):**
+       * Displays all remaining checked-in participants who competed in the Round 1 digital 1v1 showdowns with `🕹️ Digital 1v1` status pills.
+* **Full Real-Time Progression Integration:**
+  * Powered by `computeChampionshipStandings(state)` in [`tournament-engine.js`](file:///d:/uno-guide-rules/tournament-engine.js): participants dynamically advance between tiers as Round 1 matches are recorded, Round 2 heat winners are crowned, and Grand Finale placements are awarded.
+* **Bilingual Multi-Tier Localization:**
+  * Full English and Bahasa Melayu translations for tier headers, accolades (`Semi-Finalist` / `Finalis Separuh Akhir`, `Round 1 Contender` / `Peserta Pusingan 1`), and status pills in [`app.js`](file:///d:/uno-guide-rules/app.js).
+* **Dedicated Multi-Page Print Layout:**
+  * Enabled smooth multi-page pagination for 34 rows and tier headers with `page-break-inside: auto`, `page-break-after: avoid` on tier headers, and `-webkit-print-color-adjust: exact !important`.
+* **Automated Test Coverage:**
+  * Added automated test assertions in [`tests/verify-standings-print.js`](file:///d:/uno-guide-rules/tests/verify-standings-print.js) validating `fullStandings`, tier grouping, CSS styles, and roster participant integrity.
+  * 12/12 test suites passing (`npm test`).
+
+---
+
+## Round 2 "Second Chance" Wildcard System & 6-Stage Run of Show `28 October 2026`
 
 <span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
 

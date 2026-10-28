@@ -578,6 +578,86 @@ export function computeChampionshipStandings(state) {
   const placedIds = new Set([podium.first, podium.second, podium.third, podium.fourth].filter(Boolean));
   const unplacedFinalists = gf.finalists.filter(p => !placedIds.has(p.id));
 
+  // Compute full tournament standings across all participants
+  const grandFinalistIds = new Set(gf.finalists.map(p => p.id));
+
+  // Round 2 Semi-Finalists: seated in Round 2 heats, but did not advance to Grand Finale
+  const round2PlayerMap = new Map();
+  (gf.tables || []).forEach(table => {
+    (table.players || []).forEach(player => {
+      if (player && player.id && !grandFinalistIds.has(player.id)) {
+        round2PlayerMap.set(player.id, { player, heatTitle: table.title, heatKey: table.key });
+      }
+    });
+  });
+
+  // Round 1 Participants: checked-in roster players not in Grand Finale or Round 2
+  const roster = (state?.roster || []).filter(p => p.checkedIn !== false);
+  const round1Players = [];
+  roster.forEach(player => {
+    if (!grandFinalistIds.has(player.id) && !round2PlayerMap.has(player.id)) {
+      round1Players.push(player);
+    }
+  });
+
+  // Assemble comprehensive fullStandings
+  const fullStandings = [];
+  let currentRank = 1;
+
+  // Tier 1: Grand Finale Championship Podium Placements
+  placements.forEach(pl => {
+    fullStandings.push({
+      rank: pl.rank,
+      tier: 'grandFinal',
+      medal: pl.medal,
+      label: pl.label,
+      player: pl.player,
+      statusKey: pl.player ? 'crowned' : 'pending'
+    });
+    currentRank = Math.max(currentRank, pl.rank + 1);
+  });
+
+  // Any qualified finalists who have not yet been placed on podium
+  unplacedFinalists.forEach(uf => {
+    fullStandings.push({
+      rank: currentRank++,
+      tier: 'grandFinal',
+      medal: '🎖️',
+      label: 'Grand Finalist',
+      player: uf,
+      statusKey: 'inProgress'
+    });
+  });
+
+  // Tier 2: Round 2 Physical Heat Semi-Finalists
+  const semiFinalList = Array.from(round2PlayerMap.values());
+  semiFinalList.sort((a, b) => (a.player.name || '').localeCompare(b.player.name || ''));
+  semiFinalList.forEach(item => {
+    fullStandings.push({
+      rank: currentRank++,
+      tier: 'semiFinal',
+      medal: '🎗️',
+      label: 'Semi-Finalist',
+      heatTitle: item.heatTitle,
+      heatKey: item.heatKey,
+      player: item.player,
+      statusKey: 'semiFinal'
+    });
+  });
+
+  // Tier 3: Round 1 Tournament Contenders
+  round1Players.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  round1Players.forEach(player => {
+    fullStandings.push({
+      rank: currentRank++,
+      tier: 'round1',
+      medal: '🎮',
+      label: 'Round 1 Contender',
+      player: player,
+      statusKey: 'round1'
+    });
+  });
+
   return {
     numTables: gf.numTables,
     finalists: gf.finalists,
@@ -589,6 +669,8 @@ export function computeChampionshipStandings(state) {
     },
     placements,
     unplacedFinalists,
+    fullStandings,
+    totalParticipants: roster.length,
     isChampionCrowned: !!first
   };
 }

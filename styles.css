@@ -4840,15 +4840,17 @@ body {
   /* Standings Table in Print */
   body.print-mode-standings .grandfinal-standings-section {
     margin-top: 12px !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
 
   body.print-mode-standings .standings-table-wrapper {
     box-shadow: none !important;
     border: 1px solid #CBD5E1 !important;
     border-radius: 8px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
 
   body.print-mode-standings .standings-table {
@@ -4865,9 +4867,58 @@ body {
   }
 
   body.print-mode-standings .standings-table td {
-    padding: 6px 8px !important;
+    padding: 5px 8px !important;
     border-bottom: 1px solid #E2E8F0 !important;
+    font-size: 8.5pt !important;
+  }
+
+  body.print-mode-standings .standings-row {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  body.print-mode-standings .standings-tier-header {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  body.print-mode-standings .tier-header-cell {
+    padding: 6px 8px !important;
     font-size: 9pt !important;
+    font-weight: 800 !important;
+  }
+
+  body.print-mode-standings .tier-grandFinal .tier-header-cell {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+  }
+
+  body.print-mode-standings .tier-semiFinal .tier-header-cell {
+    background: #EFF6FF !important;
+    color: #1E40AF !important;
+  }
+
+  body.print-mode-standings .tier-round1 .tier-header-cell {
+    background: #F8FAFC !important;
+    color: #475569 !important;
+  }
+
+  body.print-mode-standings .rank-badge-default {
+    background: #F1F5F9 !important;
+    color: #475569 !important;
+    border: 1px solid #CBD5E1 !important;
+  }
+
+  body.print-mode-standings .status-pill.status-semifinal {
+    background: #EFF6FF !important;
+    color: #1D4ED8 !important;
+    border: 1px solid #BFDBFE !important;
+  }
+
+  body.print-mode-standings .status-pill.status-round1 {
+    background: #F8FAFC !important;
+    color: #475569 !important;
+    border: 1px solid #E2E8F0 !important;
   }
 
   /* Print Verification Footer */
@@ -6515,6 +6566,77 @@ body.role-guest #matchupsView.active {
   background: #FFFBEB;
   color: #B45309;
   border: 1px solid #FDE68A;
+}
+
+.status-pill.status-semifinal {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.status-pill.status-round1 {
+  background: #F8FAFC;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+.rank-badge-default {
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #CBD5E1;
+}
+
+.rank-tag-default {
+  color: #334155;
+}
+
+/* Standings Tier Section Headers */
+.standings-tier-header {
+  background: #F8FAFC;
+}
+
+.standings-tier-header.tier-grandFinal {
+  background: #FFFBEB;
+}
+
+.standings-tier-header.tier-semiFinal {
+  background: #EFF6FF;
+}
+
+.standings-tier-header.tier-round1 {
+  background: #F8FAFC;
+}
+
+.tier-header-cell {
+  padding: 10px 16px !important;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-top: 2px solid #E2E8F0;
+  border-bottom: 2px solid #E2E8F0;
+}
+
+.tier-grandFinal .tier-header-cell {
+  color: #92400E;
+  border-color: #FCD34D;
+}
+
+.tier-semiFinal .tier-header-cell {
+  color: #1E40AF;
+  border-color: #BFDBFE;
+}
+
+.tier-round1 .tier-header-cell {
+  color: #475569;
+  border-color: #E2E8F0;
+}
+
+.tier-header-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Organizer Desk Grand Finale Card */

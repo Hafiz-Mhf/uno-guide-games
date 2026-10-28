@@ -376,7 +376,14 @@ export const TRANSLATIONS = {
       statusCrowned: "🏆 Crowned",
       statusFinalist: "⭐ Finalist",
       statusPending: "⏳ Showdown in Progress",
-      standingsPendingNote: "Final standings will be updated in real time as the Grand Finale concludes."
+      standingsPendingNote: "Final standings will be updated in real time as the Grand Finale concludes.",
+      tierGrandFinal: "🏆 Championship Stage (Grand Finale)",
+      tierSemiFinal: "🎗️ Round 2 Semi-Finalists (Physical Heats)",
+      tierRound1: "🎮 Round 1 Contenders (Digital 1v1s)",
+      semiFinalistLabel: "Semi-Finalist",
+      round1Label: "Round 1 Contender",
+      statusSemiFinal: "🎯 Round 2 Heat",
+      statusRound1: "🕹️ Digital 1v1"
     },
     print: {
       department: "Talent Development & Human Resource Division",
@@ -759,7 +766,14 @@ export const TRANSLATIONS = {
       statusCrowned: "🏆 Ditetapkan",
       statusFinalist: "⭐ Peserta Akhir",
       statusPending: "⏳ Sedang Berlangsung",
-      standingsPendingNote: "Kedudukan akhir akan dikemas kini serta-merta sebaik sahaja perlawanan tamat."
+      standingsPendingNote: "Kedudukan akhir akan dikemas kini serta-merta sebaik sahaja perlawanan tamat.",
+      tierGrandFinal: "🏆 Peringkat Kejuaraan (Pentas Akhir)",
+      tierSemiFinal: "🎗️ Finalis Separuh Akhir (Meja Fizikal Pusingan 2)",
+      tierRound1: "🎮 Peserta Kejohanan Pusingan 1 (Digital 1v1)",
+      semiFinalistLabel: "Finalis Separuh Akhir",
+      round1Label: "Peserta Pusingan 1",
+      statusSemiFinal: "🎯 Meja P2",
+      statusRound1: "🕹️ Digital 1v1"
     },
     print: {
       department: "Bahagian Pembangunan Bakat & Sumber Manusia",
@@ -2120,14 +2134,62 @@ export function renderPodiumMarkup(standings, dict, isDesk = false) {
 
 export function renderStandingsTableMarkup(standings, dict) {
   const pmDict = dict.publicMatchups || {};
-  const { placements } = standings;
+  const isBM = (typeof currentLang !== 'undefined' && currentLang === 'bm');
+  const fullStandings = (standings.fullStandings && standings.fullStandings.length > 0)
+    ? standings.fullStandings
+    : (standings.placements || []);
 
-  const rows = placements.map(pl => {
+  let lastTier = null;
+  const rows = [];
+
+  fullStandings.forEach(pl => {
+    // Insert tier group header when tier changes
+    if (pl.tier && pl.tier !== lastTier) {
+      lastTier = pl.tier;
+      let tierTitle = '';
+      if (pl.tier === 'grandFinal') {
+        tierTitle = pmDict.tierGrandFinal || (isBM ? '🏆 Peringkat Kejuaraan (Pentas Akhir)' : '🏆 Championship Stage (Grand Finale)');
+      } else if (pl.tier === 'semiFinal') {
+        tierTitle = pmDict.tierSemiFinal || (isBM ? '🎗️ Finalis Separuh Akhir (Meja Fizikal Pusingan 2)' : '🎗️ Round 2 Semi-Finalists (Physical Heats)');
+      } else if (pl.tier === 'round1') {
+        tierTitle = pmDict.tierRound1 || (isBM ? '🎮 Peserta Kejohanan Pusingan 1 (Digital 1v1)' : '🎮 Round 1 Contenders (Digital 1v1s)');
+      }
+      rows.push(`
+        <tr class="standings-tier-header tier-${pl.tier}">
+          <td colspan="5" class="tier-header-cell">
+            <span class="tier-header-text">${tierTitle}</span>
+          </td>
+        </tr>
+      `);
+    }
+
     const isAwarded = !!pl.player;
-    return `
-      <tr class="standings-row rank-${pl.rank} ${isAwarded ? 'is-crowned' : 'is-pending'}">
+    let statusPillHtml = '';
+    if (pl.tier === 'grandFinal') {
+      statusPillHtml = isAwarded
+        ? `<span class="status-pill status-crowned">${pmDict.statusCrowned || '🏆 Crowned'}</span>`
+        : `<span class="status-pill status-in-progress">${pmDict.statusPending || '⏳ In Progress'}</span>`;
+    } else if (pl.tier === 'semiFinal') {
+      const heatSuffix = pl.heatTitle ? ` • ${pl.heatTitle}` : '';
+      statusPillHtml = `<span class="status-pill status-semifinal">${pmDict.statusSemiFinal || (isBM ? '🎯 Meja P2' : '🎯 Round 2 Heat')}${heatSuffix}</span>`;
+    } else {
+      statusPillHtml = `<span class="status-pill status-round1">${pmDict.statusRound1 || '🕹️ Digital 1v1'}</span>`;
+    }
+
+    let accoladeText = pl.label;
+    if (pl.tier === 'semiFinal') {
+      accoladeText = pmDict.semiFinalistLabel || (isBM ? 'Finalis Separuh Akhir' : 'Semi-Finalist');
+    } else if (pl.tier === 'round1') {
+      accoladeText = pmDict.round1Label || (isBM ? 'Peserta Pusingan 1' : 'Round 1 Contender');
+    }
+
+    const badgeClass = (pl.rank >= 1 && pl.rank <= 4) ? `rank-badge-${pl.rank}` : 'rank-badge-default';
+    const tagClass = (pl.rank >= 1 && pl.rank <= 4) ? `rank-tag-${pl.rank}` : 'rank-tag-default';
+
+    rows.push(`
+      <tr class="standings-row rank-${pl.rank} ${pl.tier ? 'tier-row-' + pl.tier : ''} ${isAwarded ? 'is-crowned' : 'is-pending'}">
         <td class="standings-col-rank">
-          <span class="rank-badge rank-badge-${pl.rank}">${pl.medal} #${pl.rank}</span>
+          <span class="rank-badge ${badgeClass}">${pl.medal} #${pl.rank}</span>
         </td>
         <td class="standings-col-name">
           ${isAwarded ? `<strong class="player-crowned-name">${pl.player.name}</strong>` : `<span class="player-pending-name">${pmDict.awaitingWinner || 'Pending Showdown Result...'}</span>`}
@@ -2136,13 +2198,13 @@ export function renderStandingsTableMarkup(standings, dict) {
           ${isAwarded ? (pl.player.dept || 'General') : '—'}
         </td>
         <td class="standings-col-accolade">
-          <span class="accolade-tag rank-tag-${pl.rank}">${pl.medal} ${pl.label}</span>
+          <span class="accolade-tag ${tagClass}">${pl.medal} ${accoladeText}</span>
         </td>
         <td class="standings-col-status">
-          ${isAwarded ? `<span class="status-pill status-crowned">${pmDict.statusCrowned || '🏆 Crowned'}</span>` : `<span class="status-pill status-in-progress">${pmDict.statusPending || '⏳ In Progress'}</span>`}
+          ${statusPillHtml}
         </td>
       </tr>
-    `;
+    `);
   });
 
   return `

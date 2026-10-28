@@ -77,8 +77,8 @@ for (const cls of requiredClasses) {
   }
 }
 
-// 4. Verify playground elements in index.html
-const requiredIds = ['playgroundTable', 'activeDiscardPile', 'playerHandDock', 'drawDeckBtn', 'playFeedbackBanner', 'colorPickerOverlay'];
+// 4. Verify playground & print elements in index.html
+const requiredIds = ['playgroundTable', 'activeDiscardPile', 'playerHandDock', 'drawDeckBtn', 'playFeedbackBanner', 'colorPickerOverlay', 'printStandingsBtn', 'deskPrintStandingsBtn'];
 for (const id of requiredIds) {
   if (!html.includes(`id="${id}"`)) {
     console.error(`FAIL: Missing element ID in index.html: ${id}`);

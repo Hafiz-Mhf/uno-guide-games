@@ -1395,49 +1395,8 @@ body {
 }
 
 /* ==========================================================================
-   8. Discreet Floating Quick-Launch Capsule & Corporate Footer
+   8. Corporate Footer
    ========================================================================== */
-.bottom-action-bar {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 95;
-  display: flex;
-  align-items: center;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s;
-}
-
-.action-bar-inner {
-  display: inline-flex;
-}
-
-.launch-game-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--mranti-blue);
-  color: #FFFFFF;
-  text-decoration: none;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  padding: 10px 18px;
-  border-radius: var(--radius-xl);
-  box-shadow: 0 4px 14px rgba(0, 32, 216, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.launch-game-btn:hover {
-  background: var(--mranti-blue-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 32, 216, 0.45);
-}
-
-.launch-game-btn:active {
-  transform: scale(0.98);
-}
 
 /* ==========================================================================
    Corporate Executive Footer (Multi-Column Rich Edition)
@@ -1732,7 +1691,6 @@ body {
   gap: 12px;
   font-size: 12px;
   color: #64748B;
-  padding-right: 260px; /* Safe clearance for the fixed floating launcher */
 }
 
 @media (max-width: 900px) {
@@ -3093,22 +3051,12 @@ body {
     font-size: 13px;
   }
 
-  .bottom-action-bar {
-    bottom: 12px;
-    right: 12px;
-  }
-
-  .launch-game-btn {
-    font-size: 12px;
-    padding: 8px 14px;
-  }
-
   .corp-footer-main {
     padding: 32px 16px 24px;
   }
 
   .corp-footer-bottom {
-    padding: 16px 16px 84px;
+    padding: 16px 16px;
   }
 }
 

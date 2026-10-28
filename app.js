@@ -801,7 +801,7 @@ export function openShareQrModal() {
   if (!modal) return;
 
   const publicUrl = (typeof window !== 'undefined' && window.location)
-    ? (window.location.origin + window.location.pathname + '#matchups')
+    ? (window.location.origin + window.location.pathname + '?view=guest#matchups')
     : 'https://buddyboardgames.com/uno';
 
   if (urlInput) urlInput.value = publicUrl;
@@ -2894,7 +2894,7 @@ export function setupTournamentDeskEvents() {
       openShareQrModal();
       const isBM = currentLang === 'bm';
       const url = (typeof window !== 'undefined' && window.location)
-        ? (window.location.origin + window.location.pathname + '#matchups')
+        ? (window.location.origin + window.location.pathname + '?view=guest#matchups')
         : '#matchups';
       copyTextToClipboard(url, shareBtn, null);
       showToast(isBM ? '📱 Pautan disalin & Kod QR dibuka!' : '📱 Matchups link copied & QR code ready!', '📱');
@@ -2964,10 +2964,34 @@ export function setupTournamentDeskEvents() {
 export const DEFAULT_ADMIN_USER = 'admin';
 export const DEFAULT_ADMIN_PASS = 'uno2026';
 
+export function isMobileDevice() {
+  if (typeof window === 'undefined') return false;
+  const isSmallScreen = (typeof window.innerWidth === 'number') && window.innerWidth <= 768;
+  const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent : ''
+  );
+  return isSmallScreen || isMobileUA;
+}
+
+export function isExplicitMobileAdmin() {
+  try {
+    if (typeof sessionStorage !== 'undefined') {
+      return sessionStorage.getItem('uno_explicit_mobile_admin') === 'true';
+    }
+  } catch (e) {}
+  return false;
+}
+
 export function isAdminAuthenticated() {
   try {
     if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem('uno_admin_logged_in') === 'true';
+      const stored = localStorage.getItem('uno_admin_logged_in') === 'true';
+      if (!stored) return false;
+      // On mobile devices, only authenticate if explicitly logged in via this browser session
+      if (isMobileDevice() && !isExplicitMobileAdmin()) {
+        return false;
+      }
+      return true;
     }
   } catch (e) {}
   return false;
@@ -2998,7 +3022,13 @@ export function loginAdmin(username, password) {
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem('uno_admin_logged_in', 'true');
       }
+      if (typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem('uno_explicit_mobile_admin', 'true');
+      }
     } catch (e) {}
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.classList.add('explicit-mobile-admin');
+    }
     // Automatically unlock organizer desk protection on successful admin login
     isDeskOrganizerUnlocked = true;
     renderAuthUI();
@@ -3019,7 +3049,13 @@ export function logoutAdmin() {
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('uno_admin_logged_in');
     }
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.removeItem('uno_explicit_mobile_admin');
+    }
   } catch (e) {}
+  if (typeof document !== 'undefined' && document.body) {
+    document.body.classList.remove('explicit-mobile-admin');
+  }
   isDeskOrganizerUnlocked = false;
   renderAuthUI();
 
@@ -3034,12 +3070,22 @@ export function logoutAdmin() {
 
 export function renderAuthUI() {
   if (typeof document === 'undefined') return;
-  const isAdmin = isAdminAuthenticated();
+  const isMobile = isMobileDevice();
+  const isExpAdmin = isExplicitMobileAdmin();
+  let isAdmin = isAdminAuthenticated();
+
+  const urlParams = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search) : null;
+  const isForcedGuest = urlParams && (urlParams.get('view') === 'guest' || urlParams.get('role') === 'guest');
+
+  if (isForcedGuest || (isMobile && !isExpAdmin)) {
+    isAdmin = false;
+  }
 
   // Update body role classes
   if (document.body) {
     document.body.classList.toggle('role-admin', isAdmin);
     document.body.classList.toggle('role-guest', !isAdmin);
+    document.body.classList.toggle('explicit-mobile-admin', isExpAdmin && isAdmin);
   }
 
   // Update tab-nav grid mode
@@ -3464,7 +3510,15 @@ export function initApp() {
   renderAuthUI();
 
   // Restore persisted active tab (URL Hash > localStorage > default 'matchups' for guest, 'guide' for admin)
-  const isAdmin = isAdminAuthenticated();
+  const isMobile = isMobileDevice();
+  const urlParams = (typeof window !== 'undefined' && window.location) ? new URLSearchParams(window.location.search) : null;
+  const isForcedGuest = urlParams && (urlParams.get('view') === 'guest' || urlParams.get('role') === 'guest');
+
+  if (isForcedGuest && typeof localStorage !== 'undefined') {
+    try { localStorage.removeItem('uno_admin_logged_in'); } catch (e) {}
+  }
+
+  const isAdmin = (!isMobile || isExplicitMobileAdmin()) && isAdminAuthenticated() && !isForcedGuest;
   let initialTab = isAdmin ? 'guide' : 'matchups';
   try {
     const hash = (typeof window !== 'undefined' && window.location && window.location.hash)

@@ -46,18 +46,36 @@
       try {
         var validTabs = ['guide', 'rules', 'schedule', 'matchups', 'desk'];
         var hash = (window.location.hash || '').replace(/^#/, '').trim();
-        var targetTab = validTabs.indexOf(hash) !== -1 ? hash : localStorage.getItem('uno_active_tab');
+        var isMobile = (window.innerWidth <= 768) || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+        var urlParams = new URLSearchParams(window.location.search || '');
+        var isForcedGuest = urlParams.get('view') === 'guest' || urlParams.get('role') === 'guest' || hash === 'matchups';
+
         var isAdmin = false;
         try {
           isAdmin = localStorage.getItem('uno_admin_logged_in') === 'true';
         } catch (e) {}
+
+        // Enforce guest view on mobile phones or whenever link is shared with guests
+        if (isMobile || isForcedGuest) {
+          isAdmin = false;
+          if (isForcedGuest) {
+            try { localStorage.removeItem('uno_admin_logged_in'); } catch (e) {}
+          }
+        }
+
+        var targetTab = validTabs.indexOf(hash) !== -1 ? hash : localStorage.getItem('uno_active_tab');
         if (!isAdmin) {
           targetTab = 'matchups';
         } else if (targetTab === 'desk' && !isAdmin) {
           targetTab = 'matchups';
         }
+
         if (targetTab && validTabs.indexOf(targetTab) !== -1) {
           document.addEventListener('DOMContentLoaded', function() {
+            if (!isAdmin && document.body) {
+              document.body.classList.remove('role-admin');
+              document.body.classList.add('role-guest');
+            }
             var btn = document.querySelector('.tab-btn[data-tab="' + targetTab + '"]');
             var view = document.getElementById(targetTab + 'View');
             if (btn && view) {
@@ -75,7 +93,7 @@
     })();
   </script>
 </head>
-<body>
+<body class="role-guest">
   <div id="app-container">
     <!-- Top Executive Header -->
     <header class="sticky-header">

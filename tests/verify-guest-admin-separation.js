@@ -163,4 +163,21 @@ for (const k of authKeys) {
   }
 }
 
+// 5. Verify Mobile View Hardening & Safe Guest Mode Defaults
+if (!html.includes('<body class="role-guest">')) {
+  console.error('FAIL: index.html <body> must include class="role-guest" by default to prevent organizer mode flashes on mobile');
+  process.exit(1);
+}
+
+if (!css.includes('body:not(.explicit-mobile-admin) #deskView')) {
+  console.error('FAIL: styles.css must include mobile hardening rule to hide #deskView on mobile screens');
+  process.exit(1);
+}
+
+const appJs = fs.readFileSync('app.js', 'utf-8');
+if (!appJs.includes('?view=guest#matchups')) {
+  console.error('FAIL: app.js share URLs must include ?view=guest#matchups to enforce guest view for mobile attendees');
+  process.exit(1);
+}
+
 console.log('PASS: All Guest vs Admin separation and local auth tests passed successfully!');

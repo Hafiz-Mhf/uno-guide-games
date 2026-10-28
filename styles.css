@@ -5197,6 +5197,30 @@ body.role-guest #matchupsView.active {
   display: block !important;
 }
 
+/* Mobile View Hardening: Mobile devices strictly view Live Matchups in Guest Mode */
+@media (max-width: 768px) {
+  body:not(.explicit-mobile-admin) #deskView,
+  body:not(.explicit-mobile-admin) #guideView,
+  body:not(.explicit-mobile-admin) #rulesView,
+  body:not(.explicit-mobile-admin) #scheduleView {
+    display: none !important;
+  }
+
+  body:not(.explicit-mobile-admin) .admin-only-item {
+    display: none !important;
+  }
+
+  body:not(.explicit-mobile-admin) #adminStatusGroup {
+    display: none !important;
+  }
+
+  body:not(.explicit-mobile-admin) .tab-nav {
+    grid-template-columns: 1fr !important;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
 /* Header Organizer Auth Trigger Button */
 .admin-auth-header-btn {
   display: inline-flex;

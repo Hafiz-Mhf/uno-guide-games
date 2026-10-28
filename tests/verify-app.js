@@ -16,4 +16,18 @@ for (const key of requiredKeys) {
   }
 }
 
+import fs from 'fs';
+
+const html = fs.readFileSync('index.html', 'utf-8');
+if (!html.includes('id="testRoomBtn"')) {
+  console.error('FAIL: index.html missing id="testRoomBtn"');
+  process.exit(1);
+}
+
+if (!TRANSLATIONS.en.scheduleTab?.testRoundStage || !TRANSLATIONS.bm.scheduleTab?.testRoundStage) {
+  console.error('FAIL: Missing testRoundStage in scheduleTab translations');
+  process.exit(1);
+}
+
 console.log('PASS: Translation keys verified.');
+

@@ -631,8 +631,72 @@
 
       <!-- TAB 3: DIGITAL PLATFORM & ROOM SETUP -->
       <section id="scheduleView" class="tab-content">
-        <!-- Player Guide & Technical Setup Section -->
+        <!-- Event Schedule & Run of Show Section -->
         <div class="section-header">
+          <div>
+            <h3 class="section-title" data-i18n="scheduleTab.title">Event Schedule & Run of Show</h3>
+            <p class="section-subtitle" data-i18n="scheduleTab.subtitle">90 minutes of casual, high-energy gaming from digital matches to physical finals.</p>
+          </div>
+        </div>
+
+        <div class="schedule-timeline-grid">
+          <!-- Stage 1 -->
+          <div class="schedule-card stage-checkin">
+            <div class="schedule-time-badge">
+              <span class="badge-time" data-i18n="scheduleTab.r1Time">3:00 PM – 3:12 PM (12 mins)</span>
+            </div>
+            <h4 class="stage-title" data-i18n="scheduleTab.r1Stage">Stage 1: Check-In & Onboarding</h4>
+            <p class="stage-desc" data-i18n="scheduleTab.r1Desc">Arrival at Common Area, Level 2, Hive 5, device Wi-Fi check, scanning the event guide, and room/match allocations.</p>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="schedule-card stage-testround">
+            <div class="schedule-time-badge">
+              <span class="badge-time" data-i18n="scheduleTab.testRoundTime">3:12 PM – 3:25 PM (13 mins)</span>
+            </div>
+            <h4 class="stage-title" data-i18n="scheduleTab.testRoundStage">Stage 2: 🧪 Test Round (Device & Wi-Fi Warm-Up)</h4>
+            <p class="stage-desc" data-i18n="scheduleTab.testRoundDesc">Zero-stakes trial match on BuddyBoardGames using rooms HR-Test-01 to HR-Test-17. Attendees verify browser compatibility and test action rules before official matches begin.</p>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="schedule-card stage-round1">
+            <div class="schedule-time-badge">
+              <span class="badge-time" data-i18n="scheduleTab.r2Time">3:25 PM – 3:45 PM (20 mins)</span>
+            </div>
+            <h4 class="stage-title" data-i18n="scheduleTab.r2Stage">Stage 3: Round 1 — Digital 1v1</h4>
+            <p class="stage-desc" data-i18n="scheduleTab.r2Desc">Head-to-head browser matches (Best of 1) on BuddyBoardGames. Match winners advance directly to Round 2.</p>
+          </div>
+
+          <!-- Stage 4 -->
+          <div class="schedule-card stage-round2">
+            <div class="schedule-time-badge">
+              <span class="badge-time" data-i18n="scheduleTab.r3Time">3:45 PM – 4:05 PM (20 mins)</span>
+            </div>
+            <h4 class="stage-title" data-i18n="scheduleTab.r3Stage">Stage 4: Round 2 — Physical Heats</h4>
+            <p class="stage-desc" data-i18n="scheduleTab.r3Desc">Qualifying winners split across 3 physical card tables (Table Alpha, Beta, Gamma) with Second Chance wildcards added to guarantee at least 4 players per table. 1 winner per table advances to the Grand Final.</p>
+          </div>
+
+          <!-- Stage 5 -->
+          <div class="schedule-card stage-round3">
+            <div class="schedule-time-badge">
+              <span class="badge-time" data-i18n="scheduleTab.r4Time">4:05 PM – 4:20 PM (15 mins)</span>
+            </div>
+            <h4 class="stage-title" data-i18n="scheduleTab.r4Stage">Stage 5: Round 3 — Grand Finale</h4>
+            <p class="stage-desc" data-i18n="scheduleTab.r4Desc">The 3 heat champions face off at the central showcase table for 1st, 2nd, and 3rd place podium spots while colleagues spectate.</p>
+          </div>
+
+          <!-- Stage 6 -->
+          <div class="schedule-card stage-awards">
+            <div class="schedule-time-badge">
+              <span class="badge-time" data-i18n="scheduleTab.r5Time">4:20 PM – 4:30 PM (10 mins)</span>
+            </div>
+            <h4 class="stage-title" data-i18n="scheduleTab.r5Stage">Stage 6: Awards Ceremony & Wrap-Up</h4>
+            <p class="stage-desc" data-i18n="scheduleTab.r5Desc">Official podium presentation (🥇 Grand Champion, 🥈 Runner-Up, 🥉 2nd Runner-Up), group photo, and light refreshments.</p>
+          </div>
+        </div>
+
+        <!-- Player Guide & Technical Setup Section -->
+        <div class="section-header" style="margin-top: 36px;">
           <div>
             <h3 class="section-title" data-i18n="technicalSetup.title">Player Guide & Technical Setup</h3>
             <p class="section-subtitle" data-i18n="technicalSetup.subtitle">Quick instructions to connect with your opponent on BuddyBoardGames.</p>
@@ -649,6 +713,7 @@
             </div>
             <div class="room-gen-mode-toggles">
               <button id="genNextOfficialBtn" class="btn-gen-action" data-i18n="roomGenerator.officialBtn">🏆 Next Official Match</button>
+              <button id="testRoomBtn" class="btn-gen-action test-mode" data-i18n="roomGenerator.testBtn">🧪 Test Round Room</button>
               <button id="genRandomRoomBtn" class="btn-gen-action secondary" data-i18n="roomGenerator.randomBtn">🎲 Generate Random Room</button>
             </div>
           </div>

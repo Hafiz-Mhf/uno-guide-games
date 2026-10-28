@@ -178,21 +178,24 @@ export const TRANSLATIONS = {
     scheduleTab: {
       title: "Event Schedule & Run of Show",
       subtitle: "90 minutes of casual, high-energy gaming from digital matches to physical finals.",
-      r1Time: "3:00 PM – 3:15 PM (15 mins)",
-      r1Stage: "Check-In & Onboarding",
+      r1Time: "3:00 PM – 3:12 PM (12 mins)",
+      r1Stage: "Stage 1: Check-In & Onboarding",
       r1Desc: "Arrival at Common Area, Level 2, Hive 5, device Wi-Fi check, scanning the event guide, and room/match allocations.",
-      r2Time: "3:15 PM – 3:35 PM (20 mins)",
-      r2Stage: "Round 1 — Digital 1v1",
-      r2Desc: "30 players compete in 15 simultaneous 1v1 head-to-head browser matches (Best of 1). The 15 winners advance.",
-      r3Time: "3:35 PM – 4:00 PM (25 mins)",
-      r3Stage: "Round 2 — Physical Heats",
-      r3Desc: "15 qualifying players split across 3 physical card tables (5 players per table). Table winners advance to the Grand Final.",
-      r4Time: "4:00 PM – 4:20 PM (20 mins)",
-      r4Stage: "Round 3 — Grand Final",
-      r4Desc: "The 3 finalists face off at the central championship table while the rest of the department spectates and cheers.",
+      testRoundTime: "3:12 PM – 3:25 PM (13 mins)",
+      testRoundStage: "Stage 2: 🧪 Test Round (Device & Wi-Fi Warm-Up)",
+      testRoundDesc: "Zero-stakes trial match on BuddyBoardGames using rooms HR-Test-01 to HR-Test-17. Attendees verify browser compatibility and test action rules before official matches begin.",
+      r2Time: "3:25 PM – 3:45 PM (20 mins)",
+      r2Stage: "Stage 3: Round 1 — Digital 1v1",
+      r2Desc: "Head-to-head browser matches (Best of 1) on BuddyBoardGames. Match winners advance directly to Round 2.",
+      r3Time: "3:45 PM – 4:05 PM (20 mins)",
+      r3Stage: "Stage 4: Round 2 — Physical Heats",
+      r3Desc: "Qualifying winners split across 3 physical card tables (Table Alpha, Beta, Gamma) with Second Chance wildcards added to guarantee at least 4 players per table. 1 winner per table advances to the Grand Final.",
+      r4Time: "4:05 PM – 4:20 PM (15 mins)",
+      r4Stage: "Stage 5: Round 3 — Grand Final",
+      r4Desc: "The 3 heat champions face off at the central championship table while the rest of the department spectates and cheers.",
       r5Time: "4:20 PM – 4:30 PM (10 mins)",
-      r5Stage: "Awards & Wrap-Up",
-      r5Desc: "Prize presentation for 1st, 2nd, and 3rd place winners, team photo, and light refreshments.",
+      r5Stage: "Stage 6: Awards Ceremony & Wrap-Up",
+      r5Desc: "Official podium presentation (🥇 Grand Champion, 🥈 Runner-Up, 🥉 2nd Runner-Up), group photo, and light refreshments.",
       consolationTitle: "☕ Consolation / Casual Play (Open Side Tables)",
       consolationDesc: "Players eliminated in Rounds 1 and 2 are encouraged to join open side tables with physical card decks to enjoy casual rounds and cheer on colleagues!"
     },
@@ -217,6 +220,7 @@ export const TRANSLATIONS = {
       matchSelectLabel: "Official Match (Round 1):",
       randomBtn: "🎲 Generate Random Room",
       officialBtn: "🏆 Next Official Match",
+      testBtn: "🧪 Test Round Room",
       nameLabel: "Your Nickname (Optional):",
       namePlaceholder: "Enter nickname (e.g. Sarah, Razali)...",
       roomLabel: "Active Room Name:",
@@ -548,21 +552,24 @@ export const TRANSLATIONS = {
     scheduleTab: {
       title: "Jadual Acara & Atur Cara Penuh",
       subtitle: "90 minit permainan santai dan penuh semangat dari perlawanan digital ke pentas akhir.",
-      r1Time: "3:00 PM – 3:15 PM (15 minit)",
-      r1Stage: "Pendaftaran & Taklimat",
+      r1Time: "3:00 PM – 3:12 PM (12 minit)",
+      r1Stage: "Peringkat 1: Pendaftaran & Taklimat",
       r1Desc: "Berkumpul di Common Area, Aras 2, Hive 5, semakan sambungan Wi-Fi peranti, imbas panduan acara, dan pengagihan bilik perlawanan.",
-      r2Time: "3:15 PM – 3:35 PM (20 minit)",
-      r2Stage: "Pusingan 1 — 1v1 Digital",
-      r2Desc: "30 pemain bertanding serentak dalam 15 perlawanan 1v1 di pelayar web (Best of 1). 15 pemenang mara ke pusingan seterusnya.",
-      r3Time: "3:35 PM – 4:00 PM (25 minit)",
-      r3Stage: "Pusingan 2 — Perlawanan Kad Fizikal",
-      r3Desc: "15 pemain dibahagikan kepada 3 meja kad fizikal (5 pemain setiap meja). Pemenang setiap meja mara ke Pentas Akhir.",
-      r4Time: "4:00 PM – 4:20 PM (20 minit)",
-      r4Stage: "Pusingan 3 — Pentas Akhir",
-      r4Desc: "3 finalis berentap di meja utama sambil disorak dan disokong oleh seluruh rakan sekerja.",
+      testRoundTime: "3:12 PM – 3:25 PM (13 minit)",
+      testRoundStage: "Peringkat 2: 🧪 Pusingan Percubaan (Pemanasan Badan & Ujian Peranti)",
+      testRoundDesc: "Perlawanan santai tanpa risiko di BuddyBoardGames menggunakan bilik HR-Test-01 hingga HR-Test-17. Peserta menguji keserasian pelayar dan memahami kad aksi sebelum pusingan rasmi bermula.",
+      r2Time: "3:25 PM – 3:45 PM (20 minit)",
+      r2Stage: "Peringkat 3: Pusingan 1 — 1v1 Digital",
+      r2Desc: "Perlawanan satu lawan satu di pelayar web BuddyBoardGames (Best of 1). Pemenang mara terus ke Pusingan 2.",
+      r3Time: "3:45 PM – 4:05 PM (20 minit)",
+      r3Stage: "Peringkat 4: Pusingan 2 — Meja Kad Fizikal",
+      r3Desc: "Pemenang dibahagikan kepada 3 meja fizikal (Meja Alpha, Beta, Gamma) dengan tambahan pemain Peluang Kedua bagi memastikan sekurang-kurangnya 4 pemain setiap meja. 1 pemenang mara ke Pentas Akhir.",
+      r4Time: "4:05 PM – 4:20 PM (15 minit)",
+      r4Stage: "Peringkat 5: Pusingan 3 — Pentas Akhir",
+      r4Desc: "3 juara kumpulan bertanding di meja utama untuk merebut gelaran Juara, Tempat Ke-2, dan Tempat Ke-3 sambil disorak rakan sekerja.",
       r5Time: "4:20 PM – 4:30 PM (10 minit)",
-      r5Stage: "Penyampaian Hadiah & Penutup",
-      r5Desc: "Sesi penyampaian hadiah bagi tempat Pertama, Kedua, dan Ketiga, sesi bergambar, serta jamuan ringan.",
+      r5Stage: "Peringkat 6: Penyampaian Hadiah & Penutup",
+      r5Desc: "Penyampaian hadiah rasmi (🥇 Juara, 🥈 Tempat Ke-2, 🥉 Tempat Ke-3), sesi bergambar ramai, dan jamuan ringan.",
       consolationTitle: "☕ Meja Santai (Pilihan)",
       consolationDesc: "Pemain yang tersingkir pada Pusingan 1 dan Pusingan 2 dialu-alukan untuk menyertai meja kosong lain bagi terus bermain secara santai serta memberi sokongan kepada rakan sekerja yang lain!"
     },
@@ -587,6 +594,7 @@ export const TRANSLATIONS = {
       matchSelectLabel: "Perlawanan Rasmi (Pusingan 1):",
       randomBtn: "🎲 Jana Bilik Rawak",
       officialBtn: "🏆 Perlawanan Rasmi Seterusnya",
+      testBtn: "🧪 Bilik Pusingan Percubaan",
       nameLabel: "Nama Panggilan (Pilihan):",
       namePlaceholder: "Masukkan nama (cth: Sarah, Razali)...",
       roomLabel: "Nama Bilik Aktif:",
@@ -1339,6 +1347,24 @@ export function setupRoomGeneratorEvents() {
     nextOfficialBtn.addEventListener('click', () => {
       const nextMatch = ((activeGenMatchIndex || 0) % 15) + 1;
       selectOfficialMatch(nextMatch);
+    });
+  }
+
+  let activeTestRoomIndex = 1;
+  const testRoomBtn = document.getElementById('testRoomBtn');
+  if (testRoomBtn) {
+    testRoomBtn.addEventListener('click', () => {
+      activeGenMatchIndex = null;
+      activeGenRoomName = `HR-Test-${String(activeTestRoomIndex).padStart(2, '0')}`;
+      activeTestRoomIndex = (activeTestRoomIndex % 17) + 1;
+      refreshRoomGeneratorDisplays();
+      const isBM = currentLang === 'bm';
+      showToast(
+        isBM
+          ? `Bilik Percubaan dijana: ${activeGenRoomName}`
+          : `Test Round Room generated: ${activeGenRoomName}`,
+        '🧪'
+      );
     });
   }
 

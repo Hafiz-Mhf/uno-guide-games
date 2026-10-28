@@ -2472,6 +2472,7 @@ export function setupTournamentDeskEvents() {
     persistTournamentState(tournamentState);
     nameInput.value = '';
     renderTournamentDesk();
+    renderPublicMatchups();
     const isBM = currentLang === 'bm';
     showToast(isBM ? `Peserta "${name}" ditambah ke senarai` : `Added "${name}" to roster`, '➕');
   }
@@ -2513,6 +2514,7 @@ export function setupTournamentDeskEvents() {
         bulkTextarea.value = '';
         if (bulkContainer) bulkContainer.style.display = 'none';
         renderTournamentDesk();
+        renderPublicMatchups();
         const isBM = currentLang === 'bm';
         showToast(isBM ? `${addedCount} peserta berjaya diimport!` : `Imported ${addedCount} participants!`, '📝');
       }
@@ -2528,6 +2530,7 @@ export function setupTournamentDeskEvents() {
       tournamentState = setAllCheckInStatus(tournamentState, true);
       persistTournamentState(tournamentState);
       renderTournamentDesk();
+      renderPublicMatchups();
       const isBM = currentLang === 'bm';
       showToast(isBM ? 'Semua peserta ditandakan hadir' : 'All participants marked checked-in', '✅');
     });
@@ -2541,6 +2544,7 @@ export function setupTournamentDeskEvents() {
       tournamentState = setAllCheckInStatus(tournamentState, false);
       persistTournamentState(tournamentState);
       renderTournamentDesk();
+      renderPublicMatchups();
       const isBM = currentLang === 'bm';
       showToast(isBM ? 'Semua tanda kehadiran dikosongkan' : 'All check-in marks cleared', '🔄');
     });
@@ -2627,6 +2631,7 @@ export function setupTournamentDeskEvents() {
         tournamentState = togglePlayerCheckIn(tournamentState, id);
         persistTournamentState(tournamentState);
         renderTournamentDesk();
+        renderPublicMatchups();
       } else if (action === 'delete-player') {
         const isBM = currentLang === 'bm';
         const player = tournamentState.roster.find(p => p.id === id);
@@ -2648,6 +2653,7 @@ export function setupTournamentDeskEvents() {
           tournamentState = removePlayer(tournamentState, id);
           persistTournamentState(tournamentState);
           renderTournamentDesk();
+          renderPublicMatchups();
           showToast(isBM ? `Peserta "${pName}" dikeluarkan` : `Removed "${pName}" from roster`, '🗑️');
         }
       }

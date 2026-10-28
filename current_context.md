@@ -4,11 +4,42 @@
 > **Target Event Date:** Wednesday, 28 October 2026 • 3:00 PM – 4:30 PM (90 Mins)  
 > **Venue:** Common Area, Level 2, Hive 5, MRANTI Building  
 > **Platform:** BuddyBoardGames UNO (Digital Round 1) & Physical Decks (Rounds 2 & 3)  
-> **Status:** Production Ready • 12/12 Test Suites Passing (`npm test`)
+> **Status:** Production Ready • 13/13 Test Suites Passing (`npm test`)
 
 ---
 
-## Full Tournament Standings (All 34 Participants) & Championship Podium Print Engine `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Static Curated Activity Gallery for Guest View `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **Curated Event Media in the Guest Experience:**
+  * Added a compact **Today's Activity Gallery** preview directly below the participant matchup search toolbar in `#matchupsView`.
+  * Uses the real media already stored in `Gallery Engagement Session`: **13 photos and 9 short videos**.
+  * Keeps live matchups as the primary guest task while giving attendees immediate access to event memories.
+* **Full Filtered Gallery:**
+  * Added filters for All Moments, Briefing, Tournament, Awards, and Videos.
+  * Added bilingual English and Bahasa Melayu titles, captions, media labels, filters, empty states, and controls.
+  * Gallery item metadata is maintained centrally in [`gallery-data.js`](file:///d:/uno-guide-rules/gallery-data.js).
+* **Accessible Photo and Video Lightbox:**
+  * Supports previous/next navigation, `Esc` dismissal, left/right arrow keys, visible focus states, and focus restoration.
+  * Videos use native playback controls, `playsinline`, and metadata-only preloading until opened.
+  * Images lazy-load and use asynchronous decoding to reduce guest mobile bandwidth.
+* **Responsive Visual Treatment:**
+  * Desktop uses a polished editorial contact-sheet layout.
+  * Mobile uses a touch-friendly horizontal preview and single-column full gallery.
+  * Updated gallery tiles to preserve every photo and video's original aspect ratio with no forced `4:3` crop.
+  * The compact preview uses an uncropped filmstrip; the full gallery flows through responsive masonry-style columns.
+  * Captions now sit below each complete image instead of covering it.
+  * Verified at **1440x900** and **390x844**, including bilingual filters and video playback controls.
+* **Maintenance and Verification:**
+  * Added gallery maintenance instructions in [`Gallery Engagement Session/README.md`](file:///d:/uno-guide-rules/Gallery%20Engagement%20Session/README.md).
+  * Added MP4 and WebP MIME types to [`server.js`](file:///d:/uno-guide-rules/server.js) for local media testing.
+  * Added [`tests/verify-activity-gallery.js`](file:///d:/uno-guide-rules/tests/verify-activity-gallery.js) to verify all 22 asset paths, bilingual metadata, DOM controls, filters, exports, and responsive CSS markers.
+  * **13/13 test suites pass** with `npm test`.
+
+---
+
+## Full Tournament Standings (All 34 Participants) & Championship Podium Print Engine `28 October 2026`
 
 <span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
 

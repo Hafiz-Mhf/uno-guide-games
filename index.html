@@ -826,6 +826,34 @@
           </div>
         </div>
 
+        <!-- Curated Activity Gallery: compact preview keeps matchups as the primary guest task -->
+        <section id="activityGallerySection" class="activity-gallery" aria-labelledby="activityGalleryTitle">
+          <div class="activity-gallery-header">
+            <div>
+              <span class="activity-gallery-eyebrow" data-i18n="gallery.eyebrow">Today at HR Division</span>
+              <h4 id="activityGalleryTitle" class="activity-gallery-title" data-i18n="gallery.title">Today's Activity Gallery</h4>
+              <p class="activity-gallery-subtitle" data-i18n="gallery.subtitle">Photos and short clips from our UNO engagement session.</p>
+            </div>
+            <div class="activity-gallery-actions">
+              <span id="activityGalleryCount" class="activity-gallery-count" data-i18n="gallery.countLabel">22 moments</span>
+              <button id="toggleActivityGalleryBtn" class="activity-gallery-toggle" type="button" aria-expanded="false" aria-controls="activityGalleryPanel">
+                <span data-i18n="gallery.viewAll">View Full Gallery</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="activityGalleryPreview" class="activity-gallery-preview" aria-live="polite"></div>
+
+          <div id="activityGalleryPanel" class="activity-gallery-panel" hidden>
+            <div id="activityGalleryFilters" class="activity-gallery-filters" role="toolbar" aria-label="Gallery filters"></div>
+            <div id="activityGalleryGrid" class="activity-gallery-grid"></div>
+            <div id="activityGalleryEmpty" class="activity-gallery-empty" hidden>
+              <strong data-i18n="gallery.emptyTitle">Gallery moments are being prepared</strong>
+              <span data-i18n="gallery.emptyDesc">Check again shortly for photos from today's activity.</span>
+            </div>
+          </div>
+        </section>
+
         <!-- BYE Notice Banner for Public View -->
         <div id="publicByeNotice" class="desk-bye-card desk-bye-notice" style="display: none;"></div>
 
@@ -1420,6 +1448,24 @@
 
     <!-- Global Toast Notification Container -->
     <div id="appToastContainer" class="app-toast-container" aria-live="polite"></div>
+
+    <!-- Activity Gallery Lightbox -->
+    <div id="activityGalleryLightbox" class="activity-lightbox" role="dialog" aria-modal="true" aria-labelledby="activityLightboxTitle" hidden>
+      <div class="activity-lightbox-backdrop" data-gallery-close></div>
+      <div class="activity-lightbox-dialog">
+        <button id="closeActivityLightboxBtn" class="activity-lightbox-close" type="button" data-gallery-close aria-label="Close gallery viewer">&#10005;</button>
+        <button id="previousActivityMediaBtn" class="activity-lightbox-nav activity-lightbox-prev" type="button" aria-label="Previous moment">&#8249;</button>
+        <div class="activity-lightbox-content">
+          <div id="activityLightboxMedia" class="activity-lightbox-media"></div>
+          <div class="activity-lightbox-caption">
+            <span id="activityLightboxMeta" class="activity-lightbox-meta"></span>
+            <h4 id="activityLightboxTitle"></h4>
+            <p id="activityLightboxDescription"></p>
+          </div>
+        </div>
+        <button id="nextActivityMediaBtn" class="activity-lightbox-nav activity-lightbox-next" type="button" aria-label="Next moment">&#8250;</button>
+      </div>
+    </div>
 
   </div>
 

@@ -31,6 +31,7 @@ import {
   onSyncStatusChange,
   getSyncStatus
 } from './sync-engine.js';
+import { GALLERY_ITEMS, GALLERY_CATEGORIES } from './gallery-data.js';
 
 export const TRANSLATIONS = {
   en: {
@@ -384,6 +385,30 @@ export const TRANSLATIONS = {
       round1Label: "Round 1 Contender",
       statusSemiFinal: "🎯 Round 2 Heat",
       statusRound1: "🕹️ Digital 1v1"
+    },
+    gallery: {
+      eyebrow: "Today at HR Division",
+      title: "Today's Activity Gallery",
+      subtitle: "Photos and short clips from our UNO engagement session.",
+      countLabel: "moments",
+      viewAll: "View Full Gallery",
+      hideGallery: "Hide Gallery",
+      featuredLabel: "Featured moment",
+      photoLabel: "Photo",
+      videoLabel: "Video",
+      playVideo: "Play video",
+      previous: "Previous moment",
+      next: "Next moment",
+      close: "Close gallery viewer",
+      emptyTitle: "Gallery moments are being prepared",
+      emptyDesc: "Check again shortly for photos from today's activity.",
+      categories: {
+        all: "All moments",
+        briefing: "Briefing",
+        tournament: "Tournament",
+        awards: "Awards",
+        video: "Videos"
+      }
     },
     print: {
       department: "Human Resource Division",
@@ -775,6 +800,30 @@ export const TRANSLATIONS = {
       statusSemiFinal: "🎯 Meja P2",
       statusRound1: "🕹️ Digital 1v1"
     },
+    gallery: {
+      eyebrow: "Hari Ini di Bahagian HR",
+      title: "Galeri Aktiviti Hari Ini",
+      subtitle: "Foto dan klip ringkas daripada sesi penglibatan UNO kami.",
+      countLabel: "detik",
+      viewAll: "Lihat Galeri Penuh",
+      hideGallery: "Sembunyikan Galeri",
+      featuredLabel: "Detik pilihan",
+      photoLabel: "Foto",
+      videoLabel: "Video",
+      playVideo: "Mainkan video",
+      previous: "Detik sebelumnya",
+      next: "Detik seterusnya",
+      close: "Tutup paparan galeri",
+      emptyTitle: "Detik galeri sedang disediakan",
+      emptyDesc: "Semak semula sebentar lagi untuk melihat foto aktiviti hari ini.",
+      categories: {
+        all: "Semua detik",
+        briefing: "Taklimat",
+        tournament: "Kejohanan",
+        awards: "Anugerah",
+        video: "Video"
+      }
+    },
     print: {
       department: "Bahagian Sumber Manusia",
       subtitle: "Sesi Penglibatan Oktober",
@@ -944,6 +993,7 @@ export function updateI18n() {
   if (typeof renderTournamentDesk === 'function') {
     renderTournamentDesk();
   }
+  renderActivityGallery();
 }
 
 export function renderSearchResults() {
@@ -1551,6 +1601,204 @@ export function switchPosterTab(posterType) {
       downloadPosterBtn.download = 'UNO-Engagement-Day-Poster.jpg';
     }
   }
+}
+
+// ==========================================================================
+// Static Curated Activity Gallery
+// ==========================================================================
+let activityGalleryFilter = 'all';
+let activityGalleryLightboxItems = [];
+let activityGalleryLightboxIndex = 0;
+let activityGalleryLastFocus = null;
+
+function galleryText(item, field) {
+  const localized = item && item[field];
+  return localized ? (localized[currentLang] || localized.en || '') : '';
+}
+
+function escapeGalleryText(value) {
+  return String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+export function getActivityGalleryItems(filter = activityGalleryFilter) {
+  if (filter === 'all') return [...GALLERY_ITEMS];
+  return GALLERY_ITEMS.filter(item => item.category === filter || (filter === 'video' && item.type === 'video'));
+}
+
+function renderGalleryTile(item, isPreview = false, index = 0) {
+  const dict = TRANSLATIONS[currentLang].gallery;
+  const title = escapeGalleryText(galleryText(item, 'title'));
+  const caption = escapeGalleryText(galleryText(item, 'caption'));
+  const typeLabel = item.type === 'video' ? dict.videoLabel : dict.photoLabel;
+  const previewClass = isPreview && index === 0 ? ' is-featured' : '';
+  const media = item.type === 'video'
+    ? `<video src="${escapeGalleryText(item.src)}" preload="metadata" muted playsinline tabindex="-1" aria-hidden="true"></video><span class="activity-gallery-play" aria-hidden="true">&#9654;</span>`
+    : `<img src="${escapeGalleryText(item.src)}" alt="${title}" loading="lazy" decoding="async">`;
+
+  return `
+    <button class="activity-gallery-tile${previewClass}" type="button" data-gallery-id="${escapeGalleryText(item.id)}" aria-label="${escapeGalleryText(typeLabel)}: ${title}">
+      <span class="activity-gallery-media">${media}</span>
+      <span class="activity-gallery-tile-copy">
+        <span class="activity-gallery-tile-meta">${escapeGalleryText(typeLabel)}</span>
+        <strong>${title}</strong>
+        ${isPreview ? '' : `<span>${caption}</span>`}
+      </span>
+    </button>`;
+}
+
+export function renderActivityGallery() {
+  if (typeof document === 'undefined') return;
+
+  const dict = TRANSLATIONS[currentLang].gallery;
+  const preview = document.getElementById('activityGalleryPreview');
+  const grid = document.getElementById('activityGalleryGrid');
+  const filters = document.getElementById('activityGalleryFilters');
+  const empty = document.getElementById('activityGalleryEmpty');
+  const count = document.getElementById('activityGalleryCount');
+  const toggle = document.getElementById('toggleActivityGalleryBtn');
+  const panel = document.getElementById('activityGalleryPanel');
+
+  if (!preview || !grid || !filters) return;
+
+  const featuredItems = GALLERY_ITEMS.filter(item => item.featured && item.type === 'image').slice(0, 4);
+  const previewItems = featuredItems.length ? featuredItems : GALLERY_ITEMS.filter(item => item.type === 'image').slice(0, 4);
+  const filteredItems = getActivityGalleryItems(activityGalleryFilter);
+
+  preview.innerHTML = previewItems.length
+    ? previewItems.map((item, index) => renderGalleryTile(item, true, index)).join('')
+    : `<div class="activity-gallery-preview-empty"><strong>${escapeGalleryText(dict.emptyTitle)}</strong><span>${escapeGalleryText(dict.emptyDesc)}</span></div>`;
+
+  filters.innerHTML = GALLERY_CATEGORIES.map(category => `
+    <button class="activity-gallery-filter${category === activityGalleryFilter ? ' is-active' : ''}" type="button" data-gallery-filter="${category}" aria-pressed="${category === activityGalleryFilter}">
+      ${escapeGalleryText(dict.categories[category])}
+    </button>`).join('');
+
+  grid.innerHTML = filteredItems.map(item => renderGalleryTile(item)).join('');
+  grid.hidden = filteredItems.length === 0;
+  if (empty) empty.hidden = filteredItems.length !== 0;
+  if (count) count.textContent = `${GALLERY_ITEMS.length} ${dict.countLabel}`;
+
+  if (toggle && panel) {
+    const expanded = !panel.hidden;
+    const label = toggle.querySelector('span');
+    if (label) label.textContent = expanded ? dict.hideGallery : dict.viewAll;
+    toggle.setAttribute('aria-expanded', String(expanded));
+  }
+
+  const closeButton = document.getElementById('closeActivityLightboxBtn');
+  const previousButton = document.getElementById('previousActivityMediaBtn');
+  const nextButton = document.getElementById('nextActivityMediaBtn');
+  if (closeButton) closeButton.setAttribute('aria-label', dict.close);
+  if (previousButton) previousButton.setAttribute('aria-label', dict.previous);
+  if (nextButton) nextButton.setAttribute('aria-label', dict.next);
+}
+
+export function toggleActivityGallery(forceExpanded) {
+  const panel = document.getElementById('activityGalleryPanel');
+  const toggle = document.getElementById('toggleActivityGalleryBtn');
+  if (!panel || !toggle) return;
+
+  const shouldExpand = typeof forceExpanded === 'boolean' ? forceExpanded : panel.hidden;
+  panel.hidden = !shouldExpand;
+  renderActivityGallery();
+
+  if (shouldExpand && typeof panel.scrollIntoView === 'function') {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function renderActivityLightboxItem() {
+  const item = activityGalleryLightboxItems[activityGalleryLightboxIndex];
+  if (!item) return;
+
+  const dict = TRANSLATIONS[currentLang].gallery;
+  const media = document.getElementById('activityLightboxMedia');
+  const meta = document.getElementById('activityLightboxMeta');
+  const title = document.getElementById('activityLightboxTitle');
+  const description = document.getElementById('activityLightboxDescription');
+  if (!media || !meta || !title || !description) return;
+
+  const localizedTitle = galleryText(item, 'title');
+  const localizedCaption = galleryText(item, 'caption');
+  media.innerHTML = item.type === 'video'
+    ? `<video src="${escapeGalleryText(item.src)}" controls preload="metadata" playsinline aria-label="${escapeGalleryText(localizedTitle)}"></video>`
+    : `<img src="${escapeGalleryText(item.src)}" alt="${escapeGalleryText(localizedTitle)}">`;
+  meta.textContent = `${item.type === 'video' ? dict.videoLabel : dict.photoLabel} · ${activityGalleryLightboxIndex + 1} / ${activityGalleryLightboxItems.length}`;
+  title.textContent = localizedTitle;
+  description.textContent = localizedCaption;
+}
+
+export function openActivityGalleryLightbox(itemId) {
+  const item = GALLERY_ITEMS.find(entry => entry.id === itemId);
+  const lightbox = document.getElementById('activityGalleryLightbox');
+  if (!item || !lightbox) return;
+
+  const filteredItems = getActivityGalleryItems(activityGalleryFilter);
+  activityGalleryLightboxItems = filteredItems.some(entry => entry.id === itemId) ? filteredItems : [...GALLERY_ITEMS];
+  activityGalleryLightboxIndex = Math.max(0, activityGalleryLightboxItems.findIndex(entry => entry.id === itemId));
+  activityGalleryLastFocus = document.activeElement;
+  renderActivityLightboxItem();
+  lightbox.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('closeActivityLightboxBtn')?.focus();
+}
+
+export function closeActivityGalleryLightbox() {
+  const lightbox = document.getElementById('activityGalleryLightbox');
+  const media = document.getElementById('activityLightboxMedia');
+  if (!lightbox || lightbox.hidden) return;
+  lightbox.hidden = true;
+  if (media) media.innerHTML = '';
+  document.body.style.overflow = '';
+  if (activityGalleryLastFocus && typeof activityGalleryLastFocus.focus === 'function') {
+    activityGalleryLastFocus.focus();
+  }
+}
+
+export function navigateActivityGallery(direction) {
+  if (!activityGalleryLightboxItems.length) return;
+  activityGalleryLightboxIndex = (activityGalleryLightboxIndex + direction + activityGalleryLightboxItems.length) % activityGalleryLightboxItems.length;
+  renderActivityLightboxItem();
+}
+
+export function setupActivityGalleryEvents() {
+  const section = document.getElementById('activityGallerySection');
+  const toggle = document.getElementById('toggleActivityGalleryBtn');
+  const filters = document.getElementById('activityGalleryFilters');
+  const lightbox = document.getElementById('activityGalleryLightbox');
+  if (!section || !toggle || !filters || !lightbox) return;
+
+  toggle.addEventListener('click', () => toggleActivityGallery());
+
+  section.addEventListener('click', event => {
+    const tile = event.target.closest('[data-gallery-id]');
+    if (tile) openActivityGalleryLightbox(tile.getAttribute('data-gallery-id'));
+  });
+
+  filters.addEventListener('click', event => {
+    const filterButton = event.target.closest('[data-gallery-filter]');
+    if (!filterButton) return;
+    activityGalleryFilter = filterButton.getAttribute('data-gallery-filter') || 'all';
+    renderActivityGallery();
+  });
+
+  lightbox.addEventListener('click', event => {
+    if (event.target.closest('[data-gallery-close]')) closeActivityGalleryLightbox();
+  });
+
+  document.getElementById('previousActivityMediaBtn')?.addEventListener('click', () => navigateActivityGallery(-1));
+  document.getElementById('nextActivityMediaBtn')?.addEventListener('click', () => navigateActivityGallery(1));
+
+  document.addEventListener('keydown', event => {
+    if (lightbox.hidden) return;
+    if (event.key === 'Escape') closeActivityGalleryLightbox();
+    if (event.key === 'ArrowLeft') navigateActivityGallery(-1);
+    if (event.key === 'ArrowRight') navigateActivityGallery(1);
+  });
 }
 
 // ==========================================================================
@@ -3771,6 +4019,9 @@ export function initApp() {
 
   // Setup Authentication Controls
   setupAuthEventListeners();
+
+  // Setup static activity gallery controls
+  setupActivityGalleryEvents();
 
   // Setup Footer Interactive Events
   const shuffleTipBtn = document.getElementById('shuffleFooterTipBtn');

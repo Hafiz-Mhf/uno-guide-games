@@ -8,7 +8,25 @@
 
 ---
 
-## Title Updated: HR Division October Engagement Session `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Grand Finale Standings & Podium Reset with Draw Re-shuffle `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">FIXED</span>
+
+* **Automatic Grand Finale & Standings Reset on Draw Randomization (`#deskRandomizeBtn`):**
+  * When organizers click `🎲 Randomize Round 1 Pairings` (or re-shuffle pairings), `tournamentState = resetGrandFinal(tournamentState)` is immediately executed.
+  * Cleanses all previous Round 2 heat winners (`winners.alpha`, `beta`, `gamma`, `delta`) and clears the Grand Finale podium (`podium.first`, `second`, `third`, `fourth`).
+  * Triggers immediate synchronization across both Tournament Desk (`#desk`) and Public Live Matchups (`#matchups`) views via `renderTournamentDesk()` and `renderPublicMatchups()`.
+* **Stale Podium Lookup Prevention in Engine (`computeChampionshipStandings`):**
+  * Fixed player resolution in [`tournament-engine.js`](file:///d:/uno-guide-rules/tournament-engine.js) line 412: strictly queries qualified finalists (`allFinalistMap.get(id) || null`) rather than falling back to all registered participants (`rosterMap.get(id)`).
+  * Prevents previous winners from remaining visible on the 3D podium and official standings table when Round 2 heats are waiting for winners to qualify.
+* **Unified Cross-View Synchronization:**
+  * Added `renderPublicMatchups()` calls to `#deskResetBtn` (Reset to Default 30), `#deskRemoveAllBtn` (Remove All Players), Round 1 match winner selections, and Round 2 table count format toggles.
+  * Added test coverage to [`tests/verify-tournament-engine.js`](file:///d:/uno-guide-rules/tests/verify-tournament-engine.js) verifying clean resets and stale podium prevention.
+  * Verified 10/10 test suites pass (`npm test`).
+
+---
+
+## Title Updated: HR Division October Engagement Session `28 October 2026`
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">UPDATED</span>
 

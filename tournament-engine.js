@@ -409,8 +409,7 @@ export function computeChampionshipStandings(state) {
 
   const allFinalistMap = new Map();
   gf.finalists.forEach(p => allFinalistMap.set(p.id, p));
-  const rosterMap = new Map((state.roster || []).map(p => [p.id, p]));
-  const getPlayer = (id) => (id ? allFinalistMap.get(id) || rosterMap.get(id) || null : null);
+  const getPlayer = (id) => (id ? allFinalistMap.get(id) || null : null);
 
   const first = getPlayer(podium.first);
   const second = getPlayer(podium.second);

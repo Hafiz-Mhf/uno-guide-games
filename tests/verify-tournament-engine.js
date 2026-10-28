@@ -311,4 +311,36 @@ if (stateGF.round2.winners.beta !== null || stateGF.grandFinal.podium.second !==
   process.exit(1);
 }
 
+// Test computeChampionshipStandings after resetGrandFinal
+const standingsAfterReset = computeChampionshipStandings(stateGF);
+if (
+  standingsAfterReset.podium.first !== null ||
+  standingsAfterReset.podium.second !== null ||
+  standingsAfterReset.podium.third !== null ||
+  standingsAfterReset.podium.fourth !== null ||
+  standingsAfterReset.isChampionCrowned !== false ||
+  !standingsAfterReset.placements.every(p => p.player === null)
+) {
+  console.error('FAIL: computeChampionshipStandings should have all null placements after resetGrandFinal');
+  process.exit(1);
+}
+
+// Test Stale Podium Prevention: players not qualified as finalists must NOT resolve to podium
+const stalePodiumState = {
+  ...createDefaultTournamentState(),
+  grandFinal: {
+    podium: { first: 'p-01', second: 'p-02', third: 'p-03', fourth: 'p-04' }
+  }
+};
+const staleStandings = computeChampionshipStandings(stalePodiumState);
+if (
+  staleStandings.podium.first !== null ||
+  staleStandings.podium.second !== null ||
+  staleStandings.isChampionCrowned !== false ||
+  !staleStandings.placements.every(p => p.player === null)
+) {
+  console.error('FAIL: Unqualified players from stale podium IDs must not appear in standings');
+  process.exit(1);
+}
+
 console.log('PASS: Task 3 tests & flexible heats tests passed.');

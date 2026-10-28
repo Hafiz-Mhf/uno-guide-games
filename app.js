@@ -2476,6 +2476,7 @@ export function setupTournamentDeskEvents() {
       if (confirmed) {
         tournamentState = resetTournamentState(localStorage);
         renderTournamentDesk();
+        renderPublicMatchups();
         showToast(isBM ? 'Roster telah diset semula ke 30 peserta asal' : 'Roster reset to default 30 participants', '🔄');
       }
     });
@@ -2511,6 +2512,7 @@ export function setupTournamentDeskEvents() {
         tournamentState = removeAllPlayers(tournamentState);
         saveTournamentState(localStorage, tournamentState);
         renderTournamentDesk();
+        renderPublicMatchups();
         showToast(isBM ? 'Semua pemain telah dipadam dari senarai' : 'All players removed from roster', '🗑️');
       }
     });
@@ -2573,7 +2575,9 @@ export function setupTournamentDeskEvents() {
           message: isBM
             ? 'Perlawanan Pusingan 1 telah pun dijana. Adakah anda ingin mengocok semula dan menjana susunan perlawanan 1v1 yang baru?'
             : 'Round 1 matches already exist. Re-shuffle and generate new pairings? Existing table assignments will be recalculated.',
-          note: isBM ? '💡 Petua: Pemenang perlawanan semasa akan disetkan semula untuk susunan baru.' : '💡 Note: Any recorded winners will be reset for the new pairings.',
+          note: isBM
+            ? '💡 Petua: Pemenang perlawanan dan keputusan pusingan seterusnya akan disetkan semula untuk susunan baru.'
+            : '💡 Note: Any recorded winners and subsequent round standings will be reset for the new pairings.',
           confirmText: isBM ? 'Ya, Rawak Semula 🎲' : 'Yes, Re-shuffle 🎲',
           cancelText: isBM ? 'Kekalkan Sedia Ada' : 'Keep Existing',
           confirmVariant: 'primary'
@@ -2598,8 +2602,10 @@ export function setupTournamentDeskEvents() {
 
       const pairings = generateRound1Pairings(checkedIn);
       tournamentState.round1 = pairings;
+      tournamentState = resetGrandFinal(tournamentState);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      renderPublicMatchups();
       showToast(isBM ? '🎲 Perlawanan Pusingan 1 berjaya dijana!' : '🎲 Round 1 pairings generated successfully!', '🎲');
     });
   }
@@ -2618,6 +2624,7 @@ export function setupTournamentDeskEvents() {
       tournamentState = recordMatchWinner(tournamentState, matchId, winnerId);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      renderPublicMatchups();
       const winner = tournamentState.roster.find(p => p.id === winnerId);
       if (winner) {
         const isBM = currentLang === 'bm';
@@ -2666,6 +2673,7 @@ export function setupTournamentDeskEvents() {
       tournamentState = setRound2TableCount(tournamentState, count);
       saveTournamentState(localStorage, tournamentState);
       renderTournamentDesk();
+      renderPublicMatchups();
       const isBM = currentLang === 'bm';
       showToast(
         count === 4

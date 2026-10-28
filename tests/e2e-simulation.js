@@ -9,7 +9,13 @@ import {
   addPlayer,
   generateRound1Pairings,
   recordMatchWinner,
-  computeRound2Heats
+  computeRound2Heats,
+  addSecondChancePlayer,
+  getEligibleSecondChancePlayers,
+  recordHeatWinner,
+  recordPodiumPlace,
+  computeGrandFinalists,
+  computeChampionshipStandings
 } from '../tournament-engine.js';
 
 console.log('Running End-to-End Simulation Check...');
@@ -128,4 +134,107 @@ if (round2.totalQualifiers !== 17 || round2.tableAlpha.length !== 6 || round2.ta
   process.exit(1);
 }
 
+// 7. Simulate 16-Player Minimum Contingency & Second Chance Wildcard Flow
+console.log('Simulating 16-Player Minimum Contingency with Second Chance Wildcards...');
+let state16 = createDefaultTournamentState();
+// Check in only first 16 players
+state16.roster.forEach((p, idx) => {
+  p.checkedIn = idx < 16;
+});
+
+const checkedIn16 = state16.roster.filter(p => p.checkedIn);
+if (checkedIn16.length !== 16) {
+  console.error(`FAIL: Expected 16 checked-in players, got ${checkedIn16.length}`);
+  process.exit(1);
+}
+
+// Generate pairings for 16 players
+const pairings16 = generateRound1Pairings(checkedIn16);
+if (pairings16.matches.length !== 8 || pairings16.byePlayer !== null) {
+  console.error('FAIL: Expected exactly 8 matches and 0 BYEs for 16 players');
+  process.exit(1);
+}
+state16.round1 = pairings16;
+
+// Record 8 winners (player1 of each match)
+pairings16.matches.forEach(m => {
+  state16 = recordMatchWinner(state16, m.matchId, m.player1.id);
+});
+
+// Check eligible second chance players (should be the 8 losers)
+const eligible16 = getEligibleSecondChancePlayers(state16);
+if (eligible16.length !== 8) {
+  console.error(`FAIL: Expected 8 eligible second-chance players from losers, got ${eligible16.length}`);
+  process.exit(1);
+}
+
+// Organizers add 4 second chance wildcards:
+// 1 to Alpha, 1 to Beta, 2 to Gamma -> exactly 4 players per table (3+1, 3+1, 2+2)
+state16 = addSecondChancePlayer(state16, 'alpha', eligible16[0].id);
+state16 = addSecondChancePlayer(state16, 'beta', eligible16[1].id);
+state16 = addSecondChancePlayer(state16, 'gamma', eligible16[2].id);
+state16 = addSecondChancePlayer(state16, 'gamma', eligible16[3].id);
+
+const heats16 = computeRound2Heats(
+  state16.round1.byePlayer,
+  state16.round1.matches,
+  3,
+  state16.round2.secondChance,
+  state16.roster
+);
+
+if (
+  heats16.tableAlpha.length !== 4 ||
+  heats16.tableBeta.length !== 4 ||
+  heats16.tableGamma.length !== 4 ||
+  heats16.totalSeated !== 12
+) {
+  console.error(`FAIL: Each table must have at least 4 seated players. Got Alpha=${heats16.tableAlpha.length}, Beta=${heats16.tableBeta.length}, Gamma=${heats16.tableGamma.length}`);
+  process.exit(1);
+}
+
+// Verify that the second chance players have the isSecondChance flag
+if (!heats16.tableAlpha.some(p => p.id === eligible16[0].id && p.isSecondChance)) {
+  console.error('FAIL: Second chance player in Table Alpha missing isSecondChance flag');
+  process.exit(1);
+}
+
+// Crown heat winners:
+// Table Alpha: direct qualifier wins
+const alphaWinner = heats16.tableAlpha[0];
+state16 = recordHeatWinner(state16, 'alpha', alphaWinner.id);
+
+// Table Beta: Second Chance player wins heat!
+const betaWinner = heats16.tableBeta.find(p => p.isSecondChance);
+state16 = recordHeatWinner(state16, 'beta', betaWinner.id);
+
+// Table Gamma: direct qualifier wins
+const gammaWinner = heats16.tableGamma[0];
+state16 = recordHeatWinner(state16, 'gamma', gammaWinner.id);
+
+// Compute Grand Finalists
+const gf16 = computeGrandFinalists(state16);
+if (gf16.finalists.length !== 3 || !gf16.isComplete) {
+  console.error('FAIL: Expected 3 finalists from heats');
+  process.exit(1);
+}
+
+// Award Podium Placements: Alpha = 1st (Grand Champion), Beta (Second Chance) = 2nd (Runner-Up), Gamma = 3rd (2nd Runner-Up)
+state16 = recordPodiumPlace(state16, 'first', alphaWinner.id);
+state16 = recordPodiumPlace(state16, 'second', betaWinner.id);
+state16 = recordPodiumPlace(state16, 'third', gammaWinner.id);
+
+const standings16 = computeChampionshipStandings(state16);
+if (
+  !standings16.isChampionCrowned ||
+  standings16.podium.first.id !== alphaWinner.id ||
+  standings16.podium.second.id !== betaWinner.id ||
+  standings16.podium.third.id !== gammaWinner.id
+) {
+  console.error('FAIL: Championship podium standings did not match awarded places');
+  process.exit(1);
+}
+
+console.log('PASS: 16-Player Minimum Contingency simulation succeeded!');
 console.log('PASS: All End-to-End simulation checks succeeded!');
+

@@ -8,7 +8,33 @@
 
 ---
 
-## Official 34 HR Participant Roster Live & Test Names Removed `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+## Round 2 "Second Chance" Wildcard System & 6-Stage Run of Show `28 October 2026` <span style="background:#eab308;color:#000;font-weight:700;padding:2px 8px;border-radius:6px;font-size:12px;">LATEST</span>
+
+<span style="background:#dbeafe;color:#1e40af;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">NEW</span>
+
+* **Round 2 "Second Chance" Wildcard System (Min 4 Pax per Table):**
+  * Solved the 16-player minimum contingency: if only 16 players attend, Round 1 produces 8 winners (which would only provide 3, 3, and 2 players per table).
+  * Organizers can now seat non-qualifying attendees into Table Alpha, Beta, or Gamma via an inline dropdown (`+ Add Second Chance` / `+ Tambah Peluang Kedua`) until each table has at least 4 active players.
+  * Wildcard players feature a purple badge (`🃏 Second Chance` / `🃏 Peluang Kedua`) and a quick remove button `✕`.
+  * Second Chance players compete on equal footing and can be crowned Heat Champion to advance to the Grand Finale!
+  * Empty table slots dynamically indicate when additional players are needed to reach the 4-player threshold.
+* **6-Stage Run of Show Formalized with 🧪 Test Round:**
+  * Stage 1: Check-In & Onboarding (3:00 PM – 3:12 PM)
+  * Stage 2: 🧪 Test Round / Device Warm-Up (3:12 PM – 3:25 PM) — zero-stakes trial match on BuddyBoardGames using rooms `HR-Test-01` through `HR-Test-17`.
+  * Stage 3: Round 1 Digital 1v1s (3:25 PM – 3:45 PM)
+  * Stage 4: Round 2 Physical Heats (3:45 PM – 4:05 PM)
+  * Stage 5: Round 3 Grand Finale (4:05 PM – 4:20 PM)
+  * Stage 6: Awards Ceremony & Wrap-Up (4:20 PM – 4:30 PM)
+* **Automated Room Generator Test Mode:**
+  * Added `🧪 Test Round Room` button (`#testRoomBtn`) that cycles through `HR-Test-01` to `HR-Test-17` with pre-filled BuddyBoardGames direct links.
+* **Complete Documentation & Test Verification:**
+  * Updated [`tournament.md`](file:///d:/uno-guide-rules/tournament.md) with the 6-stage architecture and 16-player minimum contingency.
+  * Verified end-to-end with 16 checked-in players (8 winners + 4 second chance wildcards -> 3 heats of 4 pax -> 3 finalists -> top 3 podium).
+  * All 11 test suites passing (`npm test`).
+
+---
+
+## Official 34 HR Participant Roster Live & Test Names Removed `28 October 2026`
 
 <span style="background:#dcfce7;color:#15803d;font-weight:700;padding:2px 8px;border-radius:6px;font-size:11px;">UPDATED</span>
 
